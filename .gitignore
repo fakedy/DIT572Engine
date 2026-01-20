@@ -1,0 +1,12 @@
+build/
+bin/
+lib/
+out/
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.user
+*.suo
+*.db
+*.ipch
