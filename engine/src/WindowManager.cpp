@@ -20,6 +20,11 @@ namespace Engine {
 			return -1;
 		}
 
+
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+
 		// create window
 		_window = SDL_CreateWindow("Hello SDL Window", 1920, 1080, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 		if (!_window) {
