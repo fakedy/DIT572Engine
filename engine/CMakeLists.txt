@@ -8,6 +8,7 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/SDL EXCLUDE_FROM_ALL)
 
 set(GLM_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm")
 
@@ -18,7 +19,12 @@ set(ENGINE_CORE_SOURCES
     src/Core.cpp
     include/Engine/Core.h
     include/Engine/Layer.h
-    ${GLAD_SOURCE})
+    ${GLAD_SOURCE}
+    include/Engine/Renderer.h
+    include/Engine/WindowManager.h
+    src/WindowManager.cpp
+    vendor/glad/src/glad.c
+ "src/Renderer.cpp")
 
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})
@@ -39,5 +45,6 @@ target_include_directories(Engine PRIVATE
 
 target_link_libraries(Engine PUBLIC
     glfw
+    SDL3::SDL3
     ${CMAKE_DL_LIBS}
 )

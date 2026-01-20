@@ -1,6 +1,10 @@
 #pragma once
 
 
+// this is an abstract base class for layers
+
+
+
 namespace Engine {
 
 	class Layer {

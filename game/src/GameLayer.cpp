@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-
+// this is the heart of the game
 namespace Game {
 
 	void GameLayer::start() {
