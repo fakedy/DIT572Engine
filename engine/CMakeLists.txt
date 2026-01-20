@@ -16,7 +16,8 @@ set(GLAD_SOURCE      "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/src/glad.c")
 
 set(ENGINE_CORE_SOURCES
     src/Core.cpp
-    include/Core.h
+    include/Engine/Core.h
+    include/Engine/Layer.h
     ${GLAD_SOURCE})
 
 
