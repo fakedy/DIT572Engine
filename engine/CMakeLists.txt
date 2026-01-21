@@ -28,7 +28,7 @@ set(ENGINE_CORE_SOURCES
     "include/Engine/GameObject.h"
     "include/Engine/Components/Transform.h"
     "include/Engine/Components/Sprite.h"
-    "include/Engine/Components/Component.h")
+    "include/Engine/Components/Component.h" "include/Engine/Shader.h")
 
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})
