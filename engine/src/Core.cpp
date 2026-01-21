@@ -35,12 +35,12 @@ namespace Engine {
 
 		while (running) {
 
-			Engine::EventManager::Get().PollEvents(running);
+			EventManager::Get().PollEvents(running);
+			InputManager::Get().Update();
 
 			for (Layer* layer : layers) {
 				layer->update();
 			}
-
 
 			renderer.clear();
 			window.swapBuffers();
