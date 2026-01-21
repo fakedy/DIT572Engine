@@ -4,9 +4,10 @@
 
 namespace Engine {
 
-	Engine::InputManager& input = Engine::InputManager::Get();
 
 	void EventManager::PollEvents(bool& running) {
+
+		Engine::InputManager& input = Engine::InputManager::Get();
 
 		SDL_Event e;
 		while (SDL_PollEvent(&e)) {
