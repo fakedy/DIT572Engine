@@ -1,5 +1,6 @@
 #pragma once
 #include <Engine/Components/Component.h>
+#include <Engine/Renderer.h>
 
 
 namespace Engine {
@@ -8,7 +9,10 @@ namespace Engine {
 	public:
 
 
+		void onAdd() override {
 
+
+		}
 
 
 	};

@@ -14,6 +14,11 @@ namespace Engine {
 			position = position + vec;
 		}
 
+
+		void onAdd() override {
+
+		}
+
 	};
 
 }

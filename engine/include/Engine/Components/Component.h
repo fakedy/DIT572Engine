@@ -11,6 +11,8 @@ namespace Engine {
 		virtual ~Component() = default;
 
 
+		virtual void onAdd() = 0;
+
 
 	};
 
