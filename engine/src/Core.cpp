@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Engine/WindowManager.h>
 #include <Engine/Renderer.h>
+#include <Engine/InputManager.h>
 
 namespace Engine {
 
@@ -20,6 +21,7 @@ namespace Engine {
 		window.CreateWindow();
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.init();
+		Engine::InputManager& input = Engine::InputManager::Get();
 
 
 		for (Layer* layer : layers) {
@@ -32,9 +34,13 @@ namespace Engine {
 				layer->update();
 			}
 
+			input.Update();
+
 			renderer.clear();
 
 			window.swapBuffers();
+
+
 		}
 
 
