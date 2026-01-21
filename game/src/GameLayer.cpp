@@ -1,6 +1,7 @@
 #include <Game/GameLayer.h>
 #include <Engine/GameObject.h>
 #include <Engine/InputManager.h>
+#include <Engine/SoundManager.h>
 #include <iostream>
 
 
@@ -16,11 +17,16 @@ namespace Game {
 	void GameLayer::start() {
 		std::cout << "Hello World!\n";
 		player.addComponent<Engine::Transform>();
+
+		Engine::SoundManager& sound = Engine::SoundManager::Get();
+		sound.PlaySound();
 	}
 
 	void GameLayer::update() {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		transform->position = vec3(0, 0, 0);
 		Engine::InputManager& input = Engine::InputManager::Get();
+
+
 	}
 }
