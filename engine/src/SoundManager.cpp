@@ -18,7 +18,7 @@ namespace Engine {
 
         
             SDL_AudioSpec spec;
-            char* wav_path = NULL;
+            char* wav_path = "game\Assets\test.wav";
 
 
             /* Load the .wav file from wherever the app is being run from. */
