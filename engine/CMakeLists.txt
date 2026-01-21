@@ -1,14 +1,27 @@
 cmake_minimum_required(VERSION  3.23)
 project(Engine)
 
+
+include(FetchContent)
+
+FetchContent_Declare(
+    SDL3
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG release-3.4.0
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/SDL"
+)
+
+FetchContent_MakeAvailable(SDL3)
+
+
 # GLM
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
+
 add_subdirectory(vendor/glfw)
-add_subdirectory(vendor/SDL EXCLUDE_FROM_ALL)
 
 set(GLM_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm")
 
