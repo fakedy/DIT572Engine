@@ -7,11 +7,6 @@ namespace Engine {
 	int Renderer::init() {
 
 
-		if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-			SDL_Log("Failed to initialize GLAD");
-			return -1;
-		}
-
 		glGenBuffers(1, &VAO);
 		glBindVertexArray(VAO);
 		glGenBuffers(1, &VBO);

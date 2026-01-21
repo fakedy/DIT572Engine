@@ -12,9 +12,6 @@ namespace Engine {
 	public:
 
 		Shader(const char* vertexPath, const char* fragmentPath) {
-
-			int success;
-			char log[512];
 			
 			std::ifstream vertexFile;
 			std::ifstream fragmentFile;
@@ -30,9 +27,6 @@ namespace Engine {
 				std::cerr << "ERROR: Failed to open shader: " << e.what() << std::endl;
 			}
 
-			std::string vertexCode;
-			std::string fragmentCode;
-
 			std::stringstream vertexStream, fragmentStream;
 
 			vertexStream << vertexFile.rdbuf();
@@ -43,6 +37,14 @@ namespace Engine {
 
 			vertexFile.close();
 			fragmentFile.close();
+
+			
+
+		}
+		void createShader() {
+
+			int success;
+			char log[512];
 
 			unsigned int vertex, fragment;
 
@@ -90,12 +92,16 @@ namespace Engine {
 			glDeleteShader(fragment);
 
 		}
-		
+
+
 		void use() {
 			glUseProgram(id);
 		}
 
 	private:
+
+		std::string vertexCode;
+		std::string fragmentCode;
 
 		int id;
 

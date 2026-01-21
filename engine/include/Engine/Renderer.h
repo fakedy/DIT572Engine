@@ -14,6 +14,14 @@ namespace Engine {
 			return instance;
 		}
 
+		Renderer() {
+			if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
+				SDL_Log("Failed to initialize GLAD");
+			}
+
+			defaultShader.createShader();
+
+		}
 
 		int init();
 
@@ -23,7 +31,7 @@ namespace Engine {
 
 
 	private:
-		Shader defaultShader = Shader("vDefault.vs", "fDefault.fs");
+		Shader defaultShader = Shader("assets/vDefault.vs", "assets/fDefault.fs");
 
 
 		const float vertices[18] = {
