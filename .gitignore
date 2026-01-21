@@ -10,3 +10,4 @@ out/
 *.suo
 *.db
 *.ipch
+/CMakeSettings.json

@@ -23,6 +23,11 @@ namespace Engine {
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.init();
 
+		// make sure SDL video is init
+		if (!SDL_Init(SDL_INIT_VIDEO)) {
+			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
+		}
+
 
 		for (Layer* layer : layers) {
 			layer->start();
