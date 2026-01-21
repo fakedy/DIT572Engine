@@ -43,6 +43,7 @@ namespace Engine {
 			}
 
 			renderer.clear();
+			renderer.draw();
 			window.swapBuffers();
 
 
