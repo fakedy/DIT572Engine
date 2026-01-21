@@ -16,7 +16,11 @@ namespace Engine {
 			}
 
 			if (e.type == SDL_EVENT_KEY_DOWN) {
-				input.GetKeyDown(e);
+				input.Update();
+			}
+
+			if (e.type == SDL_EVENT_KEY_UP) {
+				input.Update();
 			}
 
 		}

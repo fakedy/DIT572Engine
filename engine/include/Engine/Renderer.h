@@ -34,15 +34,21 @@ namespace Engine {
 		Shader defaultShader = Shader("assets/vDefault.vs", "assets/fDefault.fs");
 
 
-		const float vertices[18] = {
-			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 
-			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f, 
-			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f 
+		float vertices[20] = {
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f 
+		};
+
+		const unsigned int indices[6] = {
+			0, 1, 3,
+			1, 2, 3
 		};
 
 		unsigned int VAO;
 		unsigned int VBO;
-
+		unsigned int EBO;
 
 
 

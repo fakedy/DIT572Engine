@@ -22,7 +22,7 @@ target_include_directories(Game PUBLIC
 
 target_link_libraries(Game PRIVATE Engine)
 
-add_custom_command(TARGET Game POST_BUILD
+add_custom_target(TARGET Game ALL
     COMMAND ${CMAKE_COMMAND} -E remove_directory
      "$<TARGET_FILE_DIR:Game>/assets"
     COMMAND ${CMAKE_COMMAND} -E copy_directory

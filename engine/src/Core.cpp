@@ -36,7 +36,6 @@ namespace Engine {
 		while (running) {
 
 			EventManager::Get().PollEvents(running);
-			InputManager::Get().Update();
 
 			for (Layer* layer : layers) {
 				layer->update();
