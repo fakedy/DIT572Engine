@@ -14,19 +14,13 @@ namespace Engine {
 			return 0;
 		}
 
-		// make sure SDL video is init
-		if (!SDL_Init(SDL_INIT_VIDEO)) {
-			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
-			return -1;
-		}
-
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 
 		// create window
-		_window = SDL_CreateWindow("Hello SDL Window", 1920, 1080, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		_window = SDL_CreateWindow("Hello SDL Window", 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 		if (!_window) {
 			SDL_Log("Window Creation Failed: %s", SDL_GetError());
 			return -1;
