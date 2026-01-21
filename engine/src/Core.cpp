@@ -3,6 +3,7 @@
 #include <Engine/WindowManager.h>
 #include <Engine/Renderer.h>
 #include <Engine/InputManager.h>
+#include <Engine/EventManager.h>
 
 namespace Engine {
 
@@ -21,10 +22,9 @@ namespace Engine {
 		window.CreateWindow();
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.init();
-		Engine::InputManager& input = Engine::InputManager::Get();
 
-		// make sure SDL video is init
-		if (!SDL_Init(SDL_INIT_VIDEO)) {
+		// make sure SDL video & audio is init
+		if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
 		}
 
@@ -35,14 +35,14 @@ namespace Engine {
 
 		while (running) {
 
+			Engine::EventManager::Get().PollEvents(running);
+
 			for (Layer* layer : layers) {
 				layer->update();
 			}
 
-			input.Update();
 
 			renderer.clear();
-
 			window.swapBuffers();
 
 
