@@ -13,7 +13,11 @@ namespace Engine {
 
 		SoundManager();
 
+		~SoundManager() =default;
+
 		void PlaySound();
+
+		void StopSound();
 
 
 	};
