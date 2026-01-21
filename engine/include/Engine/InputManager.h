@@ -19,7 +19,6 @@ namespace Engine {
 		bool GetKeyDown(SDL_Scancode key);
 
 
-
 	private:
 		const bool* _keyboardState;
 	};

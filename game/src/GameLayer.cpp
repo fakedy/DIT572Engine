@@ -22,10 +22,5 @@ namespace Game {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		transform->position = vec3(0, 0, 0);
 		Engine::InputManager& input = Engine::InputManager::Get();
-
-		if (input.GetKeyDown(SDL_SCANCODE_W)) {
-			std::cout << "W Key is pressed\n";
-			_sleep(100);
-		}
 	}
 }

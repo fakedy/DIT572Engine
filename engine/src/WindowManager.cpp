@@ -14,8 +14,8 @@ namespace Engine {
 			return 0;
 		}
 
-		// make sure SDL video is init
-		if (!SDL_Init(SDL_INIT_VIDEO)) {
+		// make sure SDL video and SDL events is init
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0) {
 			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
 			return -1;
 		}
