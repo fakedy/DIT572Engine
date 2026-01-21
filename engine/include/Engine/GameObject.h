@@ -21,6 +21,11 @@ namespace Engine {
 		// add a component
 		template <typename T>
 		T* addComponent() {
+			
+			if (hasComponent<T>()) {
+				return getComponent<T>();
+			}
+
 			// create new component of T
 			T* component = new T();
 			components.push_back(component);
@@ -41,6 +46,11 @@ namespace Engine {
 				}
 			}
 			return nullptr;
+		}
+
+		template <typename T>
+		bool hasComponent() {
+			return getComponent<T>() != nullptr;
 		}
 
 

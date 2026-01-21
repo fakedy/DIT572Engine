@@ -15,11 +15,10 @@ namespace Game {
 
 	void GameLayer::start() {
 		std::cout << "Hello World!\n";
+		player.addComponent<Engine::Transform>();
 	}
 
 	void GameLayer::update() {
-
-		player.addComponent<Engine::Transform>();
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		transform->position = glm::vec3(0, 0, 0);
 
