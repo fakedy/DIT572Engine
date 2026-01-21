@@ -4,7 +4,7 @@
 
 namespace Engine {
 
-	class Sprite : Component{
+	class Sprite : public Component{
 	public:
 
 

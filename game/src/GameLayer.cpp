@@ -19,10 +19,9 @@ namespace Game {
 
 	void GameLayer::update() {
 
+		player.addComponent<Engine::Transform>();
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
-		if (transform) {
-			transform->position = glm::vec3(0, 0, 0);
-		}
+		transform->position = glm::vec3(0, 0, 0);
 
 	}
 }

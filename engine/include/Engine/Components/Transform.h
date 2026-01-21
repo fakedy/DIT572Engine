@@ -6,7 +6,7 @@
 
 namespace Engine {
 
-	class Transform : Component{
+	class Transform : public Component{
 	public:
 		glm::vec3 position;
 
