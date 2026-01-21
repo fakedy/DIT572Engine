@@ -23,8 +23,8 @@ namespace Engine {
 		renderer.init();
 		Engine::InputManager& input = Engine::InputManager::Get();
 
-		// make sure SDL video is init
-		if (!SDL_Init(SDL_INIT_VIDEO)) {
+		// make sure SDL video & audio is init
+		if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
 		}
 
