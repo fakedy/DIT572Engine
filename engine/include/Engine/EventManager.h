@@ -14,7 +14,7 @@ namespace Engine {
 
 		~EventManager() = default;
 
-		void PollEvents(bool&);
+		void PollEvents(bool& running);
 
 	private:
 	};

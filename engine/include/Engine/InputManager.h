@@ -16,7 +16,7 @@ namespace Engine {
 
 		void Update();
 
-		bool GetKeyDown(SDL_Scancode key);
+		bool GetKeyDown(SDL_Event e);
 
 
 	private:

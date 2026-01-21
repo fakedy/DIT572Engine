@@ -12,8 +12,9 @@ namespace Engine {
 		_keyboardState = SDL_GetKeyboardState(nullptr);
 	}
 
-	bool InputManager::GetKeyDown(SDL_Scancode key) {
-		return _keyboardState[key];
+	bool InputManager::GetKeyDown(SDL_Event e) {
+		SDL_Log("Key pressed: %s", SDL_GetKeyName(e.key.key));
+		return _keyboardState[e.key.key];
 	}
 
 }
