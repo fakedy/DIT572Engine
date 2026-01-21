@@ -19,9 +19,16 @@ namespace Engine {
 			std::ifstream vertexFile;
 			std::ifstream fragmentFile;
 
+			vertexFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+			fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-			vertexFile.open(vertexPath);
-			fragmentFile.open(fragmentPath);
+			try {
+				vertexFile.open(vertexPath);
+				fragmentFile.open(fragmentPath);
+			}
+			catch (std::ifstream::failure& e) {
+				std::cerr << "ERROR: Failed to open shader: " << e.what() << std::endl;
+			}
 
 			std::string vertexCode;
 			std::string fragmentCode;
