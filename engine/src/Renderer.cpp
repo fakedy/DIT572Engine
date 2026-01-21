@@ -11,6 +11,12 @@ namespace Engine {
 			SDL_Log("Failed to initialize GLAD");
 			return -1;
 		}
+		return 0;
+	}
+
+
+	void Renderer::draw() {
+
 	}
 
 

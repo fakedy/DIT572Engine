@@ -38,6 +38,9 @@ namespace Engine {
 		}
 
 
+		window.DestroyWindow();
+
+
 	}
 
 	void Core::addLayer(Layer* layer)

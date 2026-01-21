@@ -21,9 +21,6 @@ int main(){
 	// add layer to engine
 	game.addLayer(gameLayer);
 
-
-	
-
 	// run the game
 	game.run();
 	

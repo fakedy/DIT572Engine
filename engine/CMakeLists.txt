@@ -24,7 +24,11 @@ set(ENGINE_CORE_SOURCES
     include/Engine/WindowManager.h
     src/WindowManager.cpp
     vendor/glad/src/glad.c
- "src/Renderer.cpp")
+    "src/Renderer.cpp"
+    "include/Engine/GameObject.h"
+    "include/Engine/Components/Transform.h"
+    "include/Engine/Components/Sprite.h"
+    "include/Engine/Components/Component.h")
 
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})

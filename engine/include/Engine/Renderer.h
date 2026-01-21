@@ -14,6 +14,7 @@ namespace Engine {
 
 		int init();
 
+		void draw();
 
 		void clear();
 
