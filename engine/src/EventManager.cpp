@@ -15,7 +15,7 @@ namespace Engine {
 			}
 
 			if (e.type == SDL_EVENT_KEY_DOWN) {
-				SDL_Log("Key pressed: %s", SDL_GetKeyName(e.key.key));
+				input.GetKeyDown(e);
 			}
 
 		}
