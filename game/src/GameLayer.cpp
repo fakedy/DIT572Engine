@@ -26,18 +26,11 @@ namespace Game {
 	void GameLayer::update() {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		Engine::InputManager& input = Engine::InputManager::Get();
-		if (input.GetKeyDown(SDL_SCANCODE_W)) {
-			transform->translate(vec3(0, 0, 1));
-		}
-
-		if (input.GetKeyDown(SDL_SCANCODE_S)) {
-			transform->translate(vec3(0, 0, -1));
-		}
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
-			transform->translate(vec3(-1, 0, 0));
+			transform->translate(vec3(-0.1, 0, 0));
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
-			transform->translate(vec3(1, 0, 0));
+			transform->translate(vec3(0.1, 0, 0));
 		}
 
 

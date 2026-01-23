@@ -1,4 +1,5 @@
 #include <Engine/Renderer.h>
+#include <glm/glm/gtc/matrix_transform.hpp>
 
 
 namespace Engine {
@@ -37,6 +38,14 @@ namespace Engine {
 	{
 		defaultShader.use();
 		glBindVertexArray(VAO);
+		int projLoc = defaultShader.getLocation("proj");
+		int modelLoc = defaultShader.getLocation("model");
+
+		glm::mat4 proj = glm::ortho(-400.0f, 400.0f, -300.0f, 300.0f, -1.0f, 1.0f);
+		glm::mat4 tempModel = glm::scale(model, glm::vec3(100.0f, 100.0f, 1.0f));
+
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &tempModel[0][0]);
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	}

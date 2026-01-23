@@ -98,6 +98,10 @@ namespace Engine {
 			glUseProgram(id);
 		}
 
+		int getLocation(const std::string& name) {
+			return glGetUniformLocation(id, name.c_str());
+		}
+
 	private:
 
 		std::string vertexCode;
