@@ -10,14 +10,10 @@ namespace Engine {
 	public:
 		glm::vec3 position;
 
-		void translate(glm::vec3 vec) {
-			position = position + vec;
-		}
+		void translate(glm::vec3 vec);
 
 
-		void onAdd() override {
-
-		}
+		void onAdd() override;
 
 	};
 

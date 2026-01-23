@@ -28,16 +28,35 @@ namespace Engine {
 
 
 	void Renderer::draw() {
+		for (auto& pair : spriteMap) {
+			pair.second->draw();
+		}
+	}
 
+	void Renderer::drawSprite(glm::mat4 model)
+	{
 		defaultShader.use();
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 	}
 
 
 	void Renderer::clear() {
 		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	int Renderer::addSprite(Sprite* sprite)
+	{
+		int id = nextSprite++;
+		spriteMap[id] = sprite;
+		return id;
+	}
+
+	void Renderer::removeSprite(int id)
+	{
+		
 	}
 
 

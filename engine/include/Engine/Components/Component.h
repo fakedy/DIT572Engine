@@ -1,9 +1,8 @@
 #pragma once
 
-
-
-
 namespace Engine {
+
+	class GameObject;
 
 	class Component {
 	public:
@@ -12,6 +11,9 @@ namespace Engine {
 
 
 		virtual void onAdd() = 0;
+
+
+		GameObject* owner{ nullptr };
 
 
 	};

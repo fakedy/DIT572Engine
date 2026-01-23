@@ -29,6 +29,8 @@ namespace Engine {
 			// create new component of T
 			T* component = new T();
 			components.push_back(component);
+			component->owner = this;
+			component->onAdd();
 			return component;
 		}
 
