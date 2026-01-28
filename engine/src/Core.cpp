@@ -2,10 +2,11 @@
 #include <iostream>
 #include <Engine/WindowManager.h>
 #include <Engine/Renderer.h>
-#include <Engine/InputManager.h>
 #include <Engine/EventManager.h>
+#include <chrono>
 
 namespace Engine {
+
 
 	Core::Core()
 	{
@@ -33,7 +34,14 @@ namespace Engine {
 			layer->start();
 		}
 
+		auto lastTime = std::chrono::high_resolution_clock::now();
+
 		while (running) {
+
+			auto currentTime = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<float> frameTime = currentTime - lastTime;
+
+			Time::deltaTime = frameTime.count();
 
 			EventManager::Get().PollEvents(running);
 
@@ -45,6 +53,7 @@ namespace Engine {
 			renderer.draw();
 			window.swapBuffers();
 
+			lastTime = currentTime;
 
 		}
 

@@ -43,7 +43,7 @@ set(ENGINE_CORE_SOURCES
     "include/Engine/Components/Sprite.h"
     "include/Engine/Components/Component.h" "include/Engine/Shader.h" "include/Engine/InputManager.h"
     src/InputManager.cpp "include/Engine/EventManager.h" "src/EventManager.cpp"
-    src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp" "src/Components/Sprite.cpp" "src/Components/Transform.cpp")
+    src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp" "src/Components/Sprite.cpp" "src/Components/Transform.cpp" "include/Engine/Time.h" "include/Engine/Engine.h")
     
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})

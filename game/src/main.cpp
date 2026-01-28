@@ -1,6 +1,5 @@
 #include <Engine/Core.h>
 #include <Game/GameLayer.h>
-#include <Engine/WindowManager.h>
 
 namespace Game {
 

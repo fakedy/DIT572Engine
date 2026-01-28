@@ -1,7 +1,4 @@
 #include <Game/GameLayer.h>
-#include <Engine/GameObject.h>
-#include <Engine/InputManager.h>
-#include <Engine/SoundManager.h>
 #include <iostream>
 
 
@@ -16,7 +13,7 @@ namespace Game {
 
 	void GameLayer::start() {
 		std::cout << "Hello World!\n";
-		player.addComponent<Engine::Transform>();
+		player.addComponent<Engine::Transform>(); 
 		player.addComponent<Engine::Sprite>();
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
@@ -27,17 +24,18 @@ namespace Game {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		Engine::InputManager& input = Engine::InputManager::Get();
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
-			transform->translate(vec3(-0.1, 0, 0));
+			transform->translate(vec3(-100, 0, 0) * Engine::Time::deltaTime );
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
-			transform->translate(vec3(0.1, 0, 0));
+			transform->translate(vec3(100, 0, 0) * Engine::Time::deltaTime);
 		}
 
-
-		std::cout << "( " << transform->position.x
+		/*
+		std::cout
+			<< "( " << transform->position.x
 			<< ", " << transform->position.y
 			<< ", " << transform->position.z
 			<< " )" << std::endl;
-
+		*/
 	}
 }

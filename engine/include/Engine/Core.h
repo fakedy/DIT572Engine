@@ -1,5 +1,11 @@
+#pragma once
 #include <vector>
 #include "Layer.h"
+#include <Engine/GameObject.h>
+#include <Engine/InputManager.h>
+#include <Engine/SoundManager.h>
+#include <Engine/Time.h>
+
 
 namespace Engine {
 
