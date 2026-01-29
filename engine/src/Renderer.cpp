@@ -41,8 +41,11 @@ namespace Engine {
 		int projLoc = defaultShader.getLocation("proj");
 		int modelLoc = defaultShader.getLocation("model");
 
-		glm::mat4 proj = glm::ortho(-400.0f, 400.0f, -300.0f, 300.0f, -1.0f, 1.0f);
-		glm::mat4 tempModel = glm::scale(model, glm::vec3(100.0f, 100.0f, 1.0f));
+		// assume 16:9 view 
+		glm::mat4 proj = glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f);
+
+
+		glm::mat4 tempModel = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &tempModel[0][0]);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);

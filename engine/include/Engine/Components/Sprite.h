@@ -11,6 +11,11 @@ namespace Engine {
 
 		Transform* transform{ nullptr };
 
+		// like this or something
+		//Texture* texture{ nullptr };
+
+		float pixels_per_unit{ 16.0f };
+
 		void onAdd() override;
 
 		void draw();

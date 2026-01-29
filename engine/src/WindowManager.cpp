@@ -20,7 +20,7 @@ namespace Engine {
 
 
 		// create window
-		_window = SDL_CreateWindow("Hello SDL Window", 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		_window = SDL_CreateWindow("Hello SDL Window", 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 		if (!_window) {
 			SDL_Log("Window Creation Failed: %s", SDL_GetError());
 			return -1;
