@@ -16,6 +16,9 @@ namespace Engine {
 			void* fragmentData = SDL_LoadFile(fragmentPath, nullptr);
 			vertexCode = std::string(static_cast<char*>(vertexData));
 			fragmentCode = std::string(static_cast<char*>(fragmentData));
+
+			SDL_free(vertexData);
+			SDL_free(fragmentData);
 		}
 		void createShader() {
 
