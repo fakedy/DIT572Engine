@@ -13,17 +13,16 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SDL3)
 
-
 # GLM
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
-
-add_subdirectory(vendor/glfw)
-
 set(GLM_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm")
+
+
+set(STB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/STB")
 
 set(GLAD_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/include")
 set(GLAD_SOURCE      "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/src/glad.c")
@@ -31,7 +30,7 @@ set(GLAD_SOURCE      "${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/src/glad.c")
 set(ENGINE_CORE_SOURCES
     src/Core.cpp
     include/Engine/Core.h
-    include/Engine/Layer.h
+    
     ${GLAD_SOURCE}
     include/Engine/Renderer.h
     include/Engine/WindowManager.h
@@ -43,7 +42,10 @@ set(ENGINE_CORE_SOURCES
     "include/Engine/Components/Sprite.h"
     "include/Engine/Components/Component.h" "include/Engine/Shader.h" "include/Engine/InputManager.h"
     src/InputManager.cpp "include/Engine/EventManager.h" "src/EventManager.cpp"
-    src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp" "src/Components/Sprite.cpp" "src/Components/Transform.cpp" "include/Engine/Time.h" "include/Engine/Engine.h")
+    src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp"
+     "src/Components/Sprite.cpp" "src/Components/Transform.cpp"
+     "include/Engine/Time.h"  
+     "include/Engine/Engine.h" "include/Engine/Scene.h")
     
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})
@@ -55,6 +57,7 @@ target_include_directories(Engine PUBLIC
     include
     ${GLM_INCLUDE_DIR}
     ${GLAD_INCLUDE_DIR}
+    ${STB_INCLUDE_DIR}
     )
 
 target_include_directories(Engine PRIVATE
@@ -63,7 +66,6 @@ target_include_directories(Engine PRIVATE
 
 
 target_link_libraries(Engine PUBLIC
-    glfw
     SDL3::SDL3
     ${CMAKE_DL_LIBS}
 )

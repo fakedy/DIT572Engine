@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "Layer.h"
 #include <Engine/GameObject.h>
 #include <Engine/InputManager.h>
 #include <Engine/SoundManager.h>
 #include <Engine/Time.h>
+#include <Engine/Scene.h>
 
 
 namespace Engine {
@@ -20,11 +20,11 @@ namespace Engine {
 
 		virtual void run();
 
-		void addLayer(Layer* layer);
+		void setScene(Scene* scene);
 
 	private:
 
+		Scene* _scene;
 		bool running{ true };
-		std::vector<Layer*> layers;
 	};
 }

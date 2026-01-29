@@ -1,15 +1,15 @@
 #pragma once
 
 
-// this is an abstract base class for layers
+// this is an abstract base class for scenes
 
 
 
 namespace Engine {
 
-	class Layer {
+	class Scene {
 	public:
-		virtual ~Layer() = default;
+		virtual ~Scene() = default;
 
 		virtual void start() = 0;
 

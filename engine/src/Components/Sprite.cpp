@@ -3,8 +3,6 @@
 #include <iostream>
 #include <glm/glm/gtc/matrix_transform.hpp>
 
-
-
 namespace Engine {
 
 	Sprite::Sprite() {

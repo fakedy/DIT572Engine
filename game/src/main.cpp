@@ -1,5 +1,5 @@
 #include <Engine/Core.h>
-#include <Game/GameLayer.h>
+#include <Game/GameScene.h>
 
 namespace Game {
 
@@ -13,13 +13,11 @@ int main(){
 
 	// create game class
 	Game::Game game;
+	
+	// create game scene
 
-	// create the game layer
-	Game::GameLayer* gameLayer = new Game::GameLayer;
-
-	// add layer to engine
-	game.addLayer(gameLayer);
-
+	Game::GameScene* gameScene = new Game::GameScene();
+	game.setScene(gameScene);
 	// run the game
 	game.run();
 	

@@ -28,10 +28,9 @@ namespace Engine {
 		if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
 		}
-
-
-		for (Layer* layer : layers) {
-			layer->start();
+		// call start() for all layers
+		if(_scene != nullptr){
+			_scene->start();
 		}
 
 		auto lastTime = std::chrono::high_resolution_clock::now();
@@ -45,8 +44,8 @@ namespace Engine {
 
 			EventManager::Get().PollEvents(running);
 
-			for (Layer* layer : layers) {
-				layer->update();
+			if (_scene != nullptr) {
+				_scene->update();
 			}
 
 			renderer.clear();
@@ -63,8 +62,9 @@ namespace Engine {
 
 	}
 
-	void Core::addLayer(Layer* layer)
+	void Core::setScene(Scene* scene)
 	{
-		layers.push_back(layer);
+		_scene = scene;
 	}
+
 }
