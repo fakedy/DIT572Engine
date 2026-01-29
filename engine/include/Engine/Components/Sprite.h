@@ -9,6 +9,9 @@ namespace Engine {
 	class Sprite : public Component{
 	public:
 
+		Sprite();
+		Sprite(const char* path);
+
 		Transform* transform{ nullptr };
 
 		// like this or something

@@ -7,6 +7,13 @@
 
 namespace Engine {
 
+	Sprite::Sprite() {
+
+	}
+
+	Sprite::Sprite(const char* path) {
+
+	}
 
 	void Sprite::onAdd() {
 

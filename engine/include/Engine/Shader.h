@@ -1,8 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <iostream>
-#include <fstream>
-#include <sstream>
+#include <SDL3/SDL.h>
 
 namespace Engine {
 
@@ -13,33 +12,10 @@ namespace Engine {
 
 		Shader(const char* vertexPath, const char* fragmentPath) {
 			
-			std::ifstream vertexFile;
-			std::ifstream fragmentFile;
-
-			vertexFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-			try {
-				vertexFile.open(vertexPath);
-				fragmentFile.open(fragmentPath);
-			}
-			catch (std::ifstream::failure& e) {
-				std::cerr << "ERROR: Failed to open shader: " << e.what() << std::endl;
-			}
-
-			std::stringstream vertexStream, fragmentStream;
-
-			vertexStream << vertexFile.rdbuf();
-			fragmentStream << fragmentFile.rdbuf();
-
-			vertexCode = vertexStream.str();
-			fragmentCode = fragmentStream.str();
-
-			vertexFile.close();
-			fragmentFile.close();
-
-			
-
+			void* vertexData = SDL_LoadFile(vertexPath, nullptr);
+			void* fragmentData = SDL_LoadFile(fragmentPath, nullptr);
+			vertexCode = std::string(static_cast<char*>(vertexData));
+			fragmentCode = std::string(static_cast<char*>(fragmentData));
 		}
 		void createShader() {
 
