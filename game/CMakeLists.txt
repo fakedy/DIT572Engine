@@ -20,11 +20,11 @@ target_include_directories(Game PUBLIC
 
 target_link_libraries(Game PRIVATE Engine)
 
-add_custom_target(TARGET Game ALL
-    COMMAND ${CMAKE_COMMAND} -E remove_directory
-     "$<TARGET_FILE_DIR:Game>/assets"
+add_custom_target(copy_assets ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-        "$<TARGET_FILE_DIR:Game>/assets"
-    COMMENT "Copying game assets to output directory..."
+        "${CMAKE_CURRENT_SOURCE_DIR}/Assets"
+        "$<TARGET_FILE_DIR:Game>/Assets"
+    COMMENT "Copying game assets..."
 )
+
+add_dependencies(Game copy_assets)
