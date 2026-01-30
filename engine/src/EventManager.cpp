@@ -1,6 +1,7 @@
 #include <Engine/EventManager.h>
 #include <Engine/InputManager.h>
 #include <SDL3/SDL.h>
+#include <engine/Renderer.h>
 
 namespace Engine {
 
@@ -21,6 +22,15 @@ namespace Engine {
 
 			if (e.type == SDL_EVENT_KEY_UP) {
 				input.Update();
+			}
+			if (e.type == SDL_EVENT_WINDOW_RESIZED) {
+				// handle window resize if necessary
+				int width = e.window.data1;
+				int height = e.window.data2;
+
+				Renderer::Get().handleResizeWindow(width, height);
+
+				SDL_Log("Window resized to % dx % d\n", width, height);
 			}
 
 		}

@@ -35,6 +35,8 @@ namespace Engine {
 		int addSprite(Sprite* sprite);
 		void removeSprite(int id);
 
+		void handleResizeWindow(int width, int height);
+
 
 	private:
 		Shader defaultShader = Shader("assets/vDefault.vs", "assets/fDefault.fs");
@@ -59,7 +61,8 @@ namespace Engine {
 		std::unordered_map<int,Sprite*> spriteMap;
 		int nextSprite{ 0 };
 
-
+		int windowHeight = 720;
+		int windowWidth = 1280;
 
 	};
 
