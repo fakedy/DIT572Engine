@@ -1,10 +1,10 @@
 #include <Engine/EventManager.h>
 #include <Engine/InputManager.h>
 #include <SDL3/SDL.h>
-
 namespace Engine {
 
 
+	using namespace std;
 	void EventManager::PollEvents(bool& running) {
 
 		Engine::InputManager& input = Engine::InputManager::Get();

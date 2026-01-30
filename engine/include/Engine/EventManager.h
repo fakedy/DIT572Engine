@@ -1,7 +1,10 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <unordered_map>
+#include <functional>
 
 namespace Engine {
+
 	class EventManager {
 	public:
 		// singleton
@@ -17,5 +20,10 @@ namespace Engine {
 		void PollEvents(bool& running);
 
 	private:
+
+		
+
+
+
 	};
 }

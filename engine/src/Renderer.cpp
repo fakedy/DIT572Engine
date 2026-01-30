@@ -41,7 +41,7 @@ namespace Engine {
 		int projLoc = defaultShader.getLocation("proj");
 		int modelLoc = defaultShader.getLocation("model");
 
-		// assume 16:9 view 
+		// Should calculate the aspect ratio
 		glm::mat4 proj = glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f);
 
 
@@ -55,7 +55,7 @@ namespace Engine {
 
 
 	void Renderer::clear() {
-		glClearColor(1.0f, 0.5f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 

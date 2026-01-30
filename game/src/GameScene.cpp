@@ -10,7 +10,6 @@ namespace Game {
 
 
 
-
 	void GameScene::start() {
 		std::cout << "Hello World!\n";
 		player.addComponent<Engine::Transform>();
@@ -24,10 +23,10 @@ namespace Game {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		Engine::InputManager& input = Engine::InputManager::Get();
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
-			transform->translate(vec3(-1, 0, 0) * Engine::Time::deltaTime);
+			transform->translate(vec3(-10, 0, 0) * Engine::Time::deltaTime);
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
-			transform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime);
+			transform->translate(vec3(10, 0, 0) * Engine::Time::deltaTime);
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_SPACE)) {
 			std::cout
