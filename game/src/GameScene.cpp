@@ -28,6 +28,12 @@ namespace Game {
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			transform->translate(vec3(10, 0, 0) * Engine::Time::deltaTime);
 		}
+		if (input.GetKeyDown(SDL_SCANCODE_W)) {
+			transform->translate(vec3(0, 10, 0) * Engine::Time::deltaTime);
+		}
+		if (input.GetKeyDown(SDL_SCANCODE_S)) {
+			transform->translate(vec3(0, -10, 0) * Engine::Time::deltaTime);
+		}
 		if (input.GetKeyDown(SDL_SCANCODE_SPACE)) {
 			std::cout
 				<< "( " << transform->position.x
