@@ -41,8 +41,12 @@ namespace Engine {
 		int projLoc = defaultShader.getLocation("proj");
 		int modelLoc = defaultShader.getLocation("model");
 
-		// Should calculate the aspect ratio
-		glm::mat4 proj = glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f);
+		float ratioAspect = (float)windowWidth / (float)windowHeight;
+		float orthoHeight = 9.0f;
+		float orthoWidth = orthoHeight * ratioAspect;
+
+		// assume 16:9 view 
+		glm::mat4 proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
 
 
 		glm::mat4 tempModel = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -69,6 +73,13 @@ namespace Engine {
 	void Renderer::removeSprite(int id)
 	{
 		
+	}
+
+	void Renderer::handleResizeWindow(int width, int height) 
+	{
+		windowHeight = height;
+		windowWidth = width;
+		glViewport(0, 0, width, height);
 	}
 
 
