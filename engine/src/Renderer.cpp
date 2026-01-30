@@ -34,7 +34,7 @@ namespace Engine {
 		}
 	}
 
-	void Renderer::drawSprite(glm::mat4 model)
+	void Renderer::drawSprite(glm::mat4 model, unsigned int texture)
 	{
 		defaultShader.use();
 		glBindVertexArray(VAO);
@@ -51,9 +51,14 @@ namespace Engine {
 
 		glm::mat4 tempModel = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture);
+
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &tempModel[0][0]);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
 
 	}
 

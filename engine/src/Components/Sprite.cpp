@@ -2,6 +2,7 @@
 #include <Engine/Renderer.h>
 #include <iostream>
 #include <glm/glm/gtc/matrix_transform.hpp>
+#include <Engine/AssetManager.h>
 
 namespace Engine {
 
@@ -10,7 +11,6 @@ namespace Engine {
 	}
 
 	Sprite::Sprite(const char* path) {
-
 	}
 
 	void Sprite::onAdd() {
@@ -30,7 +30,11 @@ namespace Engine {
 				float scaleY = texture->height / pixels_per_unit
 				model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0f);
 			*/
-			Renderer::Get().drawSprite(model);
+			Renderer::Get().drawSprite(model, textureID);
 		}
+	}
+
+	void Sprite::LoadSprite(const char* path) {
+		textureID = AssetManager::Get().LoadTexture(path);
 	}
 }

@@ -13,7 +13,8 @@ namespace Game {
 	void GameScene::start() {
 		std::cout << "Hello World!\n";
 		player.addComponent<Engine::Transform>();
-		player.addComponent<Engine::Sprite>();
+		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/HorribleBox64x64.png");
+		
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
 		//sound.PlaySound();

@@ -28,7 +28,7 @@ namespace Engine {
 
 		void draw();
 
-		void drawSprite(glm::mat4 model);
+		void drawSprite(glm::mat4 model, unsigned int texture);
 
 		void clear();
 

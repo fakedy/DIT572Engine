@@ -23,6 +23,9 @@ namespace Engine {
 
 		void draw();
 
+		void LoadSprite(const char* path);
 
+	private:
+		unsigned int textureID{ 0 };
 	};
 }
