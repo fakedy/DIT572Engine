@@ -1,6 +1,6 @@
 #include <Engine/Renderer.h>
 #include <glm/glm/gtc/matrix_transform.hpp>
-
+#include <Engine/Texture.h>
 
 namespace Engine {
 
@@ -8,7 +8,7 @@ namespace Engine {
 	int Renderer::init() {
 
 
-		glGenBuffers(1, &VAO);
+		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -24,6 +24,15 @@ namespace Engine {
 		glEnableVertexAttribArray(1);
 
 
+		float aspectRatio = (float)windowWidth / (float)windowHeight;
+
+		float totalHeight = (float)windowHeight / pixels_per_unit;
+		float orthoHeight = totalHeight / 2.0f;
+		float orthoWidth = orthoHeight * aspectRatio;
+
+		proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
+
+
 		return 0;
 	}
 
@@ -34,32 +43,24 @@ namespace Engine {
 		}
 	}
 
-	void Renderer::drawSprite(glm::mat4 model, unsigned int texture)
+	void Renderer::drawSprite(glm::mat4 model, Texture& texture)
 	{
 		defaultShader.use();
 		glBindVertexArray(VAO);
 		int projLoc = defaultShader.getLocation("proj");
 		int modelLoc = defaultShader.getLocation("model");
 
-		float ratioAspect = (float)windowWidth / (float)windowHeight;
-		float orthoHeight = 9.0f;
-		float orthoWidth = orthoHeight * ratioAspect;
+		float sizeX = (float)texture.width / pixels_per_unit;
+		float sizeY = (float)texture.height / pixels_per_unit;
 
-		// assume 16:9 view 
-		glm::mat4 proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
+		glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
 
-
-		glm::mat4 tempModel = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture.id);
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &tempModel[0][0]);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
-
 	}
 
 

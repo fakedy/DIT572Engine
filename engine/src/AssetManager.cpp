@@ -9,7 +9,7 @@ namespace Engine {
 
 	}
 
-	int AssetManager::LoadTexture(const std::string& filePath) {
+	std::shared_ptr<Texture> AssetManager::LoadTexture(const std::string& filePath) {
 		int w, h, channels;
 
 		stbi_uc *pixels = stbi_load(filePath.c_str(), &w, &h, &channels, 0);
@@ -31,10 +31,14 @@ namespace Engine {
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 
+		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
+		newTexture->id = texture;
+		newTexture->width = w;
+		newTexture->height = h;
 
 		stbi_image_free(pixels);
-		textureMap[filePath] = texture;
+		textureMap[filePath] = newTexture;
 
-		return texture;
+		return textureMap[filePath];
 	}
 }

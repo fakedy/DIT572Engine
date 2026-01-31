@@ -25,16 +25,12 @@ namespace Engine {
 		if (transform) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, transform->position);
-			/*
-				float scaleX = texture->width / pixels_per_unit;
-				float scaleY = texture->height / pixels_per_unit
-				model = glm::scale(model, glm::vec3(scaleX, scaleY, 1.0f);
-			*/
-			Renderer::Get().drawSprite(model, textureID);
+			Renderer::Get().drawSprite(model, *texture.get());
 		}
 	}
 
 	void Sprite::LoadSprite(const char* path) {
-		textureID = AssetManager::Get().LoadTexture(path);
+		texture = AssetManager::Get().LoadTexture(path);
+		std::cout << "Sprite object: " << texture.get()->width << std::endl;
 	}
 }

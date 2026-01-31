@@ -2,6 +2,8 @@
 #include <Engine/Components/Component.h>
 #include <Engine/Components/Transform.h>
 #include <Engine/GameObject.h>
+#include <memory>
+#include <Engine/Texture.h>
 
 
 namespace Engine {
@@ -17,7 +19,6 @@ namespace Engine {
 		// like this or something
 		//Texture* texture{ nullptr };
 
-		float pixels_per_unit{ 16.0f };
 
 		void onAdd() override;
 
@@ -26,6 +27,6 @@ namespace Engine {
 		void LoadSprite(const char* path);
 
 	private:
-		unsigned int textureID{ 0 };
+		std::shared_ptr<Texture> texture;
 	};
 }

@@ -4,6 +4,7 @@
 #include <Engine/Shader.h>
 #include <Engine/Components/Sprite.h>
 #include <unordered_map>
+#include <Engine/Texture.h>
 namespace Engine {
 
 	class Renderer {
@@ -28,7 +29,7 @@ namespace Engine {
 
 		void draw();
 
-		void drawSprite(glm::mat4 model, unsigned int texture);
+		void drawSprite(glm::mat4 model, Texture& texture);
 
 		void clear();
 
@@ -63,6 +64,10 @@ namespace Engine {
 
 		int windowHeight = 720;
 		int windowWidth = 1280;
+
+		float pixels_per_unit{ 32.0f };
+
+		glm::mat4 proj;
 
 	};
 

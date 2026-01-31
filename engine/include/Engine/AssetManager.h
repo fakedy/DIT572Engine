@@ -1,6 +1,8 @@
 #pragma once
 #include <unordered_map>
 #include <string>
+#include <Engine/Texture.h>
+#include <memory>
 
 
 namespace Engine {
@@ -15,10 +17,10 @@ namespace Engine {
 			AssetManager();
 			~AssetManager() = default;
 
-			int LoadTexture(const std::string& filePath);
+			std::shared_ptr<Texture> LoadTexture(const std::string& filePath);
 
 
 		private:
-			std::unordered_map<std::string, unsigned int> textureMap;
+			std::unordered_map<std::string, std::shared_ptr<Texture>> textureMap;
 		};
 	}
