@@ -7,21 +7,19 @@ namespace Game {
 	using namespace glm;
 
 	Engine::GameObject player;
-	World world;
 
-
+	Engine::GameObject box;
 
 	void GameScene::start() {
 		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/cursed.png");
-		
+
+		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
+		box.getComponent<Engine::Transform>()->translate(vec3(6, 0, 0));
+
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.pixels_per_unit = 16.0f;
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
-		//sound.PlaySound();
-
-		world.create();
-
 
 
 
