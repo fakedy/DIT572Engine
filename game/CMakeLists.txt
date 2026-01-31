@@ -1,9 +1,9 @@
 
 
 set(GAME_SOURCES
-    src/main.cpp "src/GameScene.cpp")
+    src/main.cpp "src/GameScene.cpp" "src/World.cpp")
 
-set(GAME_INCLUDES "include/Game/GameScene.h")
+set(GAME_INCLUDES "include/Game/GameScene.h" "include/Game/World.h")
 
 
 add_executable(Game

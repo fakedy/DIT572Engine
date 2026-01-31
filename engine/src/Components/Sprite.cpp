@@ -17,7 +17,7 @@ namespace Engine {
 
 
 		Renderer::Get().addSprite(this);
-		// if there is no transform when you add a sprite its cooked
+		// if there is no transform when you add a sprite its cooked (crash)
 		transform = owner->getComponent<Transform>();
 	}
 
@@ -31,6 +31,5 @@ namespace Engine {
 
 	void Sprite::LoadSprite(const char* path) {
 		texture = AssetManager::Get().LoadTexture(path);
-		std::cout << "Sprite object: " << texture.get()->width << std::endl;
 	}
 }

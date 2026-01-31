@@ -10,8 +10,14 @@ namespace Engine {
 	}
 
 	std::shared_ptr<Texture> AssetManager::LoadTexture(const std::string& filePath) {
-		int w, h, channels;
 
+		if (textureMap.find(filePath) != textureMap.end()) {
+			return textureMap[filePath];
+		}
+
+		int w, h, channels;
+		
+		stbi_set_flip_vertically_on_load(true);
 		stbi_uc *pixels = stbi_load(filePath.c_str(), &w, &h, &channels, 0);
 
 		unsigned int texture;

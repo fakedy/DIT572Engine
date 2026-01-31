@@ -45,7 +45,7 @@ set(ENGINE_CORE_SOURCES
     src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp"
      "src/Components/Sprite.cpp" "src/Components/Transform.cpp"
      "include/Engine/Time.h"  
-     "include/Engine/Engine.h" "include/Engine/Scene.h" "include/Engine/Event/Event.h" "include/Engine/AssetManager.h" "src/AssetManager.cpp" "include/Engine/Texture.h")
+     "include/Engine/Engine.h" "include/Engine/Scene.h" "include/Engine/AssetManager.h" "src/AssetManager.cpp" "include/Engine/Texture.h")
     
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})

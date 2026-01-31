@@ -1,23 +1,30 @@
 #include <Game/GameScene.h>
 #include <iostream>
-
+#include <Game/World.h>
 
 // this is the heart of the game
 namespace Game {
 	using namespace glm;
 
 	Engine::GameObject player;
+	World world;
 
 
 
 	void GameScene::start() {
-		std::cout << "Hello World!\n";
-		player.addComponent<Engine::Transform>();
-		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/HorribleBox64x64.png");
+		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/cursed.png");
 		
+		Engine::Renderer& renderer = Engine::Renderer::Get();
+		renderer.pixels_per_unit = 16.0f;
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
 		//sound.PlaySound();
+
+		world.create();
+
+
+
+
 	}
 
 	void GameScene::update() {

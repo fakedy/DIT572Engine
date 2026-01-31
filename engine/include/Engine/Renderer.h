@@ -39,6 +39,7 @@ namespace Engine {
 		void handleResizeWindow(int width, int height);
 
 
+		float pixels_per_unit{ 32.0f };
 	private:
 		Shader defaultShader = Shader("assets/vDefault.vs", "assets/fDefault.fs");
 
@@ -65,7 +66,6 @@ namespace Engine {
 		int windowHeight = 720;
 		int windowWidth = 1280;
 
-		float pixels_per_unit{ 32.0f };
 
 		glm::mat4 proj;
 

@@ -4,11 +4,15 @@
 #include <vector>
 
 
+
 namespace Engine {
 
 	class GameObject {
 	public:
 
+		GameObject() {
+			this->addComponent<Transform>();
+		}
 
 		~GameObject() {
 

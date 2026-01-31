@@ -9,3 +9,4 @@
 #include <Engine/InputManager.h>
 #include <Engine/SoundManager.h>
 #include <Engine/Components/Sprite.h>
+#include <Engine/Renderer.h>

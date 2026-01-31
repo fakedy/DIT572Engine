@@ -8,6 +8,8 @@ namespace Engine {
 	int Renderer::init() {
 
 
+		glEnable(GL_DEPTH_TEST);
+
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 		glGenBuffers(1, &VBO);
@@ -65,8 +67,8 @@ namespace Engine {
 
 
 	void Renderer::clear() {
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.45f, 0.9f, 0.9f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	int Renderer::addSprite(Sprite* sprite)
