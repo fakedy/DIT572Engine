@@ -17,19 +17,13 @@ namespace Engine {
 
 		Transform* _transform{ nullptr };
 
-		// like this or something
-		//Texture* texture{ nullptr };
-
-
-		void onAdd() override;
-
 		void draw();
 
 		void LoadSprite(const char* path);
 
+		void onAdd() override;
 	private:
 		std::shared_ptr<Texture> texture;
-
 		int _renderIndex{ 0 };
 	};
 }

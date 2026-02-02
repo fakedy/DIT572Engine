@@ -16,14 +16,7 @@ namespace Engine {
 			return *instance;
 		}
 
-		Renderer() {
-			if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-				SDL_Log("Failed to initialize GLAD");
-			}
-
-			defaultShader.createShader();
-
-		}
+		Renderer();
 
 		int init();
 
@@ -36,14 +29,17 @@ namespace Engine {
 		int addSprite(Sprite* sprite);
 		void removeSprite(int id);
 
-		void handleResizeWindow(int width, int height);
+		void handleResizeWindow(unsigned int width, unsigned int height);
 
 
 		float pixels_per_unit{ 32.0f };
 	private:
+
+
 		Shader defaultShader = Shader("assets/vDefault.vs", "assets/fDefault.fs");
 
 
+		// Quad Vertices
 		float vertices[20] = {
 			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
 			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 
@@ -51,6 +47,7 @@ namespace Engine {
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f 
 		};
 
+		// Quad indices
 		const unsigned int indices[6] = {
 			0, 1, 3,
 			1, 2, 3
@@ -63,10 +60,11 @@ namespace Engine {
 		std::unordered_map<int,Sprite*> spriteMap;
 		int nextSprite{ 0 };
 
-		int windowHeight = 720;
-		int windowWidth = 1280;
+		unsigned int windowHeight = 720;
+		unsigned int windowWidth = 1280;
 		float unitHeight = 30.0f;
 
+		// temporary projection matrix
 		glm::mat4 proj;
 
 	};

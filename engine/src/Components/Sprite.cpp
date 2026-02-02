@@ -30,7 +30,7 @@ namespace Engine {
 	void Sprite::draw() {
 		if (_transform) {
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, _transform->position);
+			model = glm::translate(model, _transform->getPosition());
 			Renderer::Get().drawSprite(model, *texture.get());
 		}
 	}

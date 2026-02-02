@@ -3,13 +3,21 @@
 #include <Engine/Texture.h>
 
 namespace Engine {
+	Renderer::Renderer()
+	{
+		if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
+			SDL_Log("Failed to initialize GLAD");
+		}
 
+		defaultShader.createShader();
+	}
 
 	int Renderer::init() {
 
 
 		glEnable(GL_DEPTH_TEST);
 
+		// this should all be in like a Mesh::Quad or something
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
 		glGenBuffers(1, &VBO);
@@ -25,6 +33,7 @@ namespace Engine {
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
 		glEnableVertexAttribArray(1);
 
+		// this should be related to what camera is used, several cameras should be able to be used at once
 
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
 
@@ -84,7 +93,7 @@ namespace Engine {
 		spriteMap.erase(id);
 	}
 
-	void Renderer::handleResizeWindow(int width, int height) 
+	void Renderer::handleResizeWindow(unsigned int width, unsigned int height) 
 	{
 		windowHeight = height;
 		windowWidth = width;

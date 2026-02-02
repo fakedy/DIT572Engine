@@ -45,9 +45,9 @@ namespace Game {
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_SPACE)) {
 			std::cout
-				<< "( " << transform->position.x
-				<< ", " << transform->position.y
-				<< ", " << transform->position.z
+				<< "( " << transform->getPosition().x
+				<< ", " << transform->getPosition().y
+				<< ", " << transform->getPosition().z
 				<< " )" << std::endl;
 		}
 
