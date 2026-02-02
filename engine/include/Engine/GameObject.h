@@ -22,7 +22,11 @@ namespace Engine {
 			components.clear();
 		}
 
-		// add a component
+		/**
+		* @brief Adds a component to the GameObject. Ensures its unique across the GameObject.
+		* * @tparam T Type of compononent. Class derived from Component
+		* @return T* pointer to newly created component.
+		*/
 		template <typename T>
 		T* addComponent() {
 			
@@ -38,7 +42,11 @@ namespace Engine {
 			return component;
 		}
 
-		// return pointer to component
+		/**
+		* @brief Get component of type T from GameObject
+		* * @tparam T Type of compononent. Class derived from Component
+		* @return T* pointer to the component. @c nullptr if it doesnt exist.
+		*/
 		template <typename T>
 		T* getComponent() {
 

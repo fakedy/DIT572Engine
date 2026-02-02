@@ -12,9 +12,10 @@ namespace Engine {
 	public:
 
 		Sprite();
+		~Sprite();
 		Sprite(const char* path);
 
-		Transform* transform{ nullptr };
+		Transform* _transform{ nullptr };
 
 		// like this or something
 		//Texture* texture{ nullptr };
@@ -28,5 +29,7 @@ namespace Engine {
 
 	private:
 		std::shared_ptr<Texture> texture;
+
+		int _renderIndex{ 0 };
 	};
 }

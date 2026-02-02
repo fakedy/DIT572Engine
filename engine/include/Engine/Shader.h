@@ -11,6 +11,9 @@ namespace Engine {
 	public:
 
 		Shader(const char* vertexPath, const char* fragmentPath) {
+
+			this->vertexPath = vertexPath;
+			this->vertexPath = fragmentPath;
 			
 			void* vertexData = SDL_LoadFile(vertexPath, nullptr);
 			void* fragmentData = SDL_LoadFile(fragmentPath, nullptr);
@@ -39,7 +42,7 @@ namespace Engine {
 			glCompileShader(vertex);
 
 			// fragment compile error check
-			glGetProgramiv(id, GL_COMPILE_STATUS, &success);
+			glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 			if (!success) {
 				glGetProgramInfoLog(id, 512, NULL, log);
 				std::cout << "VERTEX COMPILATION FAIL: " << log << std::endl;
@@ -48,7 +51,7 @@ namespace Engine {
 			glCompileShader(fragment);
 
 			// fragment compile error check
-			glGetProgramiv(id, GL_COMPILE_STATUS, &success);
+			glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 			if (!success) {
 				glGetProgramInfoLog(id, 512, NULL, log);
 				std::cout << "FRAGMENT COMPILATION FAIL: " << log << std::endl;
@@ -72,6 +75,19 @@ namespace Engine {
 
 		}
 
+		void reload() {
+			void* vertexData = SDL_LoadFile(vertexPath.c_str(), nullptr);
+			void* fragmentData = SDL_LoadFile(fragmentPath.c_str(), nullptr);
+			vertexCode = std::string(static_cast<char*>(vertexData));
+			fragmentCode = std::string(static_cast<char*>(fragmentData));
+
+			SDL_free(vertexData);
+			SDL_free(fragmentData);
+
+			glDeleteProgram(id);
+			createShader();
+
+		}
 
 		void use() {
 			glUseProgram(id);
@@ -85,6 +101,9 @@ namespace Engine {
 
 		std::string vertexCode;
 		std::string fragmentCode;
+
+		std::string vertexPath;
+		std::string fragmentPath;
 
 		int id;
 

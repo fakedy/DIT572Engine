@@ -10,21 +10,27 @@ namespace Engine {
 
 	}
 
+	Sprite::~Sprite()
+	{
+		Renderer::Get().removeSprite(_renderIndex);
+
+	}
+
 	Sprite::Sprite(const char* path) {
 	}
 
 	void Sprite::onAdd() {
 
-
-		Renderer::Get().addSprite(this);
-		// if there is no transform when you add a sprite its cooked (crash)
-		transform = owner->getComponent<Transform>();
+		// add itself to renderer
+		_renderIndex = Renderer::Get().addSprite(this);
+		// Transform is default to gameobjects so they should have one.
+		_transform = owner->getComponent<Transform>();
 	}
 
 	void Sprite::draw() {
-		if (transform) {
+		if (_transform) {
 			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, transform->position);
+			model = glm::translate(model, _transform->position);
 			Renderer::Get().drawSprite(model, *texture.get());
 		}
 	}

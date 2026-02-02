@@ -28,8 +28,8 @@ namespace Engine {
 
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
 
-		float totalHeight = (float)windowHeight / pixels_per_unit;
-		float orthoHeight = totalHeight / 2.0f;
+
+		float orthoHeight = unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
 
 		proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
@@ -63,6 +63,7 @@ namespace Engine {
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &tempModel[0][0]);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 	}
 
 
@@ -80,7 +81,7 @@ namespace Engine {
 
 	void Renderer::removeSprite(int id)
 	{
-		
+		spriteMap.erase(id);
 	}
 
 	void Renderer::handleResizeWindow(int width, int height) 

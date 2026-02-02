@@ -17,6 +17,11 @@ namespace Engine {
 			AssetManager();
 			~AssetManager() = default;
 
+			/**
+			* @brief Loads a texture from the disk into GPU memory.
+			* * @param filePath The relative path to the asset (e.g., "Assets/Brick.png").
+			* @return Shared_ptr<Texture> if successful.
+			*/
 			std::shared_ptr<Texture> LoadTexture(const std::string& filePath);
 
 

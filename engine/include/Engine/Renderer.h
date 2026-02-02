@@ -12,8 +12,8 @@ namespace Engine {
 
 		// singleton
 		static Renderer& Get() {
-			static Renderer instance;
-			return instance;
+			static Renderer* instance = new Renderer();
+			return *instance;
 		}
 
 		Renderer() {
@@ -65,7 +65,7 @@ namespace Engine {
 
 		int windowHeight = 720;
 		int windowWidth = 1280;
-
+		float unitHeight = 30.0f;
 
 		glm::mat4 proj;
 
