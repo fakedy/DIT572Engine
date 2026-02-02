@@ -42,6 +42,20 @@ namespace Engine {
 			return component;
 		}
 
+
+		/**
+		* @brief Remove component of type T from GameObject
+		* * @tparam T Type of compononent. Class derived from Component
+		*/
+		template <typename T>
+		void removeComponent() {
+
+			if (hasComponent<T>()) {
+				// TODO FIX THIS
+			}
+		}
+
+
 		/**
 		* @brief Get component of type T from GameObject
 		* * @tparam T Type of compononent. Class derived from Component
