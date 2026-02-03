@@ -49,7 +49,8 @@ namespace Engine {
 
 
 	void Renderer::draw() {
-		for (auto& pair : spriteMap) {
+		for (auto& pair : RenderObjects) {
+
 			pair.second->draw();
 		}
 	}
@@ -81,16 +82,16 @@ namespace Engine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	int Renderer::addSprite(Sprite* sprite)
+	int Renderer::addRenderObject(RenderComponent* sprite)
 	{
-		int id = nextSprite++;
-		spriteMap[id] = sprite;
+		int id = nextRenderObject++;
+		RenderObjects[id] = sprite;
 		return id;
 	}
 
 	void Renderer::removeSprite(int id)
 	{
-		spriteMap.erase(id);
+		RenderObjects.erase(id);
 	}
 
 	void Renderer::handleResizeWindow(unsigned int width, unsigned int height) 

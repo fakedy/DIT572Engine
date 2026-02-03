@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine/Components/Component.h>
 #include <Engine/Components/Transform.h>
+#include <Engine/Components/RenderComponent.h>
 #include <Engine/GameObject.h>
 #include <memory>
 #include <Engine/Texture.h>
@@ -8,7 +9,7 @@
 
 namespace Engine {
 
-	class Sprite : public Component{
+	class Sprite : public RenderComponent{
 	public:
 
 		Sprite();
@@ -25,5 +26,6 @@ namespace Engine {
 	private:
 		std::shared_ptr<Texture> texture;
 		int _renderIndex{ 0 };
+
 	};
 }

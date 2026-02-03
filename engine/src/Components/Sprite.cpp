@@ -8,6 +8,8 @@ namespace Engine {
 
 	Sprite::Sprite() {
 
+
+
 	}
 
 	Sprite::~Sprite()
@@ -22,7 +24,7 @@ namespace Engine {
 	void Sprite::onAdd() {
 
 		// add itself to renderer
-		_renderIndex = Renderer::Get().addSprite(this);
+		_renderIndex = Renderer::Get().addRenderObject(this);
 		// Transform is default to gameobjects so they should have one.
 		_transform = owner->getComponent<Transform>();
 	}

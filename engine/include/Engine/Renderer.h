@@ -5,6 +5,7 @@
 #include <Engine/Components/Sprite.h>
 #include <unordered_map>
 #include <Engine/Texture.h>
+#include <Engine/Components/RenderComponent.h>
 namespace Engine {
 
 	class Renderer {
@@ -24,9 +25,10 @@ namespace Engine {
 
 		void drawSprite(glm::mat4 model, Texture& texture);
 
+
 		void clear();
 
-		int addSprite(Sprite* sprite);
+		int addRenderObject(RenderComponent* sprite);
 		void removeSprite(int id);
 
 		void handleResizeWindow(unsigned int width, unsigned int height);
@@ -57,8 +59,10 @@ namespace Engine {
 		unsigned int VBO;
 		unsigned int EBO;
 
-		std::unordered_map<int,Sprite*> spriteMap;
-		int nextSprite{ 0 };
+		std::unordered_map<int,RenderComponent*> RenderObjects;
+
+
+		int nextRenderObject{ 0 };
 
 		unsigned int windowHeight = 720;
 		unsigned int windowWidth = 1280;

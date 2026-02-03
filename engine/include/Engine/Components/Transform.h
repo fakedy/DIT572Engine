@@ -33,7 +33,7 @@ namespace Engine {
 		glm::vec3 _position{ 0.0f };
 		glm::vec3 _scale{ 1.0f };
 
-		glm::mat4 cachedTransform{ 1.0f };
+		glm::mat4 _cachedTransform{ 1.0f };
 	};
 
 }
