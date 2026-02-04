@@ -25,7 +25,7 @@ namespace Engine {
 		* @brief Return a reference to position
 		* * @return glm::vec3& position
 		*/
-		glm::vec3& getPosition();
+		glm::vec3 getPosition() const;
 
 
 		void onAdd() override;

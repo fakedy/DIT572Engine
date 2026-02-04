@@ -26,7 +26,6 @@ namespace Game {
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
 
 		world.create();
-
 	}
 
 	void GameScene::update() {

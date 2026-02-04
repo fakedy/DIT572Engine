@@ -60,8 +60,6 @@ namespace Engine {
 		unsigned int EBO;
 
 		std::unordered_map<int,RenderComponent*> RenderObjects;
-
-
 		int nextRenderObject{ 0 };
 
 		unsigned int windowHeight = 720;
