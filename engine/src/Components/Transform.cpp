@@ -21,7 +21,7 @@ namespace Engine {
 	}
 
 
-	glm::vec3& Transform::getPosition()
+	glm::vec3 Transform::getPosition() const
 	{
 		return _position;
 	}
