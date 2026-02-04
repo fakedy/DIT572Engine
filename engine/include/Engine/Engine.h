@@ -10,3 +10,4 @@
 #include <Engine/SoundManager.h>
 #include <Engine/Components/Sprite.h>
 #include <Engine/Renderer.h>
+#include <Engine/Components/RigidBody2D.h>
