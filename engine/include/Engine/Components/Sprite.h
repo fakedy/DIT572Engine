@@ -24,6 +24,8 @@ namespace Engine {
 
 		void onAdd() override;
 	private:
+
+
 		std::shared_ptr<Texture> texture;
 		int _renderIndex{ 0 };
 

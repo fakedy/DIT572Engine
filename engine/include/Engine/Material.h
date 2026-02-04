@@ -1,6 +1,6 @@
 #pragma once
-
-
+#include <Engine/Texture.h>
+#include <memory>
 
 
 namespace Engine {
@@ -9,7 +9,7 @@ namespace Engine {
 	public:
 
 		unsigned int shaderID{ 0 };
-
+		std::shared_ptr<Texture> texture;
 
 	private:
 	};
