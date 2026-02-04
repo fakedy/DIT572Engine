@@ -17,6 +17,7 @@ namespace Game {
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
 		box.getComponent<Engine::Transform>()->translate(vec3(6, 0, 0));
 
+		box.addComponent<Engine::RigidBody2D>();
 
 
 		Engine::Renderer& renderer = Engine::Renderer::Get();

@@ -2,6 +2,7 @@
 #include <Engine/Components/Transform.h>
 #include <Engine/Components/Sprite.h>
 #include <vector>
+#include <Engine/Components/RigidBody2D.h>
 
 
 

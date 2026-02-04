@@ -4,6 +4,7 @@
 #include <Engine/Renderer.h>
 #include <Engine/EventManager.h>
 #include <chrono>
+#include <Engine/PhysicsManager.h>
 
 namespace Engine {
 
@@ -24,6 +25,8 @@ namespace Engine {
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.init();
 
+		Engine::PhysicsManager& physics = Engine::PhysicsManager::Get();
+
 		// make sure SDL video & audio is init
 		if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)) {
 			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
@@ -41,6 +44,8 @@ namespace Engine {
 			std::chrono::duration<float> frameTime = currentTime - lastTime;
 
 			Time::deltaTime = frameTime.count();
+
+			physics.update();
 
 			EventManager::Get().PollEvents(running);
 
