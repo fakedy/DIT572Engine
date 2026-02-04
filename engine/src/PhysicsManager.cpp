@@ -11,7 +11,7 @@ namespace Engine {
 	void PhysicsManager::update() {
 		for (auto& rb : rgBodies2D) {
 			if (rb->getGravity()) {
-				rb->_transform->translate(rb->_transform->getPosition() + glm::vec3(0.0f, gravity * Time::deltaTime, 0.0f));
+				rb->_transform->translate(glm::vec3(0.0f, gravity * Time::deltaTime, 0.0f));
 			}
 		}
 
