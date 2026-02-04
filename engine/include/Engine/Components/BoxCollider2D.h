@@ -1,6 +1,6 @@
 #pragma once
 #include <Engine/Components/Collider2D.h>
-#include <Engine/CollisionManager.h>
+
 
 namespace Engine {
 	class BoxCollider2D : public Collider2D {

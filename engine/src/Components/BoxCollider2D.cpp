@@ -1,4 +1,5 @@
 #include <Engine/Components/BoxCollider2D.h>
+#include <Engine/CollisionManager.h>
 
 namespace Engine {
 

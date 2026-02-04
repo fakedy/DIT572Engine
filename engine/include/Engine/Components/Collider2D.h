@@ -1,7 +1,5 @@
 #pragma once
-#include <glm/glm/glm.hpp>
 #include <Engine/Components/Component.h>
-#include <Engine/CollisionManager.h>
 
 namespace Engine {
 	class Collider2D : public Component{
