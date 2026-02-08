@@ -33,11 +33,14 @@ namespace Engine {
 		if (_transform) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, _transform->getPosition());
-			Renderer::Get().drawSprite(model, *texture.get());
+			Renderer::Get().drawSprite(model, *material.get());
 		}
 	}
 
 	void Sprite::LoadSprite(const char* path) {
-		texture = AssetManager::Get().LoadTexture(path);
+		// temp way to do this
+		std::shared_ptr<Texture> texture = AssetManager::Get().LoadTexture(path);
+		material = AssetManager::Get().CreateMaterial(path);
+		material->texture = texture;
 	}
 }
