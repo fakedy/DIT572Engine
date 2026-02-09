@@ -27,7 +27,7 @@ namespace Engine {
 			// Simple collision response
 			collision.rigidbodyA->velocity = glm::vec3(0); // set acceleration to 0, not very accurate.
 			float resolveAmount = collision.penetrationDepth * 0.5f;
-			collision.colA->_transform->translate(collision.direction * resolveAmount);
+			collision.rigidbodyA->_transform->translate(collision.direction * resolveAmount);
 		}
 
 	}
