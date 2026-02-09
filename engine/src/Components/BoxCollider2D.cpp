@@ -36,8 +36,8 @@ namespace Engine {
 				float overlapX = std::min(aMaxX, bMaxX) - std::max(aMinX, bMinX); // Calculate overlap on X axis
 				float overlapY = std::min(aMaxY, bMaxY) - std::max(aMinY, bMinY); // Calculate overlap on Y axis
 
-				colstruct.colA = this; // Set the colliding boxes
-				colstruct.colB = other;
+				colstruct.rigidbodyA = this->owner->getComponent<RigidBody2D>(); // Set the colliding boxes
+				colstruct.rigidbodyB = other->owner->getComponent<RigidBody2D>();
 
 				if (overlapX < overlapY) {
 					colstruct.penetrationDepth = overlapX; // Set penetration depth

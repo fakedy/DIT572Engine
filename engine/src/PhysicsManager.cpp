@@ -14,14 +14,18 @@ namespace Engine {
 
 	void PhysicsManager::update() {
 		for (auto& rb : rgBodies2D) {
+			rb->acceleration = glm::vec3(0);
 			if (rb->getGravity()) {
-				rb->_transform->translate(glm::vec3(0.0f, gravity * Time::deltaTime, 0.0f));
+				rb->acceleration += + glm::vec3(0, -9.82, 0);
+				rb->velocity += rb->acceleration * Time::deltaTime;
+				rb->_transform->translate(rb->getVelocity() * Time::deltaTime);
 			}
 		}
 
 		std::vector<Collider2D::CollisionStruct> list = cm.update();
 		for (auto& collision : list) {
 			// Simple collision response
+			collision.rigidbodyA->velocity = glm::vec3(0); // set acceleration to 0, not very accurate.
 			float resolveAmount = collision.penetrationDepth * 0.5f;
 			collision.colA->_transform->translate(collision.direction * resolveAmount);
 		}

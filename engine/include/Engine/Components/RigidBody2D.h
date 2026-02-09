@@ -6,24 +6,29 @@
 namespace Engine {
 	class RigidBody2D : public Component {
 
-		public:
+	public:
 
-			void setGravity(bool use);
-			bool getGravity();
+		void setGravity(bool use);
+		bool getGravity();
 
-			RigidBody2D();
-			~RigidBody2D() = default;
+		glm::vec3 getVelocity();
 
-			void onAdd() override;
+		void addForce(glm::fvec3 force);
 
-			int _RGbodyIndex{ -1 };
-			Transform* _transform{ nullptr };
+		RigidBody2D();
+		~RigidBody2D() = default;
 
+		void onAdd() override;
+
+		int _RGbodyIndex{ -1 };
+		Transform* _transform{ nullptr };
+
+		glm::fvec3 acceleration{ 0 };
+		glm::vec3 velocity{0.0f};
 	private:
 		float mass{ 1 };
-			bool useGravity{ true };
-			bool isKinematic{ false };
-			glm::vec3 velocity{0.0f};
+		bool useGravity{ true };
+		bool isKinematic{ false };
 
 	};
 
