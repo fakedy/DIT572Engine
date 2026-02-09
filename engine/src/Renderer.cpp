@@ -101,6 +101,22 @@ namespace Engine {
 		glViewport(0, 0, width, height);
 	}
 
+	void Renderer::drawLines(glm::mat4 model, glm::vec3 color) {
+		defaultShader.use();
+		glBindVertexArray(VAO);
+
+		int projLoc = defaultShader.getLocation("proj");
+		int modelLoc = defaultShader.getLocation("model");
+		int colorLoc = defaultShader.getLocation("color");
+
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &model[0][0]);
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);
+		glUniform3fv(colorLoc, 1, &color[0]);
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_INT, 0);
+	}
+
 
 
 }

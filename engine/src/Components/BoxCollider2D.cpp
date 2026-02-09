@@ -1,7 +1,11 @@
 #include <Engine/Components/BoxCollider2D.h>
 #include <Engine/CollisionManager.h>
+#include <Engine/Renderer.h>
+#include <glm/glm/ext/matrix_transform.hpp>
 
 namespace Engine {
+
+
 
 	void BoxCollider2D::onAdd() {
 		_colliderIndex = CollisionManager::Get().addCollider(this);
@@ -46,6 +50,16 @@ namespace Engine {
 			} 
 		}
 		return false;
+	}
+
+	void BoxCollider2D::drawCollider(Renderer* renderer) {
+		if(_transform){
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, _transform->getPosition());
+
+			renderer->drawLines(model, glm::vec3(1.0f, 0.0f, 0.0f));
+		}
+
 	}
 
 

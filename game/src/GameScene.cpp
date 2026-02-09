@@ -15,6 +15,8 @@ namespace Game {
 	
 	void GameScene::start() {
 		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/cursed.png");
+		player.addComponent<Engine::BoxCollider2D>()->width = 4;
+		player.getComponent<Engine::BoxCollider2D>()->height = 6;
 
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
 		box.getComponent<Engine::Transform>()->translate(vec3(6, 0, 0));

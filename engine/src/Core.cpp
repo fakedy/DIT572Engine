@@ -5,6 +5,7 @@
 #include <Engine/EventManager.h>
 #include <chrono>
 #include <Engine/PhysicsManager.h>
+#include <Engine/CollisionManager.h>
 
 namespace Engine {
 

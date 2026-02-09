@@ -33,6 +33,7 @@ namespace Engine {
 
 		void handleResizeWindow(unsigned int width, unsigned int height);
 
+		void drawLines(glm::mat4 model, glm::vec3 color);
 
 		float pixels_per_unit{ 32.0f };
 	private:
