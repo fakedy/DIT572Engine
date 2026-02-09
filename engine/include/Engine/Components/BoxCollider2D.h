@@ -9,7 +9,6 @@ namespace Engine {
 	public:
 		bool ColliderCheck(Collider2D* other, Collider2D::CollisionStruct& colstruct) override;
 
-		void drawCollider(Renderer* renderer);
 
 		void onAdd() override;
 

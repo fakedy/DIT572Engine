@@ -14,23 +14,38 @@ namespace Game {
 	Engine::GameObject floor;
 	
 	void GameScene::start() {
+		Engine::Renderer& renderer = Engine::Renderer::Get();
+		renderer.pixels_per_unit = 16.0f;
+
+
 		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/cursed.png");
-		player.addComponent<Engine::BoxCollider2D>()->width = 4;
-		player.getComponent<Engine::BoxCollider2D>()->height = 6;
+		float playerSizeX = player.getComponent<Engine::Sprite>()->material->texture->width;
+		float playerSizeY = player.getComponent<Engine::Sprite>()->material->texture->height;
+		player.addComponent<Engine::BoxCollider2D>()->width = playerSizeX / renderer.pixels_per_unit;
+		player.getComponent<Engine::BoxCollider2D>()->height = playerSizeY / renderer.pixels_per_unit;
+		player.addComponent<Engine::RigidBody2D>();
+
 
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
 		box.getComponent<Engine::Transform>()->translate(vec3(6, 0, 0));
 		box.addComponent<Engine::RigidBody2D>();
-		box.addComponent<Engine::BoxCollider2D>()->width = 1;
+
+		float boxSizeX = box.getComponent<Engine::Sprite>()->material->texture->width;
+		float boxSizeY = box.getComponent<Engine::Sprite>()->material->texture->height;
+		box.addComponent<Engine::BoxCollider2D>()->width = boxSizeX / renderer.pixels_per_unit;
+		box.getComponent<Engine::BoxCollider2D>()->height = boxSizeY / renderer.pixels_per_unit;
+		box.addComponent<Engine::RigidBody2D>();
+
 
 		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
+		float floorSizeX = floor.getComponent<Engine::Sprite>()->material->texture->width;
+		float floorSizeY = floor.getComponent<Engine::Sprite>()->material->texture->height;
 		floor.addComponent<Engine::BoxCollider2D>()->width = 100;
+		floor.getComponent<Engine::BoxCollider2D>()->height = floorSizeY / renderer.pixels_per_unit;
 		floor.getComponent<Engine::BoxCollider2D>()->isStatic = true;
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 
 
-		Engine::Renderer& renderer = Engine::Renderer::Get();
-		renderer.pixels_per_unit = 16.0f;
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
 		
@@ -46,7 +61,7 @@ namespace Game {
 			transform->translate(vec3(10, 0, 0) * Engine::Time::deltaTime);
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_W)) {
-			transform->translate(vec3(0, 10, 0) * Engine::Time::deltaTime);
+			transform->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_S)) {
 			transform->translate(vec3(0, -10, 0) * Engine::Time::deltaTime);
