@@ -8,7 +8,7 @@ namespace Engine {
 		_transform = owner->getComponent<Transform>();
 	}
 
-	bool BoxCollider2D::ColliderCheck(Collider2D* other) {
+	bool BoxCollider2D::ColliderCheck(Collider2D* other, Collider2D::CollisionStruct& colstruct) {
 		// Implementation for 2D collision check
 		if (other->type == BOX) {
 			// Box-Box collision detection logic
@@ -27,8 +27,21 @@ namespace Engine {
 			bool collisionX = aMaxX > bMinX && aMinX < bMaxX;
 			bool collisionY = aMaxY > bMinY && aMinY < bMaxY;
 
-			if(collisionX || collisionY) {
+			if(collisionX && collisionY) {
 				// Collision detected
+				float overlapX = std::min(aMaxX, bMaxX) - std::max(aMinX, bMinX); // Calculate overlap on X axis
+				float overlapY = std::min(aMaxY, bMaxY) - std::max(aMinY, bMinY); // Calculate overlap on Y axis
+
+				colstruct.colA = this; // Set the colliding boxes
+				colstruct.colB = other;
+
+				if (overlapX < overlapY) {
+					colstruct.penetrationDepth = overlapX; // Set penetration depth
+					colstruct.direction = _transform->getPosition().x < other->_transform->getPosition().x ? glm::vec3(-1, 0, 0) : glm::vec3(1, 0, 0); // Set collision direction
+				} else {
+					colstruct.penetrationDepth = overlapY;
+					colstruct.direction = _transform->getPosition().y < other->_transform->getPosition().y ? glm::vec3(0, -1, 0) : glm::vec3(0, 1, 0);
+				}
 				return true;
 			} 
 		}

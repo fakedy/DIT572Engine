@@ -1,10 +1,19 @@
 #pragma once
 #include <Engine/Components/Component.h>
+#include <Engine/Components/Transform.h>
 
 namespace Engine {
 	class Collider2D : public Component{
 		public:
-			virtual void ColliderCheck(Collider2D* other) = 0;
+
+			struct CollisionStruct {
+				Collider2D* colA;
+				Collider2D* colB;
+				float penetrationDepth;
+				glm::vec3 direction;
+			};
+
+			virtual bool ColliderCheck(Collider2D* other, CollisionStruct& colstruct) = 0;
 
 			Transform* _transform{ nullptr };
 

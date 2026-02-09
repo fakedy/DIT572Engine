@@ -1,7 +1,11 @@
 #include <Engine/PhysicsManager.h>
 #include <Engine/Time.h>
+#include <Engine/CollisionManager.h>
+#include <Engine/Components/Collider2D.h>
 
 namespace Engine {
+
+	Engine::CollisionManager& cm = Engine::CollisionManager::Get();
 
 	int PhysicsManager::addRGBody2D(RigidBody2D* rb) {
 		rgBodies2D.push_back(rb);
@@ -15,7 +19,12 @@ namespace Engine {
 			}
 		}
 
-
+		std::vector<Collider2D::CollisionStruct> list = cm.update();
+		for (auto& collision : list) {
+			// Simple collision response
+			collision.colA->_transform->translate(collision.direction * collision.penetrationDepth);
+			collision.colB->_transform->translate(-collision.direction * collision.penetrationDepth);
+		}
 
 	}
 }

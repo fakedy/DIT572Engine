@@ -1,5 +1,8 @@
 #include <Engine/CollisionManager.h>
+#include <Engine/Components/Collider2D.h>
 #include <Engine/Time.h>
+
+
 
 namespace Engine {
 
@@ -8,16 +11,24 @@ namespace Engine {
 		return nextCollider++;
 	}
 
-	void CollisionManager::update() {
+
+
+	std::vector<Collider2D::CollisionStruct> CollisionManager::update() {
+		std::vector<Collider2D::CollisionStruct> collisions;
+
 		for (auto& col : colliders) {
 			for(auto& other : colliders) {
 				if (col != other) {
-					col->ColliderCheck(other);
+					Collider2D::CollisionStruct colstruct;
+
+					if (col->ColliderCheck(other, colstruct)) {
+						collisions.push_back(colstruct);
+					}
 				}
 			}
 		}
 
-
+		return collisions;
 
 	}
 }
