@@ -6,6 +6,7 @@ namespace Engine {
 		public:
 			virtual void ColliderCheck(Collider2D* other) = 0;
 
+			Transform* _transform{ nullptr };
 
 			enum ColliderType2D{
 				BOX,

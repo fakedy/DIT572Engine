@@ -5,13 +5,16 @@
 namespace Engine {
 	class BoxCollider2D : public Collider2D {
 	public:
-		void ColliderCheck(Collider2D* other) override;
+		bool ColliderCheck(Collider2D* other) override;
 
 		void onAdd() override;
 
 		BoxCollider2D() {type = ColliderType2D::BOX; }
 
+
+
 	private:
+		
 		float width{ 1.0f };
 		float height{ 1.0f };
 	};

@@ -10,7 +10,11 @@ namespace Engine {
 
 	void CollisionManager::update() {
 		for (auto& col : colliders) {
-
+			for(auto& other : colliders) {
+				if (col != other) {
+					col->ColliderCheck(other);
+				}
+			}
 		}
 
 
