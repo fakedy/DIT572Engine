@@ -25,6 +25,8 @@ namespace Game {
 		player.getComponent<Engine::BoxCollider2D>()->height = playerSizeY / renderer.pixels_per_unit;
 		player.addComponent<Engine::RigidBody2D>();
 
+		player.getComponent<Engine::Transform>()->scale(vec3(-1, 1, 1));
+
 
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
 		box.getComponent<Engine::Transform>()->translate(vec3(6, 0, 0));
@@ -57,9 +59,11 @@ namespace Game {
 		Engine::InputManager& input = Engine::InputManager::Get();
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			transform->translate(vec3(-10, 0, 0) * Engine::Time::deltaTime);
+			transform->scale(vec3(-1, 1, 1));
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			transform->translate(vec3(10, 0, 0) * Engine::Time::deltaTime);
+			transform->scale(vec3(1, 1, 1));
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_W)) {
 			transform->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
