@@ -27,6 +27,7 @@ namespace Engine {
 		*/
 		glm::vec3 getPosition() const;
 
+		glm::vec3 getScale() const;
 
 		void onAdd() override;
 	private:

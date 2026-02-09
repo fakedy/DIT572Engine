@@ -40,6 +40,7 @@ namespace Game {
 		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
 		float floorSizeX = floor.getComponent<Engine::Sprite>()->material->texture->width;
 		float floorSizeY = floor.getComponent<Engine::Sprite>()->material->texture->height;
+		floor.getComponent<Engine::Transform>()->scale(vec3(100, 1, 1));
 		floor.addComponent<Engine::BoxCollider2D>()->width = 100;
 		floor.getComponent<Engine::BoxCollider2D>()->height = floorSizeY / renderer.pixels_per_unit;
 		floor.getComponent<Engine::BoxCollider2D>()->isStatic = true;

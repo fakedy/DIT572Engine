@@ -25,5 +25,12 @@ namespace Engine {
 	{
 		return _position;
 	}
-}
 
+	glm::vec3 Transform::getScale() const
+	{
+		return _scale;
+
+
+	}
+
+}

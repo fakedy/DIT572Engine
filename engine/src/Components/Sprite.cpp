@@ -33,6 +33,7 @@ namespace Engine {
 		if (_transform) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, _transform->getPosition());
+			model = glm::scale(model, _transform->getScale());
 			Renderer::Get().drawSprite(model, *material.get());
 		}
 	}

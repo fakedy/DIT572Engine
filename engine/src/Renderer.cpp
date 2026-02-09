@@ -99,6 +99,13 @@ namespace Engine {
 		windowHeight = height;
 		windowWidth = width;
 		glViewport(0, 0, width, height);
+
+		float aspectRatio = (float)windowWidth / (float)windowHeight;
+		float orthoHeight = unitHeight / 2.0f;
+		float orthoWidth = orthoHeight * aspectRatio;
+
+		proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
+
 	}
 
 
