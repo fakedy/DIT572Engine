@@ -5,7 +5,7 @@
 #include <Engine/GameObject.h>
 #include <memory>
 #include <Engine/Texture.h>
-
+#include <Engine/Material.h>
 
 namespace Engine {
 
@@ -26,7 +26,7 @@ namespace Engine {
 	private:
 
 
-		std::shared_ptr<Texture> texture;
+		std::shared_ptr<Material> material;
 		int _renderIndex{ 0 };
 
 	};

@@ -23,7 +23,7 @@ namespace Engine {
 
 		void draw();
 
-		void drawSprite(glm::mat4 model, Texture& texture);
+		void drawSprite(glm::mat4 model, Material& texture);
 
 
 		void clear();

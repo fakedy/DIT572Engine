@@ -3,6 +3,7 @@
 #include <string>
 #include <Engine/Texture.h>
 #include <memory>
+#include <Engine/Material.h>
 
 
 namespace Engine {
@@ -18,14 +19,17 @@ namespace Engine {
 			~AssetManager() = default;
 
 			/**
-			* @brief Loads a texture from the disk into GPU memory.
+			* @brief Loads a texture from the disk into GPU memory and store the Texture Object in a map.
 			* * @param filePath The relative path to the asset (e.g., "Assets/Brick.png").
 			* @return Shared_ptr<Texture> if successful.
 			*/
 			std::shared_ptr<Texture> LoadTexture(const std::string& filePath);
 
+			std::shared_ptr<Material> CreateMaterial(const std::string& name);
+
 
 		private:
 			std::unordered_map<std::string, std::shared_ptr<Texture>> textureMap;
+			std::unordered_map<std::string, std::shared_ptr<Material>> materialmap;
 		};
 	}

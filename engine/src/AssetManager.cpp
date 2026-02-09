@@ -38,6 +38,7 @@ namespace Engine {
 		}
 
 		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
+		newTexture->filepath = filePath;
 		newTexture->id = texture;
 		newTexture->width = w;
 		newTexture->height = h;
@@ -46,5 +47,17 @@ namespace Engine {
 		textureMap[filePath] = newTexture;
 
 		return textureMap[filePath];
+	}
+	std::shared_ptr<Material> Engine::AssetManager::CreateMaterial(const std::string& name)
+	{
+		if (materialmap.find(name) != materialmap.end()) {
+			return materialmap[name];
+		}
+
+		std::shared_ptr<Material> newMaterial = std::make_shared<Material>();
+		newMaterial->name = name;
+		materialmap[name] = newMaterial;
+		return materialmap[name];
+
 	}
 }

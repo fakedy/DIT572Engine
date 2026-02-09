@@ -55,20 +55,20 @@ namespace Engine {
 		}
 	}
 
-	void Renderer::drawSprite(glm::mat4 model, Texture& texture)
+	void Renderer::drawSprite(glm::mat4 model, Material& material)
 	{
 		defaultShader.use();
 		glBindVertexArray(VAO);
 		int projLoc = defaultShader.getLocation("proj");
 		int modelLoc = defaultShader.getLocation("model");
 
-		float sizeX = (float)texture.width / pixels_per_unit;
-		float sizeY = (float)texture.height / pixels_per_unit;
+		float sizeX = (float)material.texture->width / pixels_per_unit;
+		float sizeY = (float)material.texture->height / pixels_per_unit;
 
 		glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture.id);
+		glBindTexture(GL_TEXTURE_2D, material.texture->id);
 
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &tempModel[0][0]);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &proj[0][0]);

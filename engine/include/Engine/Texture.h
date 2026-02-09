@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 
 
 
@@ -14,7 +14,7 @@ namespace Engine {
 		}
 		~Texture() = default;
 
-
+		std::string filepath;
 		unsigned int id;
 		unsigned int width;
 		unsigned int height;
