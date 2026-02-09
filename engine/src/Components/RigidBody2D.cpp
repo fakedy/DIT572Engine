@@ -16,6 +16,16 @@ namespace Engine {
 
 	}
 
+	glm::vec3 RigidBody2D::getVelocity()
+	{
+		return velocity;
+	}
+
+	void RigidBody2D::addForce(glm::fvec3 force)
+	{
+		acceleration = force / mass;
+	}
+
 	RigidBody2D::RigidBody2D(){
 
 	}

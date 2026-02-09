@@ -1,14 +1,15 @@
 #pragma once
 #include <Engine/Components/Component.h>
 #include <Engine/Components/Transform.h>
+#include <engine/Components/RigidBody2D.h>
 
 namespace Engine {
 	class Collider2D : public Component{
 		public:
 
 			struct CollisionStruct {
-				Collider2D* colA;
-				Collider2D* colB;
+				RigidBody2D* rigidbodyA;
+				RigidBody2D* rigidbodyB;
 				float penetrationDepth;
 				glm::vec3 direction;
 			};
