@@ -21,7 +21,7 @@ namespace Engine {
 				if (col != other) {
 					Collider2D::CollisionStruct colstruct;
 
-					if (col->ColliderCheck(other, colstruct)) {
+					if (col->ColliderCheck(other, colstruct) && !col->isStatic) {
 						collisions.push_back(colstruct);
 					}
 				}

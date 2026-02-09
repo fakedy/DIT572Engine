@@ -22,8 +22,8 @@ namespace Engine {
 		std::vector<Collider2D::CollisionStruct> list = cm.update();
 		for (auto& collision : list) {
 			// Simple collision response
-			collision.colA->_transform->translate(collision.direction * collision.penetrationDepth);
-			collision.colB->_transform->translate(-collision.direction * collision.penetrationDepth);
+			float resolveAmount = collision.penetrationDepth * 0.5f;
+			collision.colA->_transform->translate(collision.direction * resolveAmount);
 		}
 
 	}

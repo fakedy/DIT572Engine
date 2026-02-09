@@ -23,7 +23,8 @@ namespace Game {
 
 		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
 		floor.addComponent<Engine::BoxCollider2D>()->width = 100;
-		floor.getComponent<Engine::Transform>()->translate(vec3(0, -14, 0));
+		floor.getComponent<Engine::BoxCollider2D>()->isStatic = true;
+		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 
 
 		Engine::Renderer& renderer = Engine::Renderer::Get();
