@@ -46,6 +46,11 @@ namespace Engine {
 
 			Time::deltaTime = frameTime.count();
 
+			// Clamp deltaTime to avoid physics explosions
+			const float maxDelta = 0.05f; // 50 ms (20 FPS worst case)
+			if (Time::deltaTime > maxDelta)
+				Time::deltaTime = maxDelta;
+
 			physics.update();
 
 			EventManager::Get().PollEvents(running);
