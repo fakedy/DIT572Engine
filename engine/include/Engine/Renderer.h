@@ -28,6 +28,7 @@ namespace Engine {
 
 		void drawSprite(glm::mat4 model, Material& texture);
 
+		SDL_GPUDevice& getDevice();
 
 		int addRenderObject(RenderComponent* sprite);
 		void removeSprite(int id);
@@ -59,6 +60,8 @@ namespace Engine {
 
 		SDL_GPUBuffer* quadVertexBuffer;
 		SDL_GPUBuffer* quadIndicesBuffer;
+
+		SDL_GPUSampler* _spriteSampler;
 
 		unsigned int VAO;
 		unsigned int VBO;

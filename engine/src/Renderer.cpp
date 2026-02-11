@@ -22,13 +22,16 @@ namespace Engine {
 		SDL_ClaimWindowForGPUDevice(_gpuDevice, Engine::WindowManager::Get().getWindow());
 		
 		// a pipeline must be created for each shader program
-		// for now 2 types should be enough for what we want to do
+
+		SDL_GPUShader* vertexShader = createShader("assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
+		SDL_GPUShader* fragmentShader = createShader("assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
+
 		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = {0};
-		spritePipelineInfo.vertex_shader = createShader("assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
-		spritePipelineInfo.fragment_shader = createShader("assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 0, 0, 0, 0);
+		spritePipelineInfo.vertex_shader = vertexShader;
+		spritePipelineInfo.fragment_shader = fragmentShader;
 
 
-		SDL_GPUColorTargetDescription colorTarget;
+		SDL_GPUColorTargetDescription colorTarget = {};
 		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(_gpuDevice, Engine::WindowManager::Get().getWindow());
 
 		// this is like glBlendFunc except you have to set it all yourself...
@@ -68,9 +71,12 @@ namespace Engine {
 		_spritePipeline = SDL_CreateGPUGraphicsPipeline(_gpuDevice, &spritePipelineInfo);
 
 
+		SDL_ReleaseGPUShader(_gpuDevice, vertexShader);
+		SDL_ReleaseGPUShader(_gpuDevice, fragmentShader);
+
 		// setup buffer
 
-		SDL_GPUBufferCreateInfo bufferInfo;
+		SDL_GPUBufferCreateInfo bufferInfo = {};
 		bufferInfo.props = 0;
 		bufferInfo.size = sizeof(vertices);
 		bufferInfo.usage = SDL_GPU_BUFFERUSAGE_VERTEX;
@@ -84,15 +90,15 @@ namespace Engine {
 		quadIndicesBuffer = SDL_CreateGPUBuffer(_gpuDevice, &bufferInfo);
 
 		// upload buffer
-		SDL_GPUTransferBufferCreateInfo transferBufferInfo;
+		SDL_GPUTransferBufferCreateInfo transferBufferInfo = {};
 		transferBufferInfo.props = 0;
 		transferBufferInfo.size = sizeof(vertices) + sizeof(indices);
 
 		SDL_GPUTransferBuffer* bufferTransferBuffer = SDL_CreateGPUTransferBuffer(_gpuDevice, &transferBufferInfo);
 
 		void* mappedData = SDL_MapGPUTransferBuffer(_gpuDevice, bufferTransferBuffer, false);
-		memcpy(mappedData, vertices, sizeof(vertices));
-		memcpy((uint8_t*)mappedData + sizeof(vertices), indices, sizeof(indices)); // put indices at offset of (uint8_t*)mappedData + sizeof(vertices)
+		SDL_memcpy(mappedData, vertices, sizeof(vertices));
+		SDL_memcpy((uint8_t*)mappedData + sizeof(vertices), indices, sizeof(indices)); // put indices at offset of (uint8_t*)mappedData + sizeof(vertices)
 		SDL_UnmapGPUTransferBuffer(_gpuDevice, bufferTransferBuffer);
 
 
@@ -103,11 +109,11 @@ namespace Engine {
 
 
 		{
-			SDL_GPUTransferBufferLocation transferbufferloc;
+			SDL_GPUTransferBufferLocation transferbufferloc = {};
 			transferbufferloc.offset = 0;
 			transferbufferloc.transfer_buffer = bufferTransferBuffer;
 
-			SDL_GPUBufferRegion bufferRegion;
+			SDL_GPUBufferRegion bufferRegion = {};
 			bufferRegion.buffer = quadVertexBuffer;
 			bufferRegion.offset = 0;
 			bufferRegion.size = sizeof(vertices);
@@ -116,11 +122,11 @@ namespace Engine {
 		}
 
 		{
-			SDL_GPUTransferBufferLocation transferbufferloc;
+			SDL_GPUTransferBufferLocation transferbufferloc = {};
 			transferbufferloc.offset = sizeof(vertices);
 			transferbufferloc.transfer_buffer = bufferTransferBuffer;
 
-			SDL_GPUBufferRegion bufferRegion;
+			SDL_GPUBufferRegion bufferRegion = {};
 			bufferRegion.buffer = quadIndicesBuffer;
 			bufferRegion.offset = 0;
 			bufferRegion.size = sizeof(indices);
@@ -132,6 +138,18 @@ namespace Engine {
 		SDL_EndGPUCopyPass(copyPass);
 		SDL_SubmitGPUCommandBuffer(uploadCmdBuffer);
 		SDL_ReleaseGPUTransferBuffer(_gpuDevice, bufferTransferBuffer);
+
+
+		SDL_GPUSamplerCreateInfo spriteSamplerInfo = {};
+		spriteSamplerInfo.props = 0;
+		spriteSamplerInfo.min_filter = SDL_GPU_FILTER_NEAREST;
+		spriteSamplerInfo.mag_filter = SDL_GPU_FILTER_NEAREST;
+		spriteSamplerInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+		spriteSamplerInfo.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		spriteSamplerInfo.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		spriteSamplerInfo.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+
+		_spriteSampler = SDL_CreateGPUSampler(_gpuDevice, &spriteSamplerInfo);
 
 		// this should be related to what camera is used, several cameras should be able to be used at once
 
@@ -165,7 +183,7 @@ namespace Engine {
 
 		SDL_GPUColorTargetInfo colorTargetInfo = { 0 };
 		colorTargetInfo.texture = swapchainTexture;
-		colorTargetInfo.clear_color = { 0.0f, 0.0f, 0.0f, 1.0f };
+		colorTargetInfo.clear_color = { 0.3f, 0.3f, 0.8f, 1.0f };
 		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
 		colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE; // write to memory
 
@@ -175,16 +193,19 @@ namespace Engine {
 		SDL_BindGPUGraphicsPipeline(renderPass, _spritePipeline);
 
 
-		SDL_GPUBufferBinding vertexBufferBinding;
+		SDL_GPUBufferBinding vertexBufferBinding = {};
 		vertexBufferBinding.buffer = quadVertexBuffer;
 		vertexBufferBinding.offset = 0;
 
 		SDL_BindGPUVertexBuffers(renderPass, 0, &vertexBufferBinding, 1);
 
-		SDL_GPUBufferBinding indexBufferBinding;
+		SDL_GPUBufferBinding indexBufferBinding = {};
 		indexBufferBinding.buffer = quadIndicesBuffer;
 		indexBufferBinding.offset = 0;
 		SDL_BindGPUIndexBuffer(renderPass, &indexBufferBinding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
+
+
+
 
 		struct DataBlock {
 			glm::mat4 model;
@@ -195,6 +216,12 @@ namespace Engine {
 		ubo.proj = this->proj;
 
 		for (auto& pair : RenderObjects) {
+
+			SDL_GPUTextureSamplerBinding textureBinding = {};
+			textureBinding.texture = pair.second->getMaterial().texture->textureHandle; // From AssetManager
+			textureBinding.sampler = _spriteSampler;
+			SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
+
 			glm::mat4 model = pair.second->getModel();
 			Material& material = pair.second->getMaterial();
 			float sizeX = (float)material.texture->width / pixels_per_unit;
@@ -217,6 +244,11 @@ namespace Engine {
 	// unused 
 	void Renderer::drawSprite(glm::mat4 model, Material& material)
 	{
+	}
+
+	SDL_GPUDevice& Renderer::getDevice()
+	{
+		return *_gpuDevice;
 	}
 
 
