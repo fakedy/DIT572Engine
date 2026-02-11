@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <unordered_map>
 
 namespace Engine {
 
@@ -16,9 +17,12 @@ namespace Engine {
 
 		void Update();
 
-		bool GetKeyDown(SDL_Scancode e);
+		bool GetKeyPressed(SDL_Scancode scanCode);
+
+		bool GetKeyDown(SDL_Scancode scanCode);
 
 
+		std::unordered_map<uint32_t, bool> keyMap;
 	private:
 		const bool* _keyboardState;
 	};

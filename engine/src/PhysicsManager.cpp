@@ -14,12 +14,12 @@ namespace Engine {
 
 	void PhysicsManager::update() {
 		for (auto& rb : rgBodies2D) {
-			rb->acceleration = glm::vec3(0);
 			if (rb->getGravity()) {
-				rb->acceleration += + glm::vec3(0, -9.82, 0);
+				rb->acceleration += + glm::vec3(0, -9.82f, 0);
 				rb->velocity += rb->acceleration * Time::deltaTime;
 				rb->_transform->translate(rb->getVelocity() * Time::deltaTime);
 			}
+			rb->acceleration = glm::vec3(0);
 		}
 
 		std::vector<Collider2D::CollisionStruct> list = cm.update();

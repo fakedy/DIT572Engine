@@ -18,11 +18,11 @@ namespace Engine {
 			}
 
 			if (e.type == SDL_EVENT_KEY_DOWN) {
-				input.Update();
+				input.keyMap[e.key.scancode] = true;
 			}
 
 			if (e.type == SDL_EVENT_KEY_UP) {
-				input.Update();
+				input.keyMap[e.key.scancode] = false;
 			}
 			if (e.type == SDL_EVENT_WINDOW_RESIZED) {
 				// handle window resize if necessary
