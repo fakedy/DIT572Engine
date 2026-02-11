@@ -19,6 +19,8 @@ namespace Engine {
 
 		void swapBuffers();
 
+		SDL_Window* getWindow();
+
 	private:
 
 		SDL_GLContext _glContext;

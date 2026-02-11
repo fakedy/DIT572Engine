@@ -11,6 +11,7 @@ namespace Engine {
 
 	std::shared_ptr<Texture> AssetManager::LoadTexture(const std::string& filePath) {
 
+
 		if (textureMap.find(filePath) != textureMap.end()) {
 			return textureMap[filePath];
 		}
@@ -21,25 +22,9 @@ namespace Engine {
 		stbi_uc *pixels = stbi_load(filePath.c_str(), &w, &h, &channels, 0);
 
 		unsigned int texture;
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		if (!pixels) {
-			std::cout << "Failed to load texture file: " << filePath << std::endl;
-		}
-		else {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-
 		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
 		newTexture->filepath = filePath;
-		newTexture->id = texture;
+		newTexture->id = 0;
 		newTexture->width = w;
 		newTexture->height = h;
 

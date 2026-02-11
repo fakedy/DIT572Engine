@@ -59,7 +59,6 @@ namespace Engine {
 				_scene->update();
 			}
 
-			renderer.clear();
 			renderer.draw();
 			window.swapBuffers();
 

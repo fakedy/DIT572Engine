@@ -43,9 +43,17 @@ set(ENGINE_CORE_SOURCES
     "include/Engine/Components/Component.h" "include/Engine/Shader.h" "include/Engine/InputManager.h"
     src/InputManager.cpp "include/Engine/EventManager.h" "src/EventManager.cpp"
     src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp"
-     "src/Components/Sprite.cpp" "src/Components/Transform.cpp"
-     "include/Engine/Time.h"  
-     "include/Engine/Engine.h" "include/Engine/Scene.h" "include/Engine/AssetManager.h" "src/AssetManager.cpp" "include/Engine/Texture.h"   "include/Engine/Components/RenderComponent.h" "include/Engine/Components/Model.h" "include/Engine/Mesh.h" "include/Engine/Material.h" "include/Engine/Components/RigidBody2D.h" "src/Components/RigidBody2D.cpp" "include/Engine/PhysicsManager.h" "src/PhysicsManager.cpp" "include/Engine/CollisionManager.h" "include/Engine/Components/Collider2D.h" "include/Engine/Components/BoxCollider2D.h"  "src/Components/BoxCollider2D.cpp" "src/CollisionManager.cpp")
+    "src/Components/Sprite.cpp" "src/Components/Transform.cpp"
+    "include/Engine/Time.h"  
+    "include/Engine/Engine.h"
+    "include/Engine/Scene.h"
+    "include/Engine/AssetManager.h"
+    "src/AssetManager.cpp"
+    "include/Engine/Texture.h"
+    "include/Engine/Components/RenderComponent.h"
+    "include/Engine/Components/Model.h"
+    "include/Engine/Mesh.h"
+    "include/Engine/Material.h" "include/Engine/Components/RigidBody2D.h" "src/Components/RigidBody2D.cpp" "include/Engine/PhysicsManager.h" "src/PhysicsManager.cpp" "include/Engine/CollisionManager.h" "include/Engine/Components/Collider2D.h" "include/Engine/Components/BoxCollider2D.h"  "src/Components/BoxCollider2D.cpp" "src/CollisionManager.cpp")
     
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})

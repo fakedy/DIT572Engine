@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_gpu.h>
 #include <Engine/Shader.h>
 #include <Engine/Components/Sprite.h>
 #include <unordered_map>
@@ -19,6 +20,8 @@ namespace Engine {
 
 		Renderer();
 
+		~Renderer();
+
 		int init();
 
 		void draw();
@@ -26,19 +29,18 @@ namespace Engine {
 		void drawSprite(glm::mat4 model, Material& texture);
 
 
-		void clear();
-
 		int addRenderObject(RenderComponent* sprite);
 		void removeSprite(int id);
 
 		void handleResizeWindow(unsigned int width, unsigned int height);
 
+		SDL_GPUShader* createShader(const char* shaderPath, SDL_GPUShaderFormat format, SDL_GPUShaderStage stage
+			, Uint32 numSamplers, Uint32 numUniformBuffers, Uint32 numStorageBuffers, Uint32 numStorageTextures);
 
 		float pixels_per_unit{ 32.0f };
 	private:
 
 
-		Shader defaultShader = Shader("assets/vDefault.vs", "assets/fDefault.fs");
 
 
 		// Quad Vertices
@@ -55,6 +57,9 @@ namespace Engine {
 			1, 2, 3
 		};
 
+		SDL_GPUBuffer* quadVertexBuffer;
+		SDL_GPUBuffer* quadIndicesBuffer;
+
 		unsigned int VAO;
 		unsigned int VBO;
 		unsigned int EBO;
@@ -68,6 +73,11 @@ namespace Engine {
 
 		// temporary projection matrix
 		glm::mat4 proj;
+
+		SDL_GPUDevice* _gpuDevice;
+
+		SDL_GPUGraphicsPipeline* _spritePipeline;
+		SDL_GPUGraphicsPipeline* _simple3DPipeline;
 
 	};
 

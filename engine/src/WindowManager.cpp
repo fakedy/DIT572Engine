@@ -43,5 +43,10 @@ namespace Engine {
 		SDL_GL_SwapWindow(_window);
 	}
 
+	SDL_Window* WindowManager::getWindow()
+	{
+		return _window;
+	}
+
 
 }

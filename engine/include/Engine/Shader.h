@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_gpu.h>
 
 namespace Engine {
 
@@ -98,6 +99,9 @@ namespace Engine {
 		}
 
 	private:
+
+		SDL_GPUShader* _shader;
+
 
 		std::string vertexCode;
 		std::string fragmentCode;
