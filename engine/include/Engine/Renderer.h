@@ -2,7 +2,6 @@
 #include <glad/glad.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_gpu.h>
-#include <Engine/Shader.h>
 #include <Engine/Components/Sprite.h>
 #include <unordered_map>
 #include <Engine/Texture.h>
@@ -63,9 +62,6 @@ namespace Engine {
 
 		SDL_GPUSampler* _spriteSampler;
 
-		unsigned int VAO;
-		unsigned int VBO;
-		unsigned int EBO;
 
 		std::unordered_map<int,RenderComponent*> RenderObjects;
 		int nextRenderObject{ 0 };

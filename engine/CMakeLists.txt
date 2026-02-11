@@ -40,7 +40,7 @@ set(ENGINE_CORE_SOURCES
     "include/Engine/GameObject.h"
     "include/Engine/Components/Transform.h"
     "include/Engine/Components/Sprite.h"
-    "include/Engine/Components/Component.h" "include/Engine/Shader.h" "include/Engine/InputManager.h"
+    "include/Engine/Components/Component.h"  "include/Engine/InputManager.h"
     src/InputManager.cpp "include/Engine/EventManager.h" "src/EventManager.cpp"
     src/InputManager.cpp "include/Engine/SoundManager.h" "src/SoundManager.cpp"
     "src/Components/Sprite.cpp" "src/Components/Transform.cpp"
