@@ -44,13 +44,15 @@ namespace Engine {
 		colorTarget.blend_state.dst_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ZERO;
 		colorTarget.blend_state.alpha_blend_op = SDL_GPU_BLENDOP_ADD;
 
-		colorTarget.blend_state.color_write_mask = 0xF; 
+
+		colorTarget.blend_state.color_write_mask = 0xF; // RGBA because 0b1111
 
 
 		spritePipelineInfo.target_info.color_target_descriptions = &colorTarget;
 		spritePipelineInfo.target_info.num_color_targets = 1;
 		spritePipelineInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
 
+		// basically attribinfo for the pipeline
 		// this is all like setting up the VAO
 		SDL_GPUVertexAttribute vertAttribs[2];
 		vertAttribs[0] = { 0, 0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, 0 }; // positions
@@ -70,7 +72,7 @@ namespace Engine {
 
 		_spritePipeline = SDL_CreateGPUGraphicsPipeline(_gpuDevice, &spritePipelineInfo);
 
-
+		// shaders are not needed anymore!!!
 		SDL_ReleaseGPUShader(_gpuDevice, vertexShader);
 		SDL_ReleaseGPUShader(_gpuDevice, fragmentShader);
 
@@ -139,7 +141,8 @@ namespace Engine {
 		SDL_SubmitGPUCommandBuffer(uploadCmdBuffer);
 		SDL_ReleaseGPUTransferBuffer(_gpuDevice, bufferTransferBuffer);
 
-
+		// this is a basic sprite smapler
+		// we probably want multiple samplers and then select which one we want when rendering?
 		SDL_GPUSamplerCreateInfo spriteSamplerInfo = {};
 		spriteSamplerInfo.props = 0;
 		spriteSamplerInfo.min_filter = SDL_GPU_FILTER_NEAREST;
@@ -167,6 +170,8 @@ namespace Engine {
 
 
 	void Renderer::draw() {
+
+		// this is hardcoded to draw quads right now lol
 
 		// create command buffer (for render commands)
 		SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(_gpuDevice);
@@ -206,7 +211,7 @@ namespace Engine {
 
 
 
-
+		// matches the shader uniform
 		struct DataBlock {
 			glm::mat4 model;
 			glm::mat4 proj;
