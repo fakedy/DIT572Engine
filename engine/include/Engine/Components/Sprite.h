@@ -18,7 +18,9 @@ namespace Engine {
 
 		Transform* _transform{ nullptr };
 
-		void draw();
+		void draw() override;
+		glm::mat4 getModel() override;
+		Material& getMaterial() override;
 
 		void LoadSprite(const char* path);
 

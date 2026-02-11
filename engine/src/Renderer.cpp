@@ -25,7 +25,7 @@ namespace Engine {
 		// for now 2 types should be enough for what we want to do
 		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = {0};
 		spritePipelineInfo.vertex_shader = createShader("assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
-		spritePipelineInfo.fragment_shader = createShader("assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
+		spritePipelineInfo.fragment_shader = createShader("assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 0, 0, 0, 0);
 
 
 		SDL_GPUColorTargetDescription colorTarget;
@@ -55,7 +55,7 @@ namespace Engine {
 
 		SDL_GPUVertexBufferDescription vertBufferDesc = {};
 		vertBufferDesc.slot = 0;
-		vertBufferDesc.pitch = sizeof(vertices);
+		vertBufferDesc.pitch = sizeof(float) * 5; // stride, 3 positions, 2 uv coordinates
 		vertBufferDesc.input_rate = SDL_GPU_VERTEXINPUTRATE_VERTEX;
 		vertBufferDesc.instance_step_rate = 0; // unused
 
@@ -186,16 +186,25 @@ namespace Engine {
 		indexBufferBinding.offset = 0;
 		SDL_BindGPUIndexBuffer(renderPass, &indexBufferBinding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
 
-		SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+		struct DataBlock {
+			glm::mat4 model;
+			glm::mat4 proj;
+		};
 
+		DataBlock ubo;
+		ubo.proj = this->proj;
 
-
-		/*
-		// this is not correct, fix this.
 		for (auto& pair : RenderObjects) {
-			pair.second->draw();
+			glm::mat4 model = pair.second->getModel();
+			Material& material = pair.second->getMaterial();
+			float sizeX = (float)material.texture->width / pixels_per_unit;
+			float sizeY = (float)material.texture->height / pixels_per_unit;
+			glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
+			ubo.model = tempModel;
+
+			SDL_PushGPUVertexUniformData(cmd, 0, &ubo, sizeof(ubo));
+			SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 		}
-		*/
 
 		// cleanup
 
@@ -204,18 +213,10 @@ namespace Engine {
 
 	}
 
+
+	// unused 
 	void Renderer::drawSprite(glm::mat4 model, Material& material)
 	{
-		/*
-		int projLoc = defaultShader.getLocation("proj");
-		int modelLoc = defaultShader.getLocation("model");
-
-		float sizeX = (float)material.texture->width / pixels_per_unit;
-		float sizeY = (float)material.texture->height / pixels_per_unit;
-
-		glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
-
-		*/
 	}
 
 
@@ -236,7 +237,6 @@ namespace Engine {
 	{
 		windowHeight = height;
 		windowWidth = width;
-		glViewport(0, 0, width, height);
 
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
 		float orthoHeight = unitHeight / 2.0f;

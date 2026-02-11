@@ -52,7 +52,7 @@ namespace Engine {
 		};
 
 		// Quad indices
-		const unsigned int indices[6] = {
+		const uint16_t indices[6] = {
 			0, 1, 3,
 			1, 2, 3
 		};

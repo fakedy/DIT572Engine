@@ -38,6 +38,19 @@ namespace Engine {
 		}
 	}
 
+	glm::mat4 Sprite::getModel()
+	{
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, _transform->getPosition());
+		model = glm::scale(model, _transform->getScale());
+		return model;
+	}
+
+	Material& Sprite::getMaterial()
+	{
+		return *material.get();
+	}
+
 	void Sprite::LoadSprite(const char* path) {
 		// temp way to do this
 		std::shared_ptr<Texture> texture = AssetManager::Get().LoadTexture(path);
