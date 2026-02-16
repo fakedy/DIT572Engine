@@ -12,6 +12,8 @@ namespace Engine {
 		bool getGravity();
 
 		glm::vec3 getVelocity();
+		
+		void setVelocity(glm::vec3 velocity);
 
 		void addForce(glm::fvec3 force);
 

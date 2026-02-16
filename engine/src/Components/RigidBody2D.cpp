@@ -21,6 +21,11 @@ namespace Engine {
 		return velocity;
 	}
 
+	void RigidBody2D::setVelocity(glm::vec3 velocity)
+	{
+		this->velocity = velocity;
+	}
+
 	void RigidBody2D::addForce(glm::fvec3 force)
 	{
 		acceleration = force / mass;

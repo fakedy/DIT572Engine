@@ -60,11 +60,11 @@ namespace Game {
 		Engine::RigidBody2D* rigidbody = player.getComponent<Engine::RigidBody2D>();
 		Engine::InputManager& input = Engine::InputManager::Get();
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
-			rigidbody->addForce(vec3(-100, 0, 0) * Engine::Time::deltaTime);
+			rigidbody->setVelocity(vec3(-10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(-1, 1, 1));
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
-			rigidbody->addForce(vec3(100, 0, 0) * Engine::Time::deltaTime);
+			rigidbody->setVelocity(vec3(10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(1, 1, 1));
 		}
 		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
