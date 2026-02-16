@@ -13,7 +13,7 @@ namespace Engine {
 
 			void onAdd() override;
 			
-			glm::mat4 getProjection() const;
+			glm::mat4 getProjection();
 
 			void updateProjection();
 

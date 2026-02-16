@@ -90,7 +90,5 @@ namespace Game {
 			camera.getComponent<Engine::Transform>()->translate(vec3(0, -20, 0) * Engine::Time::deltaTime);
 		}
 
-		camera.getComponent<Engine::Camera>()->updateProjection();
-
 	}
 }

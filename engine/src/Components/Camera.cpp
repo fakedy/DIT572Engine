@@ -21,7 +21,8 @@ namespace Engine {
 		}
 	}
 
-	glm::mat4 Camera::getProjection() const {
+	glm::mat4 Camera::getProjection() {
+		updateProjection();
 		return _projection;
 	}
 }
