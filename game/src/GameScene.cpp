@@ -12,6 +12,8 @@ namespace Game {
 	World world;
 
 	Engine::GameObject floor;
+
+	Engine::GameObject camera;
 	
 	void GameScene::start() {
 		Engine::Renderer& renderer = Engine::Renderer::Get();
@@ -48,7 +50,8 @@ namespace Game {
 		floor.getComponent<Engine::BoxCollider2D>()->isStatic = true;
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 
-
+		camera.addComponent<Engine::Camera>();
+		
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
 		
@@ -74,6 +77,20 @@ namespace Game {
 		if (input.GetKeyDown(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 2000.0f, 0));
 		}
+		if (input.GetKeyPressed(SDL_SCANCODE_LEFT)){
+			camera.getComponent<Engine::Transform>()->translate(vec3(-20, 0, 0) * Engine::Time::deltaTime);
+		}
+		if (input.GetKeyPressed(SDL_SCANCODE_RIGHT)) {
+			camera.getComponent<Engine::Transform>()->translate(vec3(20, 0, 0) * Engine::Time::deltaTime);
+		}
+		if (input.GetKeyPressed(SDL_SCANCODE_UP)) {
+			camera.getComponent<Engine::Transform>()->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
+		}
+		if (input.GetKeyPressed(SDL_SCANCODE_DOWN)) {
+			camera.getComponent<Engine::Transform>()->translate(vec3(0, -20, 0) * Engine::Time::deltaTime);
+		}
+
+		camera.getComponent<Engine::Camera>()->updateProjection();
 
 	}
 }

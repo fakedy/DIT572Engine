@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <Engine/Texture.h>
 #include <Engine/Components/RenderComponent.h>
+#include <Engine/Components/Camera.h>
 namespace Engine {
 
 	class Renderer {
@@ -38,9 +39,10 @@ namespace Engine {
 			, Uint32 numSamplers, Uint32 numUniformBuffers, Uint32 numStorageBuffers, Uint32 numStorageTextures);
 
 		float pixels_per_unit{ 32.0f };
+
+		int addCamera(Camera* camera);
+
 	private:
-
-
 
 
 		// Quad Vertices
@@ -65,6 +67,9 @@ namespace Engine {
 
 		std::unordered_map<int,RenderComponent*> RenderObjects;
 		int nextRenderObject{ 0 };
+
+		std::vector<Camera*> cameras;
+
 
 		unsigned int windowHeight = 720;
 		unsigned int windowWidth = 1280;

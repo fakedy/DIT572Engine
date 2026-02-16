@@ -218,24 +218,31 @@ namespace Engine {
 		};
 
 		DataBlock ubo;
-		ubo.proj = this->proj;
 
-		for (auto& pair : RenderObjects) {
+		for (auto& camera : cameras) {
 
-			SDL_GPUTextureSamplerBinding textureBinding = {};
-			textureBinding.texture = pair.second->getMaterial().texture->textureHandle; // From AssetManager
-			textureBinding.sampler = _spriteSampler;
-			SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
+			if (!camera->isActive)
+				continue;
 
-			glm::mat4 model = pair.second->getModel();
-			Material& material = pair.second->getMaterial();
-			float sizeX = (float)material.texture->width / pixels_per_unit;
-			float sizeY = (float)material.texture->height / pixels_per_unit;
-			glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
-			ubo.model = tempModel;
+			ubo.proj = camera->getProjection();
 
-			SDL_PushGPUVertexUniformData(cmd, 0, &ubo, sizeof(ubo));
-			SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+			for (auto& pair : RenderObjects) {
+
+				SDL_GPUTextureSamplerBinding textureBinding = {};
+				textureBinding.texture = pair.second->getMaterial().texture->textureHandle; // From AssetManager
+				textureBinding.sampler = _spriteSampler;
+				SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
+
+				glm::mat4 model = pair.second->getModel();
+				Material& material = pair.second->getMaterial();
+				float sizeX = (float)material.texture->width / pixels_per_unit;
+				float sizeY = (float)material.texture->height / pixels_per_unit;
+				glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
+				ubo.model = tempModel;
+
+				SDL_PushGPUVertexUniformData(cmd, 0, &ubo, sizeof(ubo));
+				SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
+			}
 		}
 
 		// cleanup
@@ -272,6 +279,7 @@ namespace Engine {
 
 	void Renderer::handleResizeWindow(unsigned int width, unsigned int height) 
 	{
+
 		windowHeight = height;
 		windowWidth = width;
 
@@ -279,7 +287,13 @@ namespace Engine {
 		float orthoHeight = unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
 
-		proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
+		for (auto& camera : cameras) {
+			if (camera->isActive) {
+				camera->orthoWidth = orthoWidth;
+				camera->orthoHeight = orthoHeight;
+				camera->updateProjection();
+			}
+		}
 
 	}
 
@@ -309,7 +323,22 @@ namespace Engine {
 		return shader;
 	}
 
+	int Renderer::addCamera(Camera* camera)
+	{
+		cameras.push_back(camera);
+
+		float aspectRatio = (float)windowWidth / (float)windowHeight;
+		float orthoHeight = unitHeight / 2.0f;
+		float orthoWidth = orthoHeight * aspectRatio;
+
+		camera->orthoWidth = orthoWidth;
+		camera->orthoHeight = orthoHeight;
+		camera->updateProjection();
+
+		return cameras.size() - 1;
+	}
 
 
+	
 
 }
