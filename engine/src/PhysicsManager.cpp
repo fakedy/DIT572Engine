@@ -44,6 +44,7 @@ namespace Engine {
 			if (moveA) {
 				collision.rigidbodyA->_transform->translate(collision.direction * resolveAmount);
 				float dot = glm::dot(collision.direction, rbA->velocity);
+				// kill the velocity going into the floor
 				if (dot < 0) {
 					//rbA->velocity -= collision.direction * dot;
 				}
@@ -52,6 +53,7 @@ namespace Engine {
 			if (moveB) {
 				collision.rigidbodyB->_transform->translate(-collision.direction * resolveAmount);
 				float dot = glm::dot(-collision.direction, rbB->velocity);
+				// kill the velocity going into the floor
 				if (dot > 0) {
 					//rbB->velocity -= -collision.direction * dot;
 				}
