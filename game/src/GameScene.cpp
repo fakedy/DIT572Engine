@@ -69,9 +69,6 @@ namespace Game {
 		if (input.GetKeyDown(SDL_SCANCODE_W)) {
 			transform->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
 		}
-		if (input.GetKeyDown(SDL_SCANCODE_S)) {
-			transform->translate(vec3(0, -10, 0) * Engine::Time::deltaTime);
-		}
 		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 2000.0f, 0));
 		}
