@@ -15,6 +15,10 @@ namespace Engine {
 	void PhysicsManager::update() {
 		for (auto& rb : rgBodies2D) {
 			if (rb->getGravity()) {
+				if(rb->isStatic){
+					continue; // if static, do not apply gravity or move
+				}
+
 				rb->acceleration += + glm::vec3(0, -9.82f, 0);
 				rb->velocity += rb->acceleration * Time::deltaTime;
 				rb->_transform->translate(rb->getVelocity() * Time::deltaTime);
