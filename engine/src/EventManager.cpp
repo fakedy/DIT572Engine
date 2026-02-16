@@ -18,7 +18,9 @@ namespace Engine {
 			}
 
 			if (e.type == SDL_EVENT_KEY_DOWN) {
-				input.keyMap[e.key.scancode] = true;
+				if (e.key.repeat == false) {
+					input.keyMap[e.key.scancode] = true;
+				}
 			}
 
 			if (e.type == SDL_EVENT_KEY_UP) {

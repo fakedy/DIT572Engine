@@ -50,7 +50,6 @@ namespace Game {
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 
 		camera.addComponent<Engine::Camera>();
-		
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
 		
@@ -59,30 +58,33 @@ namespace Game {
 	void GameScene::update() {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		Engine::InputManager& input = Engine::InputManager::Get();
-		if (input.GetKeyPressed(SDL_SCANCODE_A)) {
+		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			transform->translate(vec3(-10, 0, 0) * Engine::Time::deltaTime);
 			transform->scale(vec3(-1, 1, 1));
 		}
-		if (input.GetKeyPressed(SDL_SCANCODE_D)) {
+		if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			transform->translate(vec3(10, 0, 0) * Engine::Time::deltaTime);
 			transform->scale(vec3(1, 1, 1));
 		}
-		if (input.GetKeyPressed(SDL_SCANCODE_W)) {
+		if (input.GetKeyDown(SDL_SCANCODE_W)) {
 			transform->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
 		}
-		if (input.GetKeyDown(SDL_SCANCODE_SPACE)) {
+		if (input.GetKeyDown(SDL_SCANCODE_S)) {
+			transform->translate(vec3(0, -10, 0) * Engine::Time::deltaTime);
+		}
+		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 2000.0f, 0));
 		}
-		if (input.GetKeyPressed(SDL_SCANCODE_LEFT)){
+		if (input.GetKeyDown(SDL_SCANCODE_LEFT)){
 			camera.getComponent<Engine::Transform>()->translate(vec3(-20, 0, 0) * Engine::Time::deltaTime);
 		}
-		if (input.GetKeyPressed(SDL_SCANCODE_RIGHT)) {
+		if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) {
 			camera.getComponent<Engine::Transform>()->translate(vec3(20, 0, 0) * Engine::Time::deltaTime);
 		}
-		if (input.GetKeyPressed(SDL_SCANCODE_UP)) {
+		if (input.GetKeyDown(SDL_SCANCODE_UP)) {
 			camera.getComponent<Engine::Transform>()->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
 		}
-		if (input.GetKeyPressed(SDL_SCANCODE_DOWN)) {
+		if (input.GetKeyDown(SDL_SCANCODE_DOWN)) {
 			camera.getComponent<Engine::Transform>()->translate(vec3(0, -20, 0) * Engine::Time::deltaTime);
 		}
 

@@ -10,13 +10,14 @@ namespace Engine {
 	void InputManager::Update() {
 	}
 
-	bool InputManager::GetKeyPressed(SDL_Scancode scanCode) {
+	bool InputManager::GetKeyDown(SDL_Scancode scanCode) {
 
 		return keyMap[scanCode];
 	}
 
-	bool InputManager::GetKeyDown(SDL_Scancode scanCode)
+	bool InputManager::GetKeyPressed(SDL_Scancode scanCode)
 	{
+
 		bool pressed = keyMap[scanCode];
 		keyMap[scanCode] = false;
 		return pressed;
