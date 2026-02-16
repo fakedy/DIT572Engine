@@ -16,7 +16,7 @@ namespace Engine {
 	void SoundManager::PlaySound() {
 
             SDL_AudioSpec spec;
-            char* wav_path = "Assets/test.wav";
+            char* wav_path = "Assets/terraria.wav";
 
 
             /* Load the .wav file from wherever the app is being run from. */

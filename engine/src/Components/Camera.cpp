@@ -6,15 +6,15 @@ namespace Engine {
 
 
 	void Camera::onAdd() {
-		_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f) ;
+		_projection = glm::orthoZO(0.0f, 800.0f, 0.0f, 600.0f, 0.0f, 1.0f);
 		_transform = owner->getComponent<Transform>();
 		Renderer::Get().addCamera(this);
 	}
 
 	void Camera::updateProjection() {
 		if (_projectionType == ProjectionType::Orthographic) {
-			_projection = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight);
-			_projection = glm::translate(_projection, -_transform->getPosition());
+			_projection = glm::orthoZO(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -10.0f, 10.0f);
+			_view = glm::translate(glm::mat4(1.0f), -_transform->getPosition() + glm::vec3(0,0,-10));
 		}
 		else {
 			// perspective projection
@@ -23,6 +23,6 @@ namespace Engine {
 
 	glm::mat4 Camera::getProjection() {
 		updateProjection();
-		return _projection;
+		return _projection * _view;
 	}
 }

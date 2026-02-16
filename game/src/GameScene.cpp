@@ -9,6 +9,10 @@ namespace Game {
 	Engine::GameObject player;
 
 	Engine::GameObject box;
+	Engine::GameObject box2;
+	Engine::GameObject box3;
+
+
 	World world;
 
 	Engine::GameObject floor;
@@ -27,6 +31,7 @@ namespace Game {
 		player.getComponent<Engine::BoxCollider2D>()->height = playerSizeY / renderer.pixels_per_unit;
 		player.addComponent<Engine::RigidBody2D>();
 		player.getComponent<Engine::Transform>()->scale(vec3(-1, 1, 1));
+		player.getComponent<Engine::Transform>()->translate(vec3(0, 0, 5));
 
 
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
@@ -40,6 +45,13 @@ namespace Game {
 		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 		box.addComponent<Engine::RigidBody2D>();
 
+		box2.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
+		box2.getComponent<Engine::Transform>()->translate(vec3(3, -8, 6));
+
+		box3.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
+		box3.getComponent<Engine::Transform>()->translate(vec3(-3, -8, 4));
+
+
 
 		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
 		float floorSizeX = floor.getComponent<Engine::Sprite>()->material->texture->width;
@@ -51,8 +63,12 @@ namespace Game {
 		floor.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 
 		camera.addComponent<Engine::Camera>();
+		camera.getComponent<Engine::Transform>()->translate(glm::vec3(0, 0, -10));
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
+		//sound.PlaySound();
+
+		//world.create();
 		
 	}
 

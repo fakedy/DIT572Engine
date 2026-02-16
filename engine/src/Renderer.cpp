@@ -21,6 +21,17 @@ namespace Engine {
 
 		SDL_ClaimWindowForGPUDevice(_gpuDevice, Engine::WindowManager::Get().getWindow());
 		
+
+		// Create depth texture
+		SDL_GPUTextureCreateInfo depthTextureInfo = {};
+		depthTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
+		depthTextureInfo.format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
+		depthTextureInfo.width = windowWidth;
+		depthTextureInfo.height = windowHeight;
+		depthTextureInfo.layer_count_or_depth = 1;
+		depthTextureInfo.num_levels = 1;
+		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
+		_depthTexture = SDL_CreateGPUTexture(_gpuDevice, &depthTextureInfo);
 		// a pipeline must be created for each shader program
 
 		SDL_GPUShader* vertexShader = createShader("assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
@@ -29,6 +40,14 @@ namespace Engine {
 		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = {0};
 		spritePipelineInfo.vertex_shader = vertexShader;
 		spritePipelineInfo.fragment_shader = fragmentShader;
+
+		// enable depth testing
+		spritePipelineInfo.depth_stencil_state.enable_depth_test = true;
+		spritePipelineInfo.depth_stencil_state.enable_depth_write = true;
+		spritePipelineInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
+
+		spritePipelineInfo.target_info.has_depth_stencil_target = true;
+		spritePipelineInfo.target_info.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
 
 
 		SDL_GPUColorTargetDescription colorTarget = {};
@@ -162,7 +181,6 @@ namespace Engine {
 		float orthoHeight = unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
 
-		proj = glm::ortho(-orthoWidth, orthoWidth, -orthoHeight, orthoHeight, -1.0f, 1.0f);
 
 
 		return 0;
@@ -186,14 +204,26 @@ namespace Engine {
 		
 		// render pass
 
+		// color target
 		SDL_GPUColorTargetInfo colorTargetInfo = { 0 };
 		colorTargetInfo.texture = swapchainTexture;
 		colorTargetInfo.clear_color = { 0.3f, 0.3f, 0.8f, 1.0f };
 		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
 		colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE; // write to memory
 
+		// depth target
+
+		SDL_GPUDepthStencilTargetInfo depthTargetInfo = {};
+		depthTargetInfo.texture = _depthTexture;
+		depthTargetInfo.clear_depth = 1.0f;
+		depthTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;
+		depthTargetInfo.store_op = SDL_GPU_STOREOP_DONT_CARE;
+		depthTargetInfo.stencil_load_op = SDL_GPU_LOADOP_DONT_CARE;
+		depthTargetInfo.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE;
+		depthTargetInfo.cycle = true;
+
 		// only works for 2d right now
-		SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, nullptr);
+		SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, &depthTargetInfo);
 
 		SDL_BindGPUGraphicsPipeline(renderPass, _spritePipeline);
 
@@ -294,6 +324,23 @@ namespace Engine {
 				camera->updateProjection();
 			}
 		}
+
+		if (_depthTexture != nullptr) {
+			SDL_ReleaseGPUTexture(_gpuDevice, _depthTexture);
+			_depthTexture = nullptr;
+		}
+
+		// recreate the depth buffer texture
+		SDL_GPUTextureCreateInfo depthTextureInfo = {};
+		depthTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
+		depthTextureInfo.format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
+		depthTextureInfo.width = windowWidth;
+		depthTextureInfo.height = windowHeight;
+		depthTextureInfo.layer_count_or_depth = 1;
+		depthTextureInfo.num_levels = 1;
+		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
+		_depthTexture = SDL_CreateGPUTexture(_gpuDevice, &depthTextureInfo);
+
 
 	}
 

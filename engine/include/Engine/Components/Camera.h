@@ -26,6 +26,7 @@ namespace Engine {
 
 		private:
 			glm::mat4 _projection{ 1.0f };
+			glm::mat4 _view{ 1.0f };
 			ProjectionType _projectionType{ ProjectionType::Orthographic };
 	};
 

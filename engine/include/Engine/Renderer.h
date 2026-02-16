@@ -65,6 +65,8 @@ namespace Engine {
 		SDL_GPUSampler* _spriteSampler;
 
 
+		SDL_GPUTexture* _depthTexture;
+
 		std::unordered_map<int,RenderComponent*> RenderObjects;
 		int nextRenderObject{ 0 };
 

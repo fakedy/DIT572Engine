@@ -59,7 +59,7 @@ set(ENGINE_CORE_SOURCES
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})
 
 
-
+target_compile_definitions(Engine PRIVATE GLM_FORCE_DEPTH_ZERO_TO_ONE)
 
 target_include_directories(Engine PUBLIC
     include
