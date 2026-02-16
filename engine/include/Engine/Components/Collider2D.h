@@ -9,7 +9,9 @@ namespace Engine {
 
 			struct CollisionStruct {
 				RigidBody2D* rigidbodyA;
+				Collider2D* colliderA;
 				RigidBody2D* rigidbodyB;
+				Collider2D* colliderB;
 				float penetrationDepth;
 				glm::vec3 direction;
 			};
@@ -24,6 +26,8 @@ namespace Engine {
 			};
 
 			int _colliderIndex{ -1 };
+
+			float friction{ 0 };
 
 			ColliderType2D type{ BOX };
 	};

@@ -45,7 +45,7 @@ namespace Engine {
 				collision.rigidbodyA->_transform->translate(collision.direction * resolveAmount);
 				float dot = glm::dot(collision.direction, rbA->velocity);
 				if (dot < 0) {
-					rbA->velocity -= collision.direction * dot;
+					//rbA->velocity -= collision.direction * dot;
 				}
 			}
 
@@ -53,8 +53,23 @@ namespace Engine {
 				collision.rigidbodyB->_transform->translate(-collision.direction * resolveAmount);
 				float dot = glm::dot(-collision.direction, rbB->velocity);
 				if (dot > 0) {
-					rbB->velocity -= -collision.direction * dot;
+					//rbB->velocity -= -collision.direction * dot;
 				}
+			}
+
+			if (rbA != nullptr && collision.colliderB != nullptr) {
+				float dot = glm::dot(collision.direction, glm::vec3(0,1,0));
+				if (dot > 0.5) {
+					rbA->velocity *= (1 - collision.colliderB->friction);
+				}
+			}
+
+			if (rbB != nullptr && collision.colliderA != nullptr) {
+				float dot = glm::dot(-collision.direction, glm::vec3(0, 1, 0));
+				if (dot > 0.5) {
+					rbB->velocity *= (1 - collision.colliderA->friction);
+				}
+
 			}
 
 

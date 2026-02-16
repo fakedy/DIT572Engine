@@ -38,6 +38,8 @@ namespace Engine {
 
 				colstruct.rigidbodyA = this->owner->getComponent<RigidBody2D>(); // Set the colliding boxes
 				colstruct.rigidbodyB = other->owner->getComponent<RigidBody2D>();
+				colstruct.colliderA = this;
+				colstruct.colliderB = other;
 
 				if (overlapX < overlapY) {
 					colstruct.penetrationDepth = overlapX; // Set penetration depth

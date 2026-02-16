@@ -26,7 +26,6 @@ namespace Game {
 		player.addComponent<Engine::BoxCollider2D>()->width = playerSizeX / renderer.pixels_per_unit;
 		player.getComponent<Engine::BoxCollider2D>()->height = playerSizeY / renderer.pixels_per_unit;
 		player.addComponent<Engine::RigidBody2D>();
-
 		player.getComponent<Engine::Transform>()->scale(vec3(-1, 1, 1));
 
 
@@ -38,6 +37,7 @@ namespace Game {
 		float boxSizeY = box.getComponent<Engine::Sprite>()->material->texture->height;
 		box.addComponent<Engine::BoxCollider2D>()->width = boxSizeX / renderer.pixels_per_unit;
 		box.getComponent<Engine::BoxCollider2D>()->height = boxSizeY / renderer.pixels_per_unit;
+		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 		box.addComponent<Engine::RigidBody2D>();
 
 
@@ -48,6 +48,7 @@ namespace Game {
 		floor.addComponent<Engine::BoxCollider2D>()->width = 100;
 		floor.getComponent<Engine::BoxCollider2D>()->height = floorSizeY / renderer.pixels_per_unit;
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
+		floor.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 
 		camera.addComponent<Engine::Camera>();
 

@@ -30,6 +30,8 @@ namespace Engine {
 
 		bool isStatic{ false };
 
+		float friction{ 0 };
+
 	private:
 		float mass{ 1 };
 		bool useGravity{ true };
