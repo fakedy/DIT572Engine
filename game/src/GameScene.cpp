@@ -58,23 +58,18 @@ namespace Game {
 
 	void GameScene::update() {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
+		Engine::RigidBody2D* rigidbody = player.getComponent<Engine::RigidBody2D>();
 		Engine::InputManager& input = Engine::InputManager::Get();
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
-			transform->translate(vec3(-10, 0, 0) * Engine::Time::deltaTime);
+			rigidbody->addForce(vec3(-100, 0, 0) * Engine::Time::deltaTime);
 			transform->scale(vec3(-1, 1, 1));
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
-			transform->translate(vec3(10, 0, 0) * Engine::Time::deltaTime);
+			rigidbody->addForce(vec3(100, 0, 0) * Engine::Time::deltaTime);
 			transform->scale(vec3(1, 1, 1));
 		}
-		if (input.GetKeyDown(SDL_SCANCODE_W)) {
-			transform->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
-		}
-		if (input.GetKeyDown(SDL_SCANCODE_S)) {
-			transform->translate(vec3(0, -10, 0) * Engine::Time::deltaTime);
-		}
 		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
-			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 2000.0f, 0));
+			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 1700.0f, 0));
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_LEFT)){
 			camera.getComponent<Engine::Transform>()->translate(vec3(-20, 0, 0) * Engine::Time::deltaTime);
