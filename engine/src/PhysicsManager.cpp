@@ -24,10 +24,37 @@ namespace Engine {
 
 		std::vector<Collider2D::CollisionStruct> list = cm.update();
 		for (auto& collision : list) {
-			// Simple collision response
-			collision.rigidbodyA->velocity = glm::vec3(0); // set acceleration to 0, not very accurate.
+
+			auto rbA = collision.rigidbodyA;
+			auto rbB = collision.rigidbodyB;
+
 			float resolveAmount = collision.penetrationDepth * 0.5f;
-			collision.rigidbodyA->_transform->translate(collision.direction * resolveAmount);
+
+			bool moveA = (rbA != nullptr && !collision.rigidbodyA->isStatic);
+			bool moveB = (rbB != nullptr && !collision.rigidbodyB->isStatic);
+
+			if (!moveA && !moveB) {
+				continue; // if both are static, do nothing
+			}
+
+			if (moveA) {
+				collision.rigidbodyA->_transform->translate(collision.direction * resolveAmount);
+				float dot = glm::dot(collision.direction, rbA->velocity);
+				if (dot < 0) {
+					rbA->velocity -= collision.direction * dot;
+				}
+			}
+
+			if (moveB) {
+				collision.rigidbodyB->_transform->translate(-collision.direction * resolveAmount);
+				float dot = glm::dot(-collision.direction, rbB->velocity);
+				if (dot > 0) {
+					rbB->velocity -= -collision.direction * dot;
+				}
+			}
+
+
+
 		}
 
 	}
