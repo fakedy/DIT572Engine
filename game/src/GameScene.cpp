@@ -47,7 +47,6 @@ namespace Game {
 		floor.getComponent<Engine::Transform>()->scale(vec3(100, 1, 1));
 		floor.addComponent<Engine::BoxCollider2D>()->width = 100;
 		floor.getComponent<Engine::BoxCollider2D>()->height = floorSizeY / renderer.pixels_per_unit;
-		floor.getComponent<Engine::BoxCollider2D>()->isStatic = true;
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 
 		camera.addComponent<Engine::Camera>();
@@ -70,9 +69,6 @@ namespace Game {
 		}
 		if (input.GetKeyPressed(SDL_SCANCODE_W)) {
 			transform->translate(vec3(0, 20, 0) * Engine::Time::deltaTime);
-		}
-		if (input.GetKeyPressed(SDL_SCANCODE_S)) {
-			transform->translate(vec3(0, -10, 0) * Engine::Time::deltaTime);
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 2000.0f, 0));

@@ -25,8 +25,6 @@ namespace Engine {
 
 			int _colliderIndex{ -1 };
 
-			bool isStatic{ false };
-
 			ColliderType2D type{ BOX };
 	};
 }

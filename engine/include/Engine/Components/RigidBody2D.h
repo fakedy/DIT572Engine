@@ -25,10 +25,14 @@ namespace Engine {
 
 		glm::fvec3 acceleration{ 0 };
 		glm::vec3 velocity{0.0f};
+
+		bool isStatic{ false };
+
 	private:
 		float mass{ 1 };
 		bool useGravity{ true };
 		bool isKinematic{ false };
+
 
 	};
 
