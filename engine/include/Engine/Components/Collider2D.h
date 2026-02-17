@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine/Components/Component.h>
 #include <Engine/Components/Transform.h>
-#include <engine/Components/RigidBody2D.h>
+#include <Engine/Components/RigidBody2D.h>
 
 namespace Engine {
 	class Collider2D : public Component{
