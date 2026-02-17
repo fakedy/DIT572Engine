@@ -2,10 +2,34 @@
 ## About
 A game engine for the course DIT572. While the engine is designed for the course its entirely independent from the course in terms of code and design. All our design decisions are our own.
 
-## Building
+## Building from Source
+### Prerequisites
+Before building, ensure you have the following installed:
+* **CMAKE**
+* **C++ Compiler**
+* **Vulkan SDK** - Can be skipped but you wont be able to compile shaders and are therefore required to use the precompiled ones.
+
+
+**Clone the repository:**
+   ```bash
+  # Clone and enter the repository
+  git clone https://github.com/fakedy/DIT572Engine.git
+  cd DIT572Engine
+```
+
+### Windows
 The project use cmake as a build system.
 You can build the project by running the BUILD.bat file, this creates a visual studio project in the build folder.
 Since this project use SDL3 GPUDevice shader compilation is required, as of now its using the vulkan backend and thus require the vulkan SDK to compile shaders.
+
+### Linux
+```bash
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
 
 ## Features
 
@@ -15,9 +39,12 @@ Since this project use SDL3 GPUDevice shader compilation is required, as of now 
 * AABB collisions
 * Input system
 * Sound system
+* Camera system
 
 ## Third Party Libraries
-* SDL
-* CMAKE
+* **CMAKE**
+* **SDL3**
+* **GLM**
+* **STB**
 
 
