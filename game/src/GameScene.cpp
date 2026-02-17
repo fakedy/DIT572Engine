@@ -16,6 +16,7 @@ namespace Game {
 	World world;
 
 	Engine::GameObject floor;
+	Engine::GameObject stoneGround;
 
 	Engine::GameObject camera;
 	
@@ -46,14 +47,15 @@ namespace Game {
 		box.addComponent<Engine::RigidBody2D>();
 
 		box2.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
-		box2.getComponent<Engine::Transform>()->translate(vec3(3, -8, 6));
+		box2.getComponent<Engine::Transform>()->translate(vec3(3, -8.5, 6));
 
 		box3.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
-		box3.getComponent<Engine::Transform>()->translate(vec3(-3, -8, 4));
+		box3.getComponent<Engine::Transform>()->translate(vec3(-3, -8.5, 4));
 
 
 
-		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
+		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/grass_stone.png");
+		floor.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
 		float floorSizeX = floor.getComponent<Engine::Sprite>()->material->texture->width;
 		float floorSizeY = floor.getComponent<Engine::Sprite>()->material->texture->height;
 		floor.getComponent<Engine::Transform>()->scale(vec3(100, 1, 1));
@@ -62,11 +64,20 @@ namespace Game {
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 		floor.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 
+		stoneGround.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
+		stoneGround.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
+		stoneGround.getComponent<Engine::Transform>()->scale(vec3(100, 5, 1));
+		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -13, 0));
+
+		
+
+
+
 		camera.addComponent<Engine::Camera>();
 		camera.getComponent<Engine::Transform>()->translate(glm::vec3(0, 0, -10));
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
-		//sound.PlaySound();
+		sound.PlaySound();
 
 		//world.create();
 		

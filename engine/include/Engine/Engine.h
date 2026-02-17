@@ -12,3 +12,4 @@
 #include <Engine/Renderer.h>
 #include <Engine/Components/RigidBody2D.h>
 #include <Engine/Components/BoxCollider2D.h>
+#include <Engine/Material.h>

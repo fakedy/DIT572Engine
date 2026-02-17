@@ -1,5 +1,6 @@
 #pragma once
 #include <Engine/Components/RigidBody2D.h>
+#include <glm/glm/glm.hpp>
 
 
 namespace Engine {
@@ -18,11 +19,9 @@ namespace Engine {
 		std::vector<RigidBody2D*> rgBodies2D;
 		int nextRGBody2D{ 0 };
 
+		glm::vec3 universeGravity = glm::vec3(0, -9.82f, 0);
 
-		float gravity{ -9.82f };
+
 	};
-
-
-
 
 }

@@ -30,12 +30,7 @@ namespace Engine {
 	}
 
 	void Sprite::draw() {
-		if (_transform) {
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, _transform->getPosition());
-			model = glm::scale(model, _transform->getScale());
-			Renderer::Get().drawSprite(model, *material.get());
-		}
+
 	}
 
 	glm::mat4 Sprite::getModel()
@@ -43,6 +38,11 @@ namespace Engine {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, _transform->getPosition());
 		model = glm::scale(model, _transform->getScale());
+
+		// set uvScale since it might be used
+		// could use a separate function to get it but whatever
+		uvScale = glm::vec2(_transform->getScale().x, _transform->getScale().y);
+
 		return model;
 	}
 

@@ -26,6 +26,7 @@ namespace Engine {
 
 		void onAdd() override;
 		std::shared_ptr<Material> material;
+
 	private:
 
 

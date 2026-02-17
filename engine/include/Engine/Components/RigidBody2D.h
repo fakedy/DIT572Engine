@@ -8,8 +8,6 @@ namespace Engine {
 
 	public:
 
-		void setGravity(bool use);
-		bool getGravity();
 
 		glm::vec3 getVelocity();
 		
@@ -31,10 +29,10 @@ namespace Engine {
 		bool isStatic{ false };
 
 		float friction{ 0 };
+		bool affectedByGravity{ true };
 
 	private:
 		float mass{ 1 };
-		bool useGravity{ true };
 		bool isKinematic{ false };
 
 

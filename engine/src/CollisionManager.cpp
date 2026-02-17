@@ -15,7 +15,8 @@ namespace Engine {
 
 	std::vector<Collider2D::CollisionStruct> CollisionManager::update() {
 		std::vector<Collider2D::CollisionStruct> collisions;
-
+		
+		// Amazing O(n^2) collision check
 		for (auto& col : colliders) {
 			for(auto& other : colliders) {
 				if (col != other) {

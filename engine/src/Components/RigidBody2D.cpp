@@ -7,15 +7,6 @@ namespace Engine {
 
 	
 
-	void RigidBody2D::setGravity(bool use) {
-		useGravity = use;
-	}
-
-	bool RigidBody2D::getGravity() {
-		return useGravity;
-
-	}
-
 	glm::vec3 RigidBody2D::getVelocity()
 	{
 		return velocity;

@@ -32,8 +32,9 @@ namespace Engine {
 		depthTextureInfo.num_levels = 1;
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		_depthTexture = SDL_CreateGPUTexture(_gpuDevice, &depthTextureInfo);
-		// a pipeline must be created for each shader program
 
+
+		// a pipeline must be created for each shader program
 		SDL_GPUShader* vertexShader = createShader("assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
 		SDL_GPUShader* fragmentShader = createShader("assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
 
@@ -62,7 +63,6 @@ namespace Engine {
 		colorTarget.blend_state.src_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ONE;
 		colorTarget.blend_state.dst_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ZERO;
 		colorTarget.blend_state.alpha_blend_op = SDL_GPU_BLENDOP_ADD;
-
 
 		colorTarget.blend_state.color_write_mask = 0xF; // RGBA because 0b1111
 
@@ -129,6 +129,7 @@ namespace Engine {
 		SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(uploadCmdBuffer);
 
 
+		// Uploading quad vertices to GPU
 		{
 			SDL_GPUTransferBufferLocation transferbufferloc = {};
 			transferbufferloc.offset = 0;
@@ -142,6 +143,7 @@ namespace Engine {
 			SDL_UploadToGPUBuffer(copyPass, &transferbufferloc, &bufferRegion, false);
 		}
 
+		// Uploading quad Indices to GPU
 		{
 			SDL_GPUTransferBufferLocation transferbufferloc = {};
 			transferbufferloc.offset = sizeof(vertices);
@@ -160,27 +162,40 @@ namespace Engine {
 		SDL_SubmitGPUCommandBuffer(uploadCmdBuffer);
 		SDL_ReleaseGPUTransferBuffer(_gpuDevice, bufferTransferBuffer);
 
-		// this is a basic sprite smapler
-		// we probably want multiple samplers and then select which one we want when rendering?
-		SDL_GPUSamplerCreateInfo spriteSamplerInfo = {};
-		spriteSamplerInfo.props = 0;
-		spriteSamplerInfo.min_filter = SDL_GPU_FILTER_NEAREST;
-		spriteSamplerInfo.mag_filter = SDL_GPU_FILTER_NEAREST;
-		spriteSamplerInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
-		spriteSamplerInfo.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-		spriteSamplerInfo.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-		spriteSamplerInfo.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		// samplers
 
-		_spriteSampler = SDL_CreateGPUSampler(_gpuDevice, &spriteSamplerInfo);
+		SDL_GPUSamplerCreateInfo SamplerNearest = {};
+		SamplerNearest.props = 0;
+		SamplerNearest.min_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerNearest.mag_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerNearest.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+		SamplerNearest.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerNearest.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerNearest.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
-		// this should be related to what camera is used, several cameras should be able to be used at once
+		_samplerNearest = SDL_CreateGPUSampler(_gpuDevice, &SamplerNearest);
 
-		float aspectRatio = (float)windowWidth / (float)windowHeight;
+		SDL_GPUSamplerCreateInfo SamplerLinear = {};
+		SamplerLinear.props = 0;
+		SamplerLinear.min_filter = SDL_GPU_FILTER_LINEAR;
+		SamplerLinear.mag_filter = SDL_GPU_FILTER_LINEAR;
+		SamplerLinear.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
+		SamplerLinear.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerLinear.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerLinear.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
+		_samplerLinear = SDL_CreateGPUSampler(_gpuDevice, &SamplerLinear);
 
-		float orthoHeight = unitHeight / 2.0f;
-		float orthoWidth = orthoHeight * aspectRatio;
+		SDL_GPUSamplerCreateInfo SamplerRepeat = {};
+		SamplerRepeat.props = 0;
+		SamplerRepeat.min_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerRepeat.mag_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerRepeat.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+		SamplerRepeat.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+		SamplerRepeat.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+		SamplerRepeat.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
 
+		_samplerRepeat = SDL_CreateGPUSampler(_gpuDevice, &SamplerRepeat);
 
 
 		return 0;
@@ -245,12 +260,14 @@ namespace Engine {
 		struct DataBlock {
 			glm::mat4 model;
 			glm::mat4 proj;
+			glm::vec2 uvScale;
 		};
 
 		DataBlock ubo;
 
 		for (auto& camera : cameras) {
 
+			// skip inactive cameras
 			if (!camera->isActive)
 				continue;
 
@@ -259,8 +276,22 @@ namespace Engine {
 			for (auto& pair : RenderObjects) {
 
 				SDL_GPUTextureSamplerBinding textureBinding = {};
-				textureBinding.texture = pair.second->getMaterial().texture->textureHandle; // From AssetManager
-				textureBinding.sampler = _spriteSampler;
+				Material& mat = pair.second->getMaterial();
+				textureBinding.texture = mat.texture->textureHandle; // From AssetManager
+				textureBinding.sampler = _samplerNearest;
+				ubo.uvScale = glm::vec2(1, 1);
+				// check sampler
+				if (mat.samplerMode == Material::SAMPLER_MODE_REPEAT) {
+					textureBinding.sampler = _samplerRepeat;
+					ubo.uvScale = pair.second->uvScale;
+				}
+				else if (mat.samplerMode == Material::SAMPLER_MODE_LINEAR) {
+					textureBinding.sampler = _samplerLinear;
+				}
+				else {
+					textureBinding.sampler = _samplerNearest;
+				}
+
 				SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
 
 				glm::mat4 model = pair.second->getModel();
@@ -280,12 +311,6 @@ namespace Engine {
 		SDL_EndGPURenderPass(renderPass);
 		SDL_SubmitGPUCommandBuffer(cmd);
 
-	}
-
-
-	// unused 
-	void Renderer::drawSprite(glm::mat4 model, Material& material)
-	{
 	}
 
 	SDL_GPUDevice& Renderer::getDevice()
@@ -317,6 +342,7 @@ namespace Engine {
 		float orthoHeight = unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
 
+		// since the projection depends on screen resolution this is required
 		for (auto& camera : cameras) {
 			if (camera->isActive) {
 				camera->orthoWidth = orthoWidth;
@@ -325,6 +351,7 @@ namespace Engine {
 			}
 		}
 
+		// On resize we have to delete the old depth texture
 		if (_depthTexture != nullptr) {
 			SDL_ReleaseGPUTexture(_gpuDevice, _depthTexture);
 			_depthTexture = nullptr;

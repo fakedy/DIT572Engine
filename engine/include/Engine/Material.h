@@ -14,6 +14,13 @@ namespace Engine {
 		glm::vec4 diffuse{ 1.0f };
 		std::string name;
 
+		enum SamplerMode {
+			SAMPLER_MODE_NEAREST,
+			SAMPLER_MODE_LINEAR,
+			SAMPLER_MODE_REPEAT
+		};
+
+		SamplerMode samplerMode{ SAMPLER_MODE_NEAREST };
 
 	private:
 	};

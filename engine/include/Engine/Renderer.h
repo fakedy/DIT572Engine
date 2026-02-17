@@ -26,7 +26,6 @@ namespace Engine {
 
 		void draw();
 
-		void drawSprite(glm::mat4 model, Material& texture);
 
 		SDL_GPUDevice& getDevice();
 
@@ -62,7 +61,9 @@ namespace Engine {
 		SDL_GPUBuffer* quadVertexBuffer;
 		SDL_GPUBuffer* quadIndicesBuffer;
 
-		SDL_GPUSampler* _spriteSampler;
+		SDL_GPUSampler* _samplerNearest;
+		SDL_GPUSampler* _samplerLinear;
+		SDL_GPUSampler* _samplerRepeat;
 
 
 		SDL_GPUTexture* _depthTexture;

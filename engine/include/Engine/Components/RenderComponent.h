@@ -13,6 +13,9 @@ namespace Engine {
 		virtual void draw() = 0;
 		virtual glm::mat4 getModel() = 0;
 		virtual Material& getMaterial() = 0;
+
+		glm::vec2 uvScale;
+
 	private:
 
 
