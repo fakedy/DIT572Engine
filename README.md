@@ -18,9 +18,7 @@ Before building, ensure you have the following installed:
 ```
 
 ### Windows
-The project use cmake as a build system.
-You can build the project by running the BUILD.bat file, this creates a visual studio project in the build folder.
-Since this project use SDL3 GPUDevice shader compilation is required, as of now its using the vulkan backend and thus require the vulkan SDK to compile shaders.
+Simply run the Build.Bat file included.
 
 ### Linux
 ```bash
