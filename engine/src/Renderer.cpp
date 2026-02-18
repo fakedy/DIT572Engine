@@ -339,8 +339,11 @@ namespace Engine {
 		windowWidth = width;
 
 		float aspectRatio = (float)windowWidth / (float)windowHeight;
+
+		
 		float orthoHeight = unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
+
 
 		// since the projection depends on screen resolution this is required
 		for (auto& camera : cameras) {
@@ -367,6 +370,10 @@ namespace Engine {
 		depthTextureInfo.num_levels = 1;
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		_depthTexture = SDL_CreateGPUTexture(_gpuDevice, &depthTextureInfo);
+
+
+		SDL_Log("Window resized to % dx % d\n", width, height);
+		SDL_Log("Window Units resized to % f % f\n", orthoWidth, orthoHeight);
 
 
 	}

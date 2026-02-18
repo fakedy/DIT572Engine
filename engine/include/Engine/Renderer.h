@@ -76,7 +76,7 @@ namespace Engine {
 
 		unsigned int windowHeight = 720;
 		unsigned int windowWidth = 1280;
-		float unitHeight = 30.0f;
+		float unitHeight = 34.0f;
 
 		// temporary projection matrix
 		glm::mat4 proj;

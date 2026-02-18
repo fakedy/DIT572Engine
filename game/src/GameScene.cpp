@@ -1,6 +1,5 @@
 #include <Game/GameScene.h>
 #include <iostream>
-#include <Game/World.h>
 
 // this is the heart of the game
 namespace Game {
@@ -12,8 +11,14 @@ namespace Game {
 	Engine::GameObject box2;
 	Engine::GameObject box3;
 
+	Engine::GameObject cloud;
+	Engine::GameObject cloud2;
 
-	World world;
+	Engine::GameObject sky;
+
+	Engine::GameObject badbg;
+
+
 
 	Engine::GameObject floor;
 	Engine::GameObject stoneGround;
@@ -52,7 +57,9 @@ namespace Game {
 		box3.addComponent<Engine::Sprite>()->LoadSprite("Assets/box.png");
 		box3.getComponent<Engine::Transform>()->translate(vec3(-3, -8.5, 4));
 
-
+		sky.addComponent<Engine::Sprite>()->LoadSprite("Assets/sky.png");
+		sky.getComponent<Engine::Transform>()->translate(vec3(0, 47, -1));
+		sky.getComponent<Engine::Transform>()->scale(vec3(10000, 1, 1));
 
 		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/grass_stone.png");
 		floor.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
@@ -66,10 +73,18 @@ namespace Game {
 
 		stoneGround.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
 		stoneGround.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
-		stoneGround.getComponent<Engine::Transform>()->scale(vec3(100, 5, 1));
-		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -13, 0));
+		stoneGround.getComponent<Engine::Transform>()->scale(vec3(100, 10, 1));
+		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -15, 0));
 
 		
+		cloud.addComponent<Engine::Sprite>()->LoadSprite("Assets/cloud.png");
+		cloud.getComponent<Engine::Transform>()->translate(vec3(14, 13, 0));
+
+		cloud2.addComponent<Engine::Sprite>()->LoadSprite("Assets/cloud.png");
+		cloud2.getComponent<Engine::Transform>()->translate(vec3(-11, 15, 0));
+
+		badbg.addComponent<Engine::Sprite>()->LoadSprite("Assets/badbg.png");
+		badbg.getComponent<Engine::Transform>()->translate(vec3(0, 17, 0));
 
 
 
@@ -87,6 +102,9 @@ namespace Game {
 		Engine::Transform* transform = player.getComponent<Engine::Transform>();
 		Engine::RigidBody2D* rigidbody = player.getComponent<Engine::RigidBody2D>();
 		Engine::InputManager& input = Engine::InputManager::Get();
+
+		//camera.getComponent<Engine::Transform>()->setPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y+5, -10));
+
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			rigidbody->setVelocity(vec3(-10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(-1, 1, 1));
@@ -109,6 +127,19 @@ namespace Game {
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_DOWN)) {
 			camera.getComponent<Engine::Transform>()->translate(vec3(0, -20, 0) * Engine::Time::deltaTime);
+		}
+
+		Engine::Transform* cloudTransform = cloud.getComponent<Engine::Transform>();
+		Engine::Transform* cloud2Transform = cloud2.getComponent<Engine::Transform>();
+
+		cloudTransform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime * 0.2f);
+		cloud2Transform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime * 0.5f);
+		// just move clouds if they go offscreen
+		if (cloudTransform->getPosition().x > 44) {
+			cloudTransform->setPosition(glm::vec3( - 44, cloudTransform->getPosition().y, cloudTransform->getPosition().z));
+		}
+		if (cloud2Transform->getPosition().x > 44) {
+			cloud2Transform->setPosition(glm::vec3(-44, cloud2Transform->getPosition().y, cloud2Transform->getPosition().z));
 		}
 
 	}

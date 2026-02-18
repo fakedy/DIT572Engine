@@ -33,7 +33,7 @@ namespace Engine {
 
 				Renderer::Get().handleResizeWindow(width, height);
 
-				SDL_Log("Window resized to % dx % d\n", width, height);
+				
 			}
 
 		}

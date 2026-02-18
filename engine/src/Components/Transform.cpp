@@ -26,6 +26,12 @@ namespace Engine {
 		return _position;
 	}
 
+	void Transform::setPosition(glm::vec3 pos)
+	{
+
+		_position = pos;
+	}
+
 	glm::vec3 Transform::getScale() const
 	{
 		return _scale;

@@ -1,9 +1,9 @@
 find_program(GLSLC_BIN glslc)
 
 set(GAME_SOURCES
-    src/main.cpp "src/GameScene.cpp" "src/World.cpp")
+    src/main.cpp "src/GameScene.cpp" )
 
-set(GAME_INCLUDES "include/Game/GameScene.h" "include/Game/World.h")
+set(GAME_INCLUDES "include/Game/GameScene.h" )
 
 
 add_executable(Game

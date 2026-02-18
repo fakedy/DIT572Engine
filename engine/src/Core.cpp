@@ -61,6 +61,7 @@ namespace Engine {
 
 			renderer.draw();
 			window.swapBuffers();
+			Time::timeCount++;
 
 			lastTime = currentTime;
 
