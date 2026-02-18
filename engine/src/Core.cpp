@@ -73,6 +73,52 @@ namespace Engine {
 
 	}
 
+	void Core::runHeadless()
+	{
+
+		isHeadless = true;
+
+		Engine::PhysicsManager& physics = Engine::PhysicsManager::Get();
+
+		// make sure SDL video & audio is init
+		if (!SDL_Init(NULL)) {
+			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
+		}
+		// call start() for all layers
+		if (_scene != nullptr) {
+			_scene->start();
+		}
+
+		auto lastTime = std::chrono::high_resolution_clock::now();
+
+		while (running) {
+
+			auto currentTime = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<float> frameTime = currentTime - lastTime;
+
+			Time::deltaTime = frameTime.count();
+
+			// Clamp deltaTime to avoid physics explosions
+			const float maxDelta = 0.05f; // 50 ms (20 FPS worst case)
+			if (Time::deltaTime > maxDelta)
+				Time::deltaTime = maxDelta;
+
+			physics.update();
+
+			EventManager::Get().PollEvents(running);
+
+			if (_scene != nullptr) {
+				_scene->update();
+			}
+
+			Time::timeCount++;
+
+			lastTime = currentTime;
+
+		}
+
+	}
+
 	void Core::setScene(Scene* scene)
 	{
 		_scene = scene;

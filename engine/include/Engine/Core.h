@@ -17,8 +17,11 @@ namespace Engine {
 		Core();
 		virtual ~Core();
 
+		inline static bool isHeadless{ false };
 
 		virtual void run();
+
+		virtual void runHeadless();
 
 		void setScene(Scene* scene);
 
