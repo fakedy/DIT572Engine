@@ -28,8 +28,6 @@ namespace Game {
 	void GameScene::start() {
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.pixels_per_unit = 16.0f;
-		Engine::GameObject box;
-
 		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/Slime/slime_0.png");
 		float playerSizeX = player.getComponent<Engine::Sprite>()->material->texture->width;
 		float playerSizeY = player.getComponent<Engine::Sprite>()->material->texture->height;

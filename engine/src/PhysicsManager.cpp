@@ -7,10 +7,24 @@ namespace Engine {
 
 	Engine::CollisionManager& cm = Engine::CollisionManager::Get();
 
-	int PhysicsManager::addRGBody2D(RigidBody2D* rb) {
+	unsigned int PhysicsManager::addRGBody2D(RigidBody2D* rb) {
 		rgBodies2D.push_back(rb);
-		return nextRGBody2D++;
+		return rgBodies2D.size() - 1;
 	}
+
+	void PhysicsManager::removeRGBody2D(unsigned int index)
+	{
+		// if valid
+		if (index >= rgBodies2D.size())
+			return;
+
+		if (index != rgBodies2D.size() - 1) {
+			rgBodies2D.back()->_RGbodyIndex = index;
+			rgBodies2D[index] = rgBodies2D.back();
+		}
+		rgBodies2D.pop_back();
+	}
+
 
 	void PhysicsManager::update() {
 

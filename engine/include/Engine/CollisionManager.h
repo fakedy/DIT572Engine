@@ -15,10 +15,11 @@ namespace Engine {
 			}
 
 			std::vector<Collider2D::CollisionStruct> update();
-			int addCollider(Collider2D* col);
+			unsigned int addCollider(Collider2D* col);
+
+			void removeCollider(unsigned int index);
 
 			std::vector<Collider2D*> colliders;
-			int nextCollider{ 0 };
 
 		private:
 			bool isTrigger{ false };

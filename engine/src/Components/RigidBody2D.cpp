@@ -26,6 +26,11 @@ namespace Engine {
 
 	}
 
+	RigidBody2D::~RigidBody2D()
+	{
+		PhysicsManager::Get().removeRGBody2D(_RGbodyIndex);
+	}
+
 	void RigidBody2D::onAdd() {
 
 		// add itself to renderer

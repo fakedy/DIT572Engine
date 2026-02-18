@@ -16,7 +16,7 @@ namespace Engine {
 		void addForce(glm::fvec3 force);
 
 		RigidBody2D();
-		~RigidBody2D() = default;
+		~RigidBody2D();
 
 		void onAdd() override;
 

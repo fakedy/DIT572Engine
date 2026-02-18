@@ -14,7 +14,9 @@ namespace Engine {
 
 
 		void update();
-		int addRGBody2D(RigidBody2D* rb);
+		unsigned int addRGBody2D(RigidBody2D* rb);
+
+		void removeRGBody2D(unsigned int index);
 
 		std::vector<RigidBody2D*> rgBodies2D;
 		int nextRGBody2D{ 0 };

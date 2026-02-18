@@ -12,6 +12,18 @@ namespace Engine {
 		_transform = owner->getComponent<Transform>();
 	}
 
+	BoxCollider2D::BoxCollider2D()
+	{
+		type = ColliderType2D::BOX;
+	}
+
+	BoxCollider2D::~BoxCollider2D()
+	{
+
+		CollisionManager::Get().removeCollider(_colliderIndex);
+
+	}
+
 	bool BoxCollider2D::ColliderCheck(Collider2D* other, Collider2D::CollisionStruct& colstruct) {
 		// Implementation for 2D collision check
 		if (other->type == BOX) {

@@ -6,9 +6,24 @@
 
 namespace Engine {
 
-	int CollisionManager::addCollider(Collider2D* col) {
+	unsigned int CollisionManager::addCollider(Collider2D* col) {
 		colliders.push_back(col);
-		return nextCollider++;
+		return colliders.size() -1;
+	}
+
+	void CollisionManager::removeCollider(unsigned int index)
+	{
+
+		if (index >= colliders.size()) {
+			return;
+		}
+
+		if (index != colliders.size() - 1) {
+			colliders.back()->_colliderIndex = index;
+			colliders[index] = colliders.back();
+		}
+		colliders.pop_back();
+
 	}
 
 

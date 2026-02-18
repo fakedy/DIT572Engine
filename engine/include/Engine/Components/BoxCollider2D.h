@@ -7,12 +7,14 @@
 namespace Engine {
 	class BoxCollider2D : public Collider2D {
 	public:
+
+		BoxCollider2D();
+		~BoxCollider2D();
+
 		bool ColliderCheck(Collider2D* other, Collider2D::CollisionStruct& colstruct) override;
 
 
 		void onAdd() override;
-
-		BoxCollider2D() {type = ColliderType2D::BOX; }
 
 		float width{ 1.0f };
 		float height{ 1.0f };
