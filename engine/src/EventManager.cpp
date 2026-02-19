@@ -1,7 +1,7 @@
 #include <Engine/EventManager.h>
 #include <Engine/InputManager.h>
 #include <SDL3/SDL.h>
-#include <engine/Renderer.h>
+#include <Engine/Renderer.h>
 
 namespace Engine {
 
