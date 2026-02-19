@@ -8,21 +8,21 @@ namespace Engine {
 	Engine::CollisionManager& cm = Engine::CollisionManager::Get();
 
 	unsigned int PhysicsManager::addRGBody2D(RigidBody2D* rb) {
-		rgBodies2D.push_back(rb);
-		return rgBodies2D.size() - 1;
+		m_rgBodies2D.push_back(rb);
+		return m_rgBodies2D.size() - 1;
 	}
 
 	void PhysicsManager::removeRGBody2D(unsigned int index)
 	{
 		// if valid
-		if (index >= rgBodies2D.size())
+		if (index >= m_rgBodies2D.size())
 			return;
 
-		if (index != rgBodies2D.size() - 1) {
-			rgBodies2D.back()->RGbodyIndex = index;
-			rgBodies2D[index] = rgBodies2D.back();
+		if (index != m_rgBodies2D.size() - 1) {
+			m_rgBodies2D.back()->RGbodyIndex = index;
+			m_rgBodies2D[index] = m_rgBodies2D.back();
 		}
-		rgBodies2D.pop_back();
+		m_rgBodies2D.pop_back();
 	}
 
 
@@ -30,7 +30,7 @@ namespace Engine {
 
 		// Apply gravity
 
-		for (auto& rb : rgBodies2D) {
+		for (auto& rb : m_rgBodies2D) {
 			if (!rb->affectedByGravity || rb->isStatic) {
 				continue;
 			}

@@ -12,7 +12,7 @@ namespace Engine {
 		_transform = owner->getComponent<Transform>();
 	}
 
-	glm::vec2 BoxCollider2D::getSize()
+	glm::vec2 BoxCollider2D::getSize() const
 	{
 		return m_size;
 	}

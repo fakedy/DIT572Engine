@@ -19,9 +19,9 @@ namespace Engine {
 
 			void removeCollider(unsigned int index);
 
-			std::vector<Collider2D*> colliders;
 
 		private:
+			std::vector<Collider2D*> m_colliders;
 			bool m_isTrigger{ false };
 	};
 }

@@ -18,10 +18,12 @@ namespace Engine {
 
 		void removeRGBody2D(unsigned int index);
 
-		std::vector<RigidBody2D*> rgBodies2D;
-		int nextRGBody2D{ 0 };
 
 		glm::vec3 universeGravity = glm::vec3(0, -9.82f, 0);
+
+	private:
+		std::vector<RigidBody2D*> m_rgBodies2D;
+
 
 
 	};

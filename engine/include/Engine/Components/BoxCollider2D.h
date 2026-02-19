@@ -16,7 +16,7 @@ namespace Engine {
 
 		void onAdd() override;
 
-		glm::vec2 getSize();
+		glm::vec2 getSize() const;
 		void setSize(glm::vec2 size);
 
 

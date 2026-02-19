@@ -7,22 +7,22 @@
 namespace Engine {
 
 	unsigned int CollisionManager::addCollider(Collider2D* col) {
-		colliders.push_back(col);
-		return colliders.size() -1;
+		m_colliders.push_back(col);
+		return m_colliders.size() -1;
 	}
 
 	void CollisionManager::removeCollider(unsigned int index)
 	{
 
-		if (index >= colliders.size()) {
+		if (index >= m_colliders.size()) {
 			return;
 		}
 
-		if (index != colliders.size() - 1) {
-			colliders.back()->colliderIndex = index;
-			colliders[index] = colliders.back();
+		if (index != m_colliders.size() - 1) {
+			m_colliders.back()->colliderIndex = index;
+			m_colliders[index] = m_colliders.back();
 		}
-		colliders.pop_back();
+		m_colliders.pop_back();
 
 	}
 
@@ -32,8 +32,8 @@ namespace Engine {
 		std::vector<Collider2D::CollisionStruct> collisions;
 		
 		// Amazing O(n^2) collision check
-		for (auto& col : colliders) {
-			for(auto& other : colliders) {
+		for (auto& col : m_colliders) {
+			for(auto& other : m_colliders) {
 				if (col != other) {
 					Collider2D::CollisionStruct colstruct;
 
