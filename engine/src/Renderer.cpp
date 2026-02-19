@@ -275,17 +275,17 @@ namespace Engine {
 			ubo.proj = camera->getProjection();
 			ubo.view = camera->getView();
 
-			for (auto& pair : m_renderObjects) {
+			for (auto& object : m_renderObjects) {
 
 				SDL_GPUTextureSamplerBinding textureBinding = {};
-				Material& mat = pair.second->getMaterial();
+				Material& mat = object->getMaterial();
 				textureBinding.texture = mat.texture->textureHandle; // From AssetManager
 				textureBinding.sampler = m_samplerNearest;
 				ubo.uvScale = glm::vec2(1, 1);
 				// check sampler
 				if (mat.samplerMode == Material::SAMPLER_MODE_REPEAT) {
 					textureBinding.sampler = m_samplerRepeat;
-					ubo.uvScale = pair.second->uvScale;
+					ubo.uvScale = object->uvScale;
 				}
 				else if (mat.samplerMode == Material::SAMPLER_MODE_LINEAR) {
 					textureBinding.sampler = m_samplerLinear;
@@ -296,8 +296,8 @@ namespace Engine {
 
 				SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
 
-				glm::mat4 model = pair.second->getModel();
-				Material& material = pair.second->getMaterial();
+				glm::mat4 model = object->getModel();
+				Material& material = object->getMaterial();
 				float sizeX = (float)material.texture->width / pixels_per_unit;
 				float sizeY = (float)material.texture->height / pixels_per_unit;
 				glm::mat4 tempModel = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
@@ -322,16 +322,24 @@ namespace Engine {
 
 
 
-	int Renderer::addRenderObject(RenderComponent* sprite)
+	unsigned int Renderer::addRenderObject(RenderComponent* object)
 	{
-		int id = m_nextRenderObject++;
-		m_renderObjects[id] = sprite;
-		return id;
+		m_renderObjects.push_back(object);
+		return m_renderObjects.size() - 1;
 	}
 
-	void Renderer::removeSprite(int id)
+	void Renderer::removeRenderObject(unsigned int id)
 	{
-		m_renderObjects.erase(id);
+		if (id >= m_renderObjects.size())
+			return;
+
+		if (id != m_renderObjects.size() - 1) {
+			m_renderObjects[id] = m_renderObjects.back();
+			m_renderObjects[id]->renderIndex = id;
+		}
+		
+		m_renderObjects.pop_back();
+		
 	}
 
 	void Renderer::handleResizeWindow(unsigned int width, unsigned int height) 

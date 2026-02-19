@@ -3,7 +3,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_gpu.h>
 #include <Engine/Components/Sprite.h>
-#include <unordered_map>
+#include <vector>
 #include <Engine/Texture.h>
 #include <Engine/Components/RenderComponent.h>
 #include <Engine/Components/Camera.h>
@@ -29,8 +29,8 @@ namespace Engine {
 
 		SDL_GPUDevice& getDevice();
 
-		int addRenderObject(RenderComponent* sprite);
-		void removeSprite(int id);
+		unsigned int addRenderObject(RenderComponent* object);
+		void removeRenderObject(unsigned int id);
 
 		void handleResizeWindow(unsigned int width, unsigned int height);
 
@@ -68,7 +68,7 @@ namespace Engine {
 
 		SDL_GPUTexture* m_depthTexture;
 
-		std::unordered_map<int,RenderComponent*> m_renderObjects;
+		std::vector<RenderComponent*> m_renderObjects;
 		int m_nextRenderObject{ 0 };
 
 		std::vector<Camera*> m_cameras;

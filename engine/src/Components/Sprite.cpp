@@ -14,7 +14,7 @@ namespace Engine {
 
 	Sprite::~Sprite()
 	{
-		Renderer::Get().removeSprite(_renderIndex);
+		Renderer::Get().removeRenderObject(renderIndex);
 
 	}
 
@@ -24,7 +24,7 @@ namespace Engine {
 	void Sprite::onAdd() {
 
 		// add itself to renderer
-		_renderIndex = Renderer::Get().addRenderObject(this);
+		renderIndex = Renderer::Get().addRenderObject(this);
 		// Transform is default to gameobjects so they should have one.
 		transform = owner->getComponent<Transform>();
 	}

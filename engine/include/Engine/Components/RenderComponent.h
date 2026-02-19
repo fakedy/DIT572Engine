@@ -15,9 +15,9 @@ namespace Engine {
 		virtual Material& getMaterial() = 0;
 
 		glm::vec2 uvScale;
-
+		unsigned int renderIndex{ 0 };
+		
 	private:
-
 
 
 	};

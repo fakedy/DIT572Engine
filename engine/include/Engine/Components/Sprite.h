@@ -30,7 +30,6 @@ namespace Engine {
 	private:
 
 
-		int _renderIndex{ 0 };
 
 	};
 }
