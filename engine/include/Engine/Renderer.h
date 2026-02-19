@@ -29,8 +29,8 @@ namespace Engine {
 
 		SDL_GPUDevice& getDevice();
 
-		unsigned int addRenderObject(RenderComponent* object);
-		void removeRenderObject(unsigned int id);
+		unsigned int addSpriteObject(Sprite* object);
+		void removeSpriteObject(unsigned int id);
 
 		void handleResizeWindow(unsigned int width, unsigned int height);
 
@@ -43,6 +43,11 @@ namespace Engine {
 
 	private:
 
+
+		void setupSpritePipeline();
+		void setupPostFXPipeline();
+
+		void createSamplers();
 
 		// Quad Vertices
 		float m_vertices[20] = {
@@ -67,8 +72,14 @@ namespace Engine {
 
 
 		SDL_GPUTexture* m_depthTexture;
+		SDL_GPUTexture* m_postFXTexture;
 
-		std::vector<RenderComponent*> m_renderObjects;
+		std::vector<Sprite*> m_spriteObjects;
+
+		std::vector<Sprite*> m_spriteOpaqueQueue;
+		std::vector<Sprite*> m_spriteTransparentQueue;
+
+
 		int m_nextRenderObject{ 0 };
 
 		std::vector<Camera*> m_cameras;
@@ -81,7 +92,7 @@ namespace Engine {
 		SDL_GPUDevice* m_gpuDevice;
 
 		SDL_GPUGraphicsPipeline* m_spritePipeline;
-		SDL_GPUGraphicsPipeline* m_simple3DPipeline;
+		SDL_GPUGraphicsPipeline* m_postFXPipeline;
 
 	};
 

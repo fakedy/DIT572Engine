@@ -14,6 +14,8 @@ namespace Engine {
 		glm::vec4 diffuse{ 1.0f };
 		std::string name;
 
+		bool transparent{ false };
+
 		enum SamplerMode {
 			SAMPLER_MODE_NEAREST,
 			SAMPLER_MODE_LINEAR,

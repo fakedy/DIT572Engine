@@ -25,7 +25,6 @@ namespace Engine {
 		void LoadSprite(const char* path);
 
 		void onAdd() override;
-		std::shared_ptr<Material> material;
 
 	private:
 

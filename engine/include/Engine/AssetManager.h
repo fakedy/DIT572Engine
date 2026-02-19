@@ -25,6 +25,12 @@ namespace Engine {
 			*/
 			std::shared_ptr<Texture> LoadTexture(const std::string& filePath);
 
+
+			/**
+			* @brief Creates a material for the given texture name
+			* * @param filePath The relative path to the asset (e.g., "Assets/Brick.png").
+			* @return Shared_ptr<Material> if successful.
+			*/
 			std::shared_ptr<Material> CreateMaterial(const std::string& name);
 
 

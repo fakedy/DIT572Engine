@@ -14,11 +14,13 @@ namespace Engine {
 		virtual glm::mat4 getModel() = 0;
 		virtual Material& getMaterial() = 0;
 
-		glm::vec2 uvScale;
+		glm::vec2 uvScale = glm::vec2(1, 1);
 		unsigned int renderIndex{ 0 };
 		
-	private:
 
+	protected:
+		std::shared_ptr<Material> m_material;
+	private:
 
 	};
 }

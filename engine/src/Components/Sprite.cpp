@@ -14,7 +14,7 @@ namespace Engine {
 
 	Sprite::~Sprite()
 	{
-		Renderer::Get().removeRenderObject(renderIndex);
+		Renderer::Get().removeSpriteObject(renderIndex);
 
 	}
 
@@ -22,9 +22,6 @@ namespace Engine {
 	}
 
 	void Sprite::onAdd() {
-
-		// add itself to renderer
-		renderIndex = Renderer::Get().addRenderObject(this);
 		// Transform is default to gameobjects so they should have one.
 		transform = owner->getComponent<Transform>();
 	}
@@ -48,13 +45,16 @@ namespace Engine {
 
 	Material& Sprite::getMaterial()
 	{
-		return *material.get();
+		return *m_material.get();
 	}
 
 	void Sprite::LoadSprite(const char* path) {
 		// temp way to do this
 		std::shared_ptr<Texture> texture = AssetManager::Get().LoadTexture(path);
-		material = AssetManager::Get().CreateMaterial(path);
-		material->texture = texture;
+		m_material = AssetManager::Get().CreateMaterial(path);
+		m_material->texture = texture;
+		// add itself to renderer
+		renderIndex = Renderer::Get().addSpriteObject(this);
+
 	}
 }

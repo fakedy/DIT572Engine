@@ -33,67 +33,22 @@ namespace Engine {
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
+		// create postFX texture
+		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
+		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
+		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		postFXTextureInfo.width = m_windowWidth;
+		postFXTextureInfo.height = m_windowHeight;
+		postFXTextureInfo.layer_count_or_depth = 1;
+		postFXTextureInfo.num_levels = 1;
+		postFXTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
+		m_postFXTexture = SDL_CreateGPUTexture(m_gpuDevice, &postFXTextureInfo);
 
-		// a pipeline must be created for each shader program
-		SDL_GPUShader* vertexShader = createShader("Assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
-		SDL_GPUShader* fragmentShader = createShader("Assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
-
-		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = {0};
-		spritePipelineInfo.vertex_shader = vertexShader;
-		spritePipelineInfo.fragment_shader = fragmentShader;
-
-		// enable depth testing
-		spritePipelineInfo.depth_stencil_state.enable_depth_test = true;
-		spritePipelineInfo.depth_stencil_state.enable_depth_write = true;
-		spritePipelineInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
-
-		spritePipelineInfo.target_info.has_depth_stencil_target = true;
-		spritePipelineInfo.target_info.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
+		setupSpritePipeline();
+		setupPostFXPipeline();
 
 
-		SDL_GPUColorTargetDescription colorTarget = {};
-		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
-
-		// this is like glBlendFunc except you have to set it all yourself...
-		colorTarget.blend_state.enable_blend = true;
-		colorTarget.blend_state.src_color_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA;
-		colorTarget.blend_state.dst_color_blendfactor = SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
-		colorTarget.blend_state.color_blend_op = SDL_GPU_BLENDOP_ADD;
-
-		colorTarget.blend_state.src_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ONE;
-		colorTarget.blend_state.dst_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ZERO;
-		colorTarget.blend_state.alpha_blend_op = SDL_GPU_BLENDOP_ADD;
-
-		colorTarget.blend_state.color_write_mask = 0xF; // RGBA because 0b1111
-
-
-		spritePipelineInfo.target_info.color_target_descriptions = &colorTarget;
-		spritePipelineInfo.target_info.num_color_targets = 1;
-		spritePipelineInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
-
-		// basically attribinfo for the pipeline
-		// this is all like setting up the VAO
-		SDL_GPUVertexAttribute vertAttribs[2];
-		vertAttribs[0] = { 0, 0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, 0 }; // positions
-		vertAttribs[1] = { 1, 0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, sizeof(float) * 3}; // uv
-
-		SDL_GPUVertexBufferDescription vertBufferDesc = {};
-		vertBufferDesc.slot = 0;
-		vertBufferDesc.pitch = sizeof(float) * 5; // stride, 3 positions, 2 uv coordinates
-		vertBufferDesc.input_rate = SDL_GPU_VERTEXINPUTRATE_VERTEX;
-		vertBufferDesc.instance_step_rate = 0; // unused
-
-		spritePipelineInfo.vertex_input_state.vertex_attributes = vertAttribs;
-		spritePipelineInfo.vertex_input_state.num_vertex_attributes = 2;
-
-		spritePipelineInfo.vertex_input_state.vertex_buffer_descriptions = &vertBufferDesc;
-		spritePipelineInfo.vertex_input_state.num_vertex_buffers = 1;
-
-		m_spritePipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &spritePipelineInfo);
-
-		// shaders are not needed anymore!!!
-		SDL_ReleaseGPUShader(m_gpuDevice, vertexShader);
-		SDL_ReleaseGPUShader(m_gpuDevice, fragmentShader);
+		// to render a quad texture
 
 		// setup buffer
 
@@ -162,41 +117,7 @@ namespace Engine {
 		SDL_SubmitGPUCommandBuffer(uploadCmdBuffer);
 		SDL_ReleaseGPUTransferBuffer(m_gpuDevice, bufferTransferBuffer);
 
-		// samplers
-
-		SDL_GPUSamplerCreateInfo SamplerNearest = {};
-		SamplerNearest.props = 0;
-		SamplerNearest.min_filter = SDL_GPU_FILTER_NEAREST;
-		SamplerNearest.mag_filter = SDL_GPU_FILTER_NEAREST;
-		SamplerNearest.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
-		SamplerNearest.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-		SamplerNearest.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-		SamplerNearest.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-
-		m_samplerNearest = SDL_CreateGPUSampler(m_gpuDevice, &SamplerNearest);
-
-		SDL_GPUSamplerCreateInfo SamplerLinear = {};
-		SamplerLinear.props = 0;
-		SamplerLinear.min_filter = SDL_GPU_FILTER_LINEAR;
-		SamplerLinear.mag_filter = SDL_GPU_FILTER_LINEAR;
-		SamplerLinear.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
-		SamplerLinear.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-		SamplerLinear.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-		SamplerLinear.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-
-		m_samplerLinear = SDL_CreateGPUSampler(m_gpuDevice, &SamplerLinear);
-
-		SDL_GPUSamplerCreateInfo SamplerRepeat = {};
-		SamplerRepeat.props = 0;
-		SamplerRepeat.min_filter = SDL_GPU_FILTER_NEAREST;
-		SamplerRepeat.mag_filter = SDL_GPU_FILTER_NEAREST;
-		SamplerRepeat.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
-		SamplerRepeat.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
-		SamplerRepeat.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
-		SamplerRepeat.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
-
-		m_samplerRepeat = SDL_CreateGPUSampler(m_gpuDevice, &SamplerRepeat);
-
+		createSamplers();
 
 		return 0;
 	}
@@ -221,7 +142,7 @@ namespace Engine {
 
 		// color target
 		SDL_GPUColorTargetInfo colorTargetInfo = { 0 };
-		colorTargetInfo.texture = swapchainTexture;
+		colorTargetInfo.texture = m_postFXTexture;
 		colorTargetInfo.clear_color = { 0.3f, 0.3f, 0.8f, 1.0f };
 		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
 		colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE; // write to memory
@@ -275,7 +196,7 @@ namespace Engine {
 			ubo.proj = camera->getProjection();
 			ubo.view = camera->getView();
 
-			for (auto& object : m_renderObjects) {
+			for (auto& object : m_spriteObjects) {
 
 				SDL_GPUTextureSamplerBinding textureBinding = {};
 				Material& mat = object->getMaterial();
@@ -308,9 +229,31 @@ namespace Engine {
 			}
 		}
 
-		// cleanup
-
 		SDL_EndGPURenderPass(renderPass);
+
+
+		colorTargetInfo.texture = swapchainTexture;
+		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
+
+
+		// only works for 2d right now
+		SDL_GPURenderPass* postFXPass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, nullptr);
+
+		SDL_BindGPUGraphicsPipeline(postFXPass, m_postFXPipeline);
+
+		SDL_GPUTextureSamplerBinding textureBinding = {};
+
+		textureBinding.sampler = m_samplerLinear;
+		textureBinding.texture = m_postFXTexture;
+
+		SDL_BindGPUFragmentSamplers(postFXPass, 0, &textureBinding, 1);
+
+		// draw screen quad
+		SDL_DrawGPUPrimitives(postFXPass, 6, 1, 0, 0);
+
+
+		SDL_EndGPURenderPass(postFXPass);
+		// cleanup
 		SDL_SubmitGPUCommandBuffer(cmd);
 
 	}
@@ -322,24 +265,24 @@ namespace Engine {
 
 
 
-	unsigned int Renderer::addRenderObject(RenderComponent* object)
+	unsigned int Renderer::addSpriteObject(Sprite* object)
 	{
-		m_renderObjects.push_back(object);
-		return m_renderObjects.size() - 1;
+		m_spriteObjects.push_back(object);
+		return m_spriteObjects.size() - 1;
 	}
 
-	void Renderer::removeRenderObject(unsigned int id)
+	void Renderer::removeSpriteObject(unsigned int id)
 	{
-		if (id >= m_renderObjects.size())
+		if (id >= m_spriteObjects.size())
 			return;
 
-		if (id != m_renderObjects.size() - 1) {
-			m_renderObjects[id] = m_renderObjects.back();
-			m_renderObjects[id]->renderIndex = id;
+		if (id != m_spriteObjects.size() - 1) {
+			m_spriteObjects[id] = m_spriteObjects.back();
+			m_spriteObjects[id]->renderIndex = id;
 		}
 		
-		m_renderObjects.pop_back();
-		
+		m_spriteObjects.pop_back();
+
 	}
 
 	void Renderer::handleResizeWindow(unsigned int width, unsigned int height) 
@@ -427,6 +370,133 @@ namespace Engine {
 		camera->updateProjection();
 
 		return m_cameras.size() - 1;
+	}
+
+	void Renderer::setupSpritePipeline()
+	{
+
+		// a pipeline must be created for each shader program
+		SDL_GPUShader* vertexShader = createShader("Assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
+		SDL_GPUShader* fragmentShader = createShader("Assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
+
+		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = { 0 };
+		spritePipelineInfo.vertex_shader = vertexShader;
+		spritePipelineInfo.fragment_shader = fragmentShader;
+
+		// enable depth testing
+		spritePipelineInfo.depth_stencil_state.enable_depth_test = true;
+		spritePipelineInfo.depth_stencil_state.enable_depth_write = true;
+		spritePipelineInfo.depth_stencil_state.compare_op = SDL_GPU_COMPAREOP_LESS;
+
+		spritePipelineInfo.target_info.has_depth_stencil_target = true;
+		spritePipelineInfo.target_info.depth_stencil_format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
+
+
+		SDL_GPUColorTargetDescription colorTarget = {};
+		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+
+		// this is like glBlendFunc except you have to set it all yourself...
+		colorTarget.blend_state.enable_blend = true;
+		colorTarget.blend_state.src_color_blendfactor = SDL_GPU_BLENDFACTOR_SRC_ALPHA;
+		colorTarget.blend_state.dst_color_blendfactor = SDL_GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+		colorTarget.blend_state.color_blend_op = SDL_GPU_BLENDOP_ADD;
+
+		colorTarget.blend_state.src_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ONE;
+		colorTarget.blend_state.dst_alpha_blendfactor = SDL_GPU_BLENDFACTOR_ZERO;
+		colorTarget.blend_state.alpha_blend_op = SDL_GPU_BLENDOP_ADD;
+
+		colorTarget.blend_state.color_write_mask = 0xF; // RGBA because 0b1111
+
+
+		spritePipelineInfo.target_info.color_target_descriptions = &colorTarget;
+		spritePipelineInfo.target_info.num_color_targets = 1;
+		spritePipelineInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+
+		// basically attribinfo for the pipeline
+		// this is all like setting up the VAO
+		SDL_GPUVertexAttribute vertAttribs[2];
+		vertAttribs[0] = { 0, 0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, 0 }; // positions
+		vertAttribs[1] = { 1, 0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2, sizeof(float) * 3 }; // uv
+
+		SDL_GPUVertexBufferDescription vertBufferDesc = {};
+		vertBufferDesc.slot = 0;
+		vertBufferDesc.pitch = sizeof(float) * 5; // stride, 3 positions, 2 uv coordinates
+		vertBufferDesc.input_rate = SDL_GPU_VERTEXINPUTRATE_VERTEX;
+		vertBufferDesc.instance_step_rate = 0; // unused
+
+		spritePipelineInfo.vertex_input_state.vertex_attributes = vertAttribs;
+		spritePipelineInfo.vertex_input_state.num_vertex_attributes = 2;
+
+		spritePipelineInfo.vertex_input_state.vertex_buffer_descriptions = &vertBufferDesc;
+		spritePipelineInfo.vertex_input_state.num_vertex_buffers = 1;
+
+		m_spritePipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &spritePipelineInfo);
+
+		// shaders are not needed anymore!!!
+		SDL_ReleaseGPUShader(m_gpuDevice, vertexShader);
+		SDL_ReleaseGPUShader(m_gpuDevice, fragmentShader);
+	}
+
+	void Renderer::setupPostFXPipeline()
+	{
+		SDL_GPUShader* vertexShader = createShader("Assets/shaders/vPostFX.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 0, 0, 0);
+		SDL_GPUShader* fragmentShader = createShader("Assets/shaders/fPostFX.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
+		
+		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = { 0 };
+		spritePipelineInfo.vertex_shader = vertexShader;
+		spritePipelineInfo.fragment_shader = fragmentShader;
+		
+		SDL_GPUColorTargetDescription colorTarget = {};
+		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		colorTarget.blend_state.color_write_mask = 0xF;
+
+
+		spritePipelineInfo.target_info.color_target_descriptions = &colorTarget;
+		spritePipelineInfo.target_info.num_color_targets = 1;
+		spritePipelineInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+
+
+		m_postFXPipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &spritePipelineInfo);
+
+		SDL_ReleaseGPUShader(m_gpuDevice, vertexShader);
+		SDL_ReleaseGPUShader(m_gpuDevice, fragmentShader);
+	}
+
+	void Renderer::createSamplers()
+	{
+		SDL_GPUSamplerCreateInfo SamplerNearest = {};
+		SamplerNearest.props = 0;
+		SamplerNearest.min_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerNearest.mag_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerNearest.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+		SamplerNearest.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerNearest.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerNearest.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+
+		m_samplerNearest = SDL_CreateGPUSampler(m_gpuDevice, &SamplerNearest);
+
+		SDL_GPUSamplerCreateInfo SamplerLinear = {};
+		SamplerLinear.props = 0;
+		SamplerLinear.min_filter = SDL_GPU_FILTER_LINEAR;
+		SamplerLinear.mag_filter = SDL_GPU_FILTER_LINEAR;
+		SamplerLinear.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
+		SamplerLinear.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerLinear.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+		SamplerLinear.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+
+		m_samplerLinear = SDL_CreateGPUSampler(m_gpuDevice, &SamplerLinear);
+
+		SDL_GPUSamplerCreateInfo SamplerRepeat = {};
+		SamplerRepeat.props = 0;
+		SamplerRepeat.min_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerRepeat.mag_filter = SDL_GPU_FILTER_NEAREST;
+		SamplerRepeat.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+		SamplerRepeat.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+		SamplerRepeat.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+		SamplerRepeat.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+
+		m_samplerRepeat = SDL_CreateGPUSampler(m_gpuDevice, &SamplerRepeat);
+
 	}
 
 

@@ -17,6 +17,11 @@ namespace Engine {
 			std::vector<Collider2D::CollisionStruct> update();
 			unsigned int addCollider(Collider2D* col);
 
+
+			/**
+			* @brief Removes a collider from the collisionManager
+			* * @param index of collider in the collider vector
+			*/
 			void removeCollider(unsigned int index);
 
 
