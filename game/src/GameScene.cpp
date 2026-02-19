@@ -69,7 +69,7 @@ namespace Game {
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 		floor.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 
-		stoneGround.addComponent<Engine::Sprite>()->LoadSprite("Assets/stone.png");
+		stoneGround.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/stone.png");
 		stoneGround.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
 		stoneGround.getComponent<Engine::Transform>()->scale(vec3(100, 10, 1));
 		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -15, 0));
