@@ -26,7 +26,7 @@ namespace Engine {
 		// add itself to renderer
 		_renderIndex = Renderer::Get().addRenderObject(this);
 		// Transform is default to gameobjects so they should have one.
-		_transform = owner->getComponent<Transform>();
+		transform = owner->getComponent<Transform>();
 	}
 
 	void Sprite::draw() {
@@ -36,12 +36,12 @@ namespace Engine {
 	glm::mat4 Sprite::getModel()
 	{
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, _transform->getPosition());
-		model = glm::scale(model, _transform->getScale());
+		model = glm::translate(model, transform->getPosition());
+		model = glm::scale(model, transform->getScale());
 
 		// set uvScale since it might be used
 		// could use a separate function to get it but whatever
-		uvScale = glm::vec2(_transform->getScale().x, _transform->getScale().y);
+		uvScale = glm::vec2(transform->getScale().x, transform->getScale().y);
 
 		return model;
 	}

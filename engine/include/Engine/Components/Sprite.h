@@ -16,7 +16,7 @@ namespace Engine {
 		~Sprite();
 		Sprite(const char* path);
 
-		Transform* _transform{ nullptr };
+		Transform* transform{ nullptr };
 
 		void draw() override;
 		glm::mat4 getModel() override;

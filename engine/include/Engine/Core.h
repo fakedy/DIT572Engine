@@ -24,7 +24,7 @@ namespace Engine {
 
 	private:
 
-		Scene* _scene;
-		bool running{ true };
+		Scene* m_scene;
+		bool m_running{ true };
 	};
 }

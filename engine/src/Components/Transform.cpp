@@ -6,13 +6,13 @@
 namespace Engine {
 
 	void Transform::translate(const glm::vec3& pos) {
-		_position = _position + pos; // why not use glm translate here lol
+		m_position += pos;
 	}
 
 
 	void Transform::scale(const glm::vec3& scale)
 	{
-		_scale = scale;
+		m_scale = scale;
 
 	}
 
@@ -23,18 +23,18 @@ namespace Engine {
 
 	glm::vec3 Transform::getPosition() const
 	{
-		return _position;
+		return m_position;
 	}
 
-	void Transform::setPosition(glm::vec3 pos)
+	void Transform::setPosition(const glm::vec3 pos)
 	{
 
-		_position = pos;
+		m_position = pos;
 	}
 
 	glm::vec3 Transform::getScale() const
 	{
-		return _scale;
+		return m_scale;
 
 
 	}

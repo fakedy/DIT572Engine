@@ -22,6 +22,6 @@ namespace Engine {
 			std::vector<Collider2D*> colliders;
 
 		private:
-			bool isTrigger{ false };
+			bool m_isTrigger{ false };
 	};
 }

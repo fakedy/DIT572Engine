@@ -45,7 +45,7 @@ namespace Engine {
 
 
 		// Quad Vertices
-		float vertices[20] = {
+		float m_vertices[20] = {
 			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
 			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 
@@ -53,38 +53,35 @@ namespace Engine {
 		};
 
 		// Quad indices
-		const uint16_t indices[6] = {
+		const uint16_t m_indices[6] = {
 			0, 1, 3,
 			1, 2, 3
 		};
 
-		SDL_GPUBuffer* quadVertexBuffer;
-		SDL_GPUBuffer* quadIndicesBuffer;
+		SDL_GPUBuffer* m_quadVertexBuffer;
+		SDL_GPUBuffer* m_quadIndicesBuffer;
 
-		SDL_GPUSampler* _samplerNearest;
-		SDL_GPUSampler* _samplerLinear;
-		SDL_GPUSampler* _samplerRepeat;
-
-
-		SDL_GPUTexture* _depthTexture;
-
-		std::unordered_map<int,RenderComponent*> RenderObjects;
-		int nextRenderObject{ 0 };
-
-		std::vector<Camera*> cameras;
+		SDL_GPUSampler* m_samplerNearest;
+		SDL_GPUSampler* m_samplerLinear;
+		SDL_GPUSampler* m_samplerRepeat;
 
 
-		unsigned int windowHeight = 720;
-		unsigned int windowWidth = 1280;
-		float unitHeight = 34.0f;
+		SDL_GPUTexture* m_depthTexture;
 
-		// temporary projection matrix
-		glm::mat4 proj;
+		std::unordered_map<int,RenderComponent*> m_renderObjects;
+		int m_nextRenderObject{ 0 };
 
-		SDL_GPUDevice* _gpuDevice;
+		std::vector<Camera*> m_cameras;
 
-		SDL_GPUGraphicsPipeline* _spritePipeline;
-		SDL_GPUGraphicsPipeline* _simple3DPipeline;
+
+		unsigned int m_windowHeight = 720;
+		unsigned int m_windowWidth = 1280;
+		float m_unitHeight = 34.0f;
+
+		SDL_GPUDevice* m_gpuDevice;
+
+		SDL_GPUGraphicsPipeline* m_spritePipeline;
+		SDL_GPUGraphicsPipeline* m_simple3DPipeline;
 
 	};
 

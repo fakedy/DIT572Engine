@@ -7,31 +7,31 @@ namespace Engine {
 	Renderer::Renderer()
 	{
 
-		_gpuDevice = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL, true, "vulkan");
+		m_gpuDevice = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL, true, "vulkan");
 
 	}
 
 	Renderer::~Renderer()
 	{
-		SDL_DestroyGPUDevice(_gpuDevice);
+		SDL_DestroyGPUDevice(m_gpuDevice);
 	}
 
 	int Renderer::init() {
 
 
-		SDL_ClaimWindowForGPUDevice(_gpuDevice, Engine::WindowManager::Get().getWindow());
+		SDL_ClaimWindowForGPUDevice(m_gpuDevice, Engine::WindowManager::Get().getWindow());
 		
 
 		// Create depth texture
 		SDL_GPUTextureCreateInfo depthTextureInfo = {};
 		depthTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
 		depthTextureInfo.format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
-		depthTextureInfo.width = windowWidth;
-		depthTextureInfo.height = windowHeight;
+		depthTextureInfo.width = m_windowWidth;
+		depthTextureInfo.height = m_windowHeight;
 		depthTextureInfo.layer_count_or_depth = 1;
 		depthTextureInfo.num_levels = 1;
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
-		_depthTexture = SDL_CreateGPUTexture(_gpuDevice, &depthTextureInfo);
+		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
 
 		// a pipeline must be created for each shader program
@@ -52,7 +52,7 @@ namespace Engine {
 
 
 		SDL_GPUColorTargetDescription colorTarget = {};
-		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(_gpuDevice, Engine::WindowManager::Get().getWindow());
+		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
 
 		// this is like glBlendFunc except you have to set it all yourself...
 		colorTarget.blend_state.enable_blend = true;
@@ -89,43 +89,43 @@ namespace Engine {
 		spritePipelineInfo.vertex_input_state.vertex_buffer_descriptions = &vertBufferDesc;
 		spritePipelineInfo.vertex_input_state.num_vertex_buffers = 1;
 
-		_spritePipeline = SDL_CreateGPUGraphicsPipeline(_gpuDevice, &spritePipelineInfo);
+		m_spritePipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &spritePipelineInfo);
 
 		// shaders are not needed anymore!!!
-		SDL_ReleaseGPUShader(_gpuDevice, vertexShader);
-		SDL_ReleaseGPUShader(_gpuDevice, fragmentShader);
+		SDL_ReleaseGPUShader(m_gpuDevice, vertexShader);
+		SDL_ReleaseGPUShader(m_gpuDevice, fragmentShader);
 
 		// setup buffer
 
 		SDL_GPUBufferCreateInfo bufferInfo = {};
 		bufferInfo.props = 0;
-		bufferInfo.size = sizeof(vertices);
+		bufferInfo.size = sizeof(m_vertices);
 		bufferInfo.usage = SDL_GPU_BUFFERUSAGE_VERTEX;
 
-		quadVertexBuffer = SDL_CreateGPUBuffer(_gpuDevice, &bufferInfo);
+		m_quadVertexBuffer = SDL_CreateGPUBuffer(m_gpuDevice, &bufferInfo);
 
 		bufferInfo.props = 0;
-		bufferInfo.size = sizeof(indices);
+		bufferInfo.size = sizeof(m_indices);
 		bufferInfo.usage = SDL_GPU_BUFFERUSAGE_INDEX;
 
-		quadIndicesBuffer = SDL_CreateGPUBuffer(_gpuDevice, &bufferInfo);
+		m_quadIndicesBuffer = SDL_CreateGPUBuffer(m_gpuDevice, &bufferInfo);
 
 		// upload buffer
 		SDL_GPUTransferBufferCreateInfo transferBufferInfo = {};
 		transferBufferInfo.props = 0;
-		transferBufferInfo.size = sizeof(vertices) + sizeof(indices);
+		transferBufferInfo.size = sizeof(m_vertices) + sizeof(m_indices);
 
-		SDL_GPUTransferBuffer* bufferTransferBuffer = SDL_CreateGPUTransferBuffer(_gpuDevice, &transferBufferInfo);
+		SDL_GPUTransferBuffer* bufferTransferBuffer = SDL_CreateGPUTransferBuffer(m_gpuDevice, &transferBufferInfo);
 
-		void* mappedData = SDL_MapGPUTransferBuffer(_gpuDevice, bufferTransferBuffer, false);
-		SDL_memcpy(mappedData, vertices, sizeof(vertices));
-		SDL_memcpy((uint8_t*)mappedData + sizeof(vertices), indices, sizeof(indices)); // put indices at offset of (uint8_t*)mappedData + sizeof(vertices)
-		SDL_UnmapGPUTransferBuffer(_gpuDevice, bufferTransferBuffer);
+		void* mappedData = SDL_MapGPUTransferBuffer(m_gpuDevice, bufferTransferBuffer, false);
+		SDL_memcpy(mappedData, m_vertices, sizeof(m_vertices));
+		SDL_memcpy((uint8_t*)mappedData + sizeof(m_vertices), m_indices, sizeof(m_indices)); // put indices at offset of (uint8_t*)mappedData + sizeof(vertices)
+		SDL_UnmapGPUTransferBuffer(m_gpuDevice, bufferTransferBuffer);
 
 
 		// command buffer for uploading
 
-		SDL_GPUCommandBuffer* uploadCmdBuffer = SDL_AcquireGPUCommandBuffer(_gpuDevice);
+		SDL_GPUCommandBuffer* uploadCmdBuffer = SDL_AcquireGPUCommandBuffer(m_gpuDevice);
 		SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(uploadCmdBuffer);
 
 
@@ -136,9 +136,9 @@ namespace Engine {
 			transferbufferloc.transfer_buffer = bufferTransferBuffer;
 
 			SDL_GPUBufferRegion bufferRegion = {};
-			bufferRegion.buffer = quadVertexBuffer;
+			bufferRegion.buffer = m_quadVertexBuffer;
 			bufferRegion.offset = 0;
-			bufferRegion.size = sizeof(vertices);
+			bufferRegion.size = sizeof(m_vertices);
 
 			SDL_UploadToGPUBuffer(copyPass, &transferbufferloc, &bufferRegion, false);
 		}
@@ -146,13 +146,13 @@ namespace Engine {
 		// Uploading quad Indices to GPU
 		{
 			SDL_GPUTransferBufferLocation transferbufferloc = {};
-			transferbufferloc.offset = sizeof(vertices);
+			transferbufferloc.offset = sizeof(m_vertices);
 			transferbufferloc.transfer_buffer = bufferTransferBuffer;
 
 			SDL_GPUBufferRegion bufferRegion = {};
-			bufferRegion.buffer = quadIndicesBuffer;
+			bufferRegion.buffer = m_quadIndicesBuffer;
 			bufferRegion.offset = 0;
-			bufferRegion.size = sizeof(indices);
+			bufferRegion.size = sizeof(m_indices);
 
 			SDL_UploadToGPUBuffer(copyPass, &transferbufferloc, &bufferRegion, false);
 		}
@@ -160,7 +160,7 @@ namespace Engine {
 
 		SDL_EndGPUCopyPass(copyPass);
 		SDL_SubmitGPUCommandBuffer(uploadCmdBuffer);
-		SDL_ReleaseGPUTransferBuffer(_gpuDevice, bufferTransferBuffer);
+		SDL_ReleaseGPUTransferBuffer(m_gpuDevice, bufferTransferBuffer);
 
 		// samplers
 
@@ -173,7 +173,7 @@ namespace Engine {
 		SamplerNearest.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 		SamplerNearest.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
-		_samplerNearest = SDL_CreateGPUSampler(_gpuDevice, &SamplerNearest);
+		m_samplerNearest = SDL_CreateGPUSampler(m_gpuDevice, &SamplerNearest);
 
 		SDL_GPUSamplerCreateInfo SamplerLinear = {};
 		SamplerLinear.props = 0;
@@ -184,7 +184,7 @@ namespace Engine {
 		SamplerLinear.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 		SamplerLinear.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
-		_samplerLinear = SDL_CreateGPUSampler(_gpuDevice, &SamplerLinear);
+		m_samplerLinear = SDL_CreateGPUSampler(m_gpuDevice, &SamplerLinear);
 
 		SDL_GPUSamplerCreateInfo SamplerRepeat = {};
 		SamplerRepeat.props = 0;
@@ -195,7 +195,7 @@ namespace Engine {
 		SamplerRepeat.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
 		SamplerRepeat.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
 
-		_samplerRepeat = SDL_CreateGPUSampler(_gpuDevice, &SamplerRepeat);
+		m_samplerRepeat = SDL_CreateGPUSampler(m_gpuDevice, &SamplerRepeat);
 
 
 		return 0;
@@ -207,7 +207,7 @@ namespace Engine {
 		// this is hardcoded to draw quads right now lol
 
 		// create command buffer (for render commands)
-		SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(_gpuDevice);
+		SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(m_gpuDevice);
 		// the texture displayed on screen
 		SDL_GPUTexture* swapchainTexture;
 
@@ -229,7 +229,7 @@ namespace Engine {
 		// depth target
 
 		SDL_GPUDepthStencilTargetInfo depthTargetInfo = {};
-		depthTargetInfo.texture = _depthTexture;
+		depthTargetInfo.texture = m_depthTexture;
 		depthTargetInfo.clear_depth = 1.0f;
 		depthTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;
 		depthTargetInfo.store_op = SDL_GPU_STOREOP_DONT_CARE;
@@ -240,17 +240,17 @@ namespace Engine {
 		// only works for 2d right now
 		SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, &depthTargetInfo);
 
-		SDL_BindGPUGraphicsPipeline(renderPass, _spritePipeline);
+		SDL_BindGPUGraphicsPipeline(renderPass, m_spritePipeline);
 
 
 		SDL_GPUBufferBinding vertexBufferBinding = {};
-		vertexBufferBinding.buffer = quadVertexBuffer;
+		vertexBufferBinding.buffer = m_quadVertexBuffer;
 		vertexBufferBinding.offset = 0;
 
 		SDL_BindGPUVertexBuffers(renderPass, 0, &vertexBufferBinding, 1);
 
 		SDL_GPUBufferBinding indexBufferBinding = {};
-		indexBufferBinding.buffer = quadIndicesBuffer;
+		indexBufferBinding.buffer = m_quadIndicesBuffer;
 		indexBufferBinding.offset = 0;
 		SDL_BindGPUIndexBuffer(renderPass, &indexBufferBinding, SDL_GPU_INDEXELEMENTSIZE_16BIT);
 
@@ -260,36 +260,38 @@ namespace Engine {
 		struct DataBlock {
 			glm::mat4 model;
 			glm::mat4 proj;
+			glm::mat4 view;
 			glm::vec2 uvScale;
 		};
 
 		DataBlock ubo;
 
-		for (auto& camera : cameras) {
+		for (auto& camera : m_cameras) {
 
 			// skip inactive cameras
 			if (!camera->isActive)
 				continue;
 
 			ubo.proj = camera->getProjection();
+			ubo.view = camera->getView();
 
-			for (auto& pair : RenderObjects) {
+			for (auto& pair : m_renderObjects) {
 
 				SDL_GPUTextureSamplerBinding textureBinding = {};
 				Material& mat = pair.second->getMaterial();
 				textureBinding.texture = mat.texture->textureHandle; // From AssetManager
-				textureBinding.sampler = _samplerNearest;
+				textureBinding.sampler = m_samplerNearest;
 				ubo.uvScale = glm::vec2(1, 1);
 				// check sampler
 				if (mat.samplerMode == Material::SAMPLER_MODE_REPEAT) {
-					textureBinding.sampler = _samplerRepeat;
+					textureBinding.sampler = m_samplerRepeat;
 					ubo.uvScale = pair.second->uvScale;
 				}
 				else if (mat.samplerMode == Material::SAMPLER_MODE_LINEAR) {
-					textureBinding.sampler = _samplerLinear;
+					textureBinding.sampler = m_samplerLinear;
 				}
 				else {
-					textureBinding.sampler = _samplerNearest;
+					textureBinding.sampler = m_samplerNearest;
 				}
 
 				SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
@@ -315,38 +317,38 @@ namespace Engine {
 
 	SDL_GPUDevice& Renderer::getDevice()
 	{
-		return *_gpuDevice;
+		return *m_gpuDevice;
 	}
 
 
 
 	int Renderer::addRenderObject(RenderComponent* sprite)
 	{
-		int id = nextRenderObject++;
-		RenderObjects[id] = sprite;
+		int id = m_nextRenderObject++;
+		m_renderObjects[id] = sprite;
 		return id;
 	}
 
 	void Renderer::removeSprite(int id)
 	{
-		RenderObjects.erase(id);
+		m_renderObjects.erase(id);
 	}
 
 	void Renderer::handleResizeWindow(unsigned int width, unsigned int height) 
 	{
 
-		windowHeight = height;
-		windowWidth = width;
+		m_windowHeight = height;
+		m_windowWidth = width;
 
-		float aspectRatio = (float)windowWidth / (float)windowHeight;
+		float aspectRatio = (float)m_windowWidth / (float)m_windowHeight;
 
 		
-		float orthoHeight = unitHeight / 2.0f;
+		float orthoHeight = m_unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
 
 
 		// since the projection depends on screen resolution this is required
-		for (auto& camera : cameras) {
+		for (auto& camera : m_cameras) {
 			if (camera->isActive) {
 				camera->orthoWidth = orthoWidth;
 				camera->orthoHeight = orthoHeight;
@@ -355,21 +357,21 @@ namespace Engine {
 		}
 
 		// On resize we have to delete the old depth texture
-		if (_depthTexture != nullptr) {
-			SDL_ReleaseGPUTexture(_gpuDevice, _depthTexture);
-			_depthTexture = nullptr;
+		if (m_depthTexture != nullptr) {
+			SDL_ReleaseGPUTexture(m_gpuDevice, m_depthTexture);
+			m_depthTexture = nullptr;
 		}
 
 		// recreate the depth buffer texture
 		SDL_GPUTextureCreateInfo depthTextureInfo = {};
 		depthTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
 		depthTextureInfo.format = SDL_GPU_TEXTUREFORMAT_D16_UNORM;
-		depthTextureInfo.width = windowWidth;
-		depthTextureInfo.height = windowHeight;
+		depthTextureInfo.width = m_windowWidth;
+		depthTextureInfo.height = m_windowHeight;
 		depthTextureInfo.layer_count_or_depth = 1;
 		depthTextureInfo.num_levels = 1;
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
-		_depthTexture = SDL_CreateGPUTexture(_gpuDevice, &depthTextureInfo);
+		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
 
 		SDL_Log("Window resized to % dx % d\n", width, height);
@@ -397,7 +399,7 @@ namespace Engine {
 		
 
 
-		SDL_GPUShader*  shader = SDL_CreateGPUShader(_gpuDevice, &vertexCreateInfo);
+		SDL_GPUShader*  shader = SDL_CreateGPUShader(m_gpuDevice, &vertexCreateInfo);
 
 		SDL_free(data);
 
@@ -406,17 +408,17 @@ namespace Engine {
 
 	int Renderer::addCamera(Camera* camera)
 	{
-		cameras.push_back(camera);
+		m_cameras.push_back(camera);
 
-		float aspectRatio = (float)windowWidth / (float)windowHeight;
-		float orthoHeight = unitHeight / 2.0f;
+		float aspectRatio = (float)m_windowWidth / (float)m_windowHeight;
+		float orthoHeight = m_unitHeight / 2.0f;
 		float orthoWidth = orthoHeight * aspectRatio;
 
 		camera->orthoWidth = orthoWidth;
 		camera->orthoHeight = orthoHeight;
 		camera->updateProjection();
 
-		return cameras.size() - 1;
+		return m_cameras.size() - 1;
 	}
 
 

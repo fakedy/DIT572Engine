@@ -17,10 +17,10 @@ namespace Engine {
 
 		~GameObject() {
 
-			for (auto* component : components) {
+			for (auto* component : m_components) {
 				delete component;
 			}
-			components.clear();
+			m_components.clear();
 		}
 
 		/**
@@ -37,7 +37,7 @@ namespace Engine {
 
 			// create new component of T
 			T* component = new T();
-			components.push_back(component);
+			m_components.push_back(component);
 			component->owner = this;
 			component->onAdd();
 			return component;
@@ -65,7 +65,7 @@ namespace Engine {
 		template <typename T>
 		T* getComponent() {
 
-			for (auto* component : components) {
+			for (auto* component : m_components) {
 				// try cast component to T*
 				T* ptr = dynamic_cast<T*>(component);
 				
@@ -85,7 +85,7 @@ namespace Engine {
 
 	private:
 
-		std::vector<Component*> components;
+		std::vector<Component*> m_components;
 
 	};
 

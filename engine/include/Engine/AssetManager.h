@@ -29,7 +29,7 @@ namespace Engine {
 
 
 		private:
-			std::unordered_map<std::string, std::shared_ptr<Texture>> textureMap;
-			std::unordered_map<std::string, std::shared_ptr<Material>> materialmap;
+			std::unordered_map<std::string, std::shared_ptr<Texture>> m_textureMap;
+			std::unordered_map<std::string, std::shared_ptr<Material>> m_materialmap;
 		};
 	}

@@ -4,7 +4,7 @@ namespace Engine {
 
 
 	InputManager::InputManager() {
-		_keyboardState = SDL_GetKeyboardState(nullptr);
+		m_keyboardState = SDL_GetKeyboardState(nullptr);
 	}
 
 	void InputManager::Update() {

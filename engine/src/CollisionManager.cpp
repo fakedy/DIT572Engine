@@ -19,7 +19,7 @@ namespace Engine {
 		}
 
 		if (index != colliders.size() - 1) {
-			colliders.back()->_colliderIndex = index;
+			colliders.back()->colliderIndex = index;
 			colliders[index] = colliders.back();
 		}
 		colliders.pop_back();

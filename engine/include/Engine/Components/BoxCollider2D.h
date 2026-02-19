@@ -16,10 +16,12 @@ namespace Engine {
 
 		void onAdd() override;
 
-		float width{ 1.0f };
-		float height{ 1.0f };
+		glm::vec2 getSize();
+		void setSize(glm::vec2 size);
+
 
 	private:
 
+		glm::vec2 m_size{ 1,1 };
 	};
 }

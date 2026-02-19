@@ -15,6 +15,8 @@ namespace Engine {
 			
 			glm::mat4 getProjection();
 
+			glm::mat4 getView();
+
 			void updateProjection();
 
 			bool isActive{ true };
@@ -22,12 +24,13 @@ namespace Engine {
 			float orthoWidth{ 800.0f };
 			float orthoHeight{ 600.0f };
 
-			Transform* _transform{ nullptr };
 
 		private:
-			glm::mat4 _projection{ 1.0f };
-			glm::mat4 _view{ 1.0f };
-			ProjectionType _projectionType{ ProjectionType::Orthographic };
+
+			Transform* m_transform{ nullptr };
+			glm::mat4 m_projection{ 1.0f };
+			glm::mat4 m_view{ 1.0f };
+			ProjectionType m_projectionType{ ProjectionType::Orthographic };
 	};
 
 }

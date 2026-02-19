@@ -20,8 +20,7 @@ namespace Engine {
 
 		void onAdd() override;
 
-		int _RGbodyIndex{ -1 };
-		Transform* _transform{ nullptr };
+		int RGbodyIndex{ -1 };
 
 		glm::fvec3 acceleration{ 0 };
 		glm::vec3 velocity{0.0f};
@@ -30,6 +29,8 @@ namespace Engine {
 
 		float friction{ 0 };
 		bool affectedByGravity{ true };
+
+		Transform* transform{ nullptr };
 
 	private:
 		float mass{ 1 };

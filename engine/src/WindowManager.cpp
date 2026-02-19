@@ -10,7 +10,7 @@ namespace Engine {
 	int WindowManager::CreateWindow() {
 
 		// no support for multiple windows
-		if (_window != nullptr) {
+		if (m_window != nullptr) {
 			return 0;
 		}
 
@@ -20,32 +20,32 @@ namespace Engine {
 
 
 		// create window
-		_window = SDL_CreateWindow("Hello SDL Window", 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-		if (!_window) {
+		m_window = SDL_CreateWindow("Hello SDL Window", 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		if (!m_window) {
 			SDL_Log("Window Creation Failed: %s", SDL_GetError());
 			return -1;
 		}
 
-		_glContext = SDL_GL_CreateContext(_window);
-		SDL_GL_MakeCurrent(_window, _glContext);
+		m_glContext = SDL_GL_CreateContext(m_window);
+		SDL_GL_MakeCurrent(m_window, m_glContext);
 
 
 		return 0; // success
 	}
 
 	int WindowManager::DestroyWindow() {
-		SDL_GL_DestroyContext(_glContext);
-		SDL_DestroyWindow(_window);
+		SDL_GL_DestroyContext(m_glContext);
+		SDL_DestroyWindow(m_window);
 		return 0;
 	}
 
 	void WindowManager::swapBuffers() {
-		SDL_GL_SwapWindow(_window);
+		SDL_GL_SwapWindow(m_window);
 	}
 
 	SDL_Window* WindowManager::getWindow()
 	{
-		return _window;
+		return m_window;
 	}
 
 

@@ -33,13 +33,13 @@ namespace Engine {
 			SDL_Log("SDL_Init Failed: %s", SDL_GetError());
 		}
 		// call start() for all layers
-		if(_scene != nullptr){
-			_scene->start();
+		if(m_scene != nullptr){
+			m_scene->start();
 		}
 
 		auto lastTime = std::chrono::high_resolution_clock::now();
 
-		while (running) {
+		while (m_running) {
 
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<float> frameTime = currentTime - lastTime;
@@ -53,10 +53,10 @@ namespace Engine {
 
 			physics.update();
 
-			EventManager::Get().PollEvents(running);
+			EventManager::Get().PollEvents(m_running);
 
-			if (_scene != nullptr) {
-				_scene->update();
+			if (m_scene != nullptr) {
+				m_scene->update();
 			}
 
 			renderer.draw();
@@ -75,7 +75,7 @@ namespace Engine {
 
 	void Core::setScene(Scene* scene)
 	{
-		_scene = scene;
+		m_scene = scene;
 	}
 
 }

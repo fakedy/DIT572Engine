@@ -25,7 +25,7 @@ namespace Engine {
 				CIRCLE
 			};
 
-			int _colliderIndex{ -1 };
+			int colliderIndex{ -1 };
 
 			float friction{ 0 };
 

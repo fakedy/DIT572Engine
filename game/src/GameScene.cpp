@@ -31,8 +31,7 @@ namespace Game {
 		player.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/Slime/slime_0.png");
 		float playerSizeX = player.getComponent<Engine::Sprite>()->material->texture->width;
 		float playerSizeY = player.getComponent<Engine::Sprite>()->material->texture->height;
-		player.addComponent<Engine::BoxCollider2D>()->width = playerSizeX / renderer.pixels_per_unit;
-		player.getComponent<Engine::BoxCollider2D>()->height = playerSizeY / renderer.pixels_per_unit;
+		player.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(playerSizeX / renderer.pixels_per_unit, playerSizeY / renderer.pixels_per_unit));
 		player.addComponent<Engine::RigidBody2D>();
 		player.getComponent<Engine::Transform>()->scale(vec3(-1, 1, 1));
 		player.getComponent<Engine::Transform>()->translate(vec3(0, 0, 5));
@@ -44,8 +43,7 @@ namespace Game {
 
 		float boxSizeX = box.getComponent<Engine::Sprite>()->material->texture->width;
 		float boxSizeY = box.getComponent<Engine::Sprite>()->material->texture->height;
-		box.addComponent<Engine::BoxCollider2D>()->width = boxSizeX / renderer.pixels_per_unit;
-		box.getComponent<Engine::BoxCollider2D>()->height = boxSizeY / renderer.pixels_per_unit;
+		box.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(boxSizeX / renderer.pixels_per_unit, boxSizeY / renderer.pixels_per_unit));
 		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 		box.addComponent<Engine::RigidBody2D>();
 
@@ -64,8 +62,7 @@ namespace Game {
 		float floorSizeX = floor.getComponent<Engine::Sprite>()->material->texture->width;
 		float floorSizeY = floor.getComponent<Engine::Sprite>()->material->texture->height;
 		floor.getComponent<Engine::Transform>()->scale(vec3(100, 1, 1));
-		floor.addComponent<Engine::BoxCollider2D>()->width = 100;
-		floor.getComponent<Engine::BoxCollider2D>()->height = floorSizeY / renderer.pixels_per_unit;
+		floor.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(100, floorSizeY / renderer.pixels_per_unit));
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 		floor.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 

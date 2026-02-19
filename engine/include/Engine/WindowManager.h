@@ -23,8 +23,8 @@ namespace Engine {
 
 	private:
 
-		SDL_GLContext _glContext;
-		SDL_Window* _window;
+		SDL_GLContext m_glContext;
+		SDL_Window* m_window;
 	};
 
 }

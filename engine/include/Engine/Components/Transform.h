@@ -33,10 +33,10 @@ namespace Engine {
 
 		void onAdd() override;
 	private:
-		glm::vec3 _position{ 0.0f };
-		glm::vec3 _scale{ 1.0f };
+		glm::vec3 m_position{ 0.0f };
+		glm::vec3 m_scale{ 1.0f };
 
-		glm::mat4 _cachedTransform{ 1.0f };
+		glm::mat4 m_cachedTransform{ 1.0f };
 	};
 
 }

@@ -19,7 +19,7 @@ namespace Engine {
 			return;
 
 		if (index != rgBodies2D.size() - 1) {
-			rgBodies2D.back()->_RGbodyIndex = index;
+			rgBodies2D.back()->RGbodyIndex = index;
 			rgBodies2D[index] = rgBodies2D.back();
 		}
 		rgBodies2D.pop_back();
@@ -37,7 +37,7 @@ namespace Engine {
 
 			rb->acceleration += universeGravity;
 			rb->velocity += rb->acceleration * Time::deltaTime;
-			rb->_transform->translate(rb->getVelocity() * Time::deltaTime);
+			rb->transform->translate(rb->getVelocity() * Time::deltaTime);
 
 			// reset acceleration
 			rb->acceleration = glm::vec3(0);
@@ -59,7 +59,7 @@ namespace Engine {
 			}
 
 			if (moveA) {
-				collision.rigidbodyA->_transform->translate(collision.direction * resolveAmount);
+				collision.rigidbodyA->transform->translate(collision.direction * resolveAmount);
 				float dot = glm::dot(collision.direction, rbA->velocity);
 				// kill the velocity going into the floor
 				if (dot < 0) {
@@ -68,7 +68,7 @@ namespace Engine {
 			}
 
 			if (moveB) {
-				collision.rigidbodyB->_transform->translate(-collision.direction * resolveAmount);
+				collision.rigidbodyB->transform->translate(-collision.direction * resolveAmount);
 				float dot = glm::dot(-collision.direction, rbB->velocity);
 				// kill the velocity going into the floor
 				if (dot > 0) {

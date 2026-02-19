@@ -28,15 +28,15 @@ namespace Engine {
 
 	RigidBody2D::~RigidBody2D()
 	{
-		PhysicsManager::Get().removeRGBody2D(_RGbodyIndex);
+		PhysicsManager::Get().removeRGBody2D(RGbodyIndex);
 	}
 
 	void RigidBody2D::onAdd() {
 
 		// add itself to renderer
-		_RGbodyIndex = PhysicsManager::Get().addRGBody2D(this);
+		RGbodyIndex = PhysicsManager::Get().addRGBody2D(this);
 		// Transform is default to gameobjects so they should have one.
-		_transform = owner->getComponent<Transform>();
+		transform = owner->getComponent<Transform>();
 	}
 
 }

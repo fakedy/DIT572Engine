@@ -15,8 +15,8 @@ namespace Engine {
 		//guh singletons
 		SDL_GPUDevice& device = Renderer::Get().getDevice();
 
-		if (textureMap.find(filePath) != textureMap.end()) {
-			return textureMap[filePath];
+		if (m_textureMap.find(filePath) != m_textureMap.end()) {
+			return m_textureMap[filePath];
 		}
 
 		int w, h, channels;
@@ -83,20 +83,20 @@ namespace Engine {
 		newTexture->height = h;
 
 		stbi_image_free(pixels);
-		textureMap[filePath] = newTexture;
+		m_textureMap[filePath] = newTexture;
 
-		return textureMap[filePath];
+		return m_textureMap[filePath];
 	}
 	std::shared_ptr<Material> Engine::AssetManager::CreateMaterial(const std::string& name)
 	{
-		if (materialmap.find(name) != materialmap.end()) {
-			return materialmap[name];
+		if (m_materialmap.find(name) != m_materialmap.end()) {
+			return m_materialmap[name];
 		}
 
 		std::shared_ptr<Material> newMaterial = std::make_shared<Material>();
 		newMaterial->name = name;
-		materialmap[name] = newMaterial;
-		return materialmap[name];
+		m_materialmap[name] = newMaterial;
+		return m_materialmap[name];
 
 	}
 }

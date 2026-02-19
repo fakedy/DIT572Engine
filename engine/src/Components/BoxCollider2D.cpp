@@ -8,8 +8,18 @@ namespace Engine {
 
 
 	void BoxCollider2D::onAdd() {
-		_colliderIndex = CollisionManager::Get().addCollider(this);
+		colliderIndex = CollisionManager::Get().addCollider(this);
 		_transform = owner->getComponent<Transform>();
+	}
+
+	glm::vec2 BoxCollider2D::getSize()
+	{
+		return m_size;
+	}
+
+	void BoxCollider2D::setSize(glm::vec2 size)
+	{
+		m_size = size;
 	}
 
 	BoxCollider2D::BoxCollider2D()
@@ -20,7 +30,7 @@ namespace Engine {
 	BoxCollider2D::~BoxCollider2D()
 	{
 
-		CollisionManager::Get().removeCollider(_colliderIndex);
+		CollisionManager::Get().removeCollider(colliderIndex);
 
 	}
 
@@ -30,15 +40,15 @@ namespace Engine {
 			// Box-Box collision detection logic
 			BoxCollider2D* otherBox = static_cast<BoxCollider2D*>(other);
 
-			float aMinX = _transform->getPosition().x - width / 2;
-			float aMaxX = _transform->getPosition().x + width / 2;
-			float aMinY = _transform->getPosition().y - height / 2;
-			float aMaxY = _transform->getPosition().y + height / 2;
+			float aMinX = _transform->getPosition().x - m_size.x / 2;
+			float aMaxX = _transform->getPosition().x + m_size.x / 2;
+			float aMinY = _transform->getPosition().y - m_size.y / 2;
+			float aMaxY = _transform->getPosition().y + m_size.y / 2;
 
-			float bMinX = otherBox->_transform->getPosition().x - otherBox->width / 2;
-			float bMaxX = otherBox->_transform->getPosition().x + otherBox->width / 2;
-			float bMinY = otherBox->_transform->getPosition().y - otherBox->height / 2;
-			float bMaxY = otherBox->_transform->getPosition().y + otherBox->height / 2;
+			float bMinX = otherBox->_transform->getPosition().x - otherBox->getSize().x / 2;
+			float bMaxX = otherBox->_transform->getPosition().x + otherBox->getSize().x / 2;
+			float bMinY = otherBox->_transform->getPosition().y - otherBox->getSize().y / 2;
+			float bMaxY = otherBox->_transform->getPosition().y + otherBox->getSize().y / 2;
 
 			bool collisionX = aMaxX > bMinX && aMinX < bMaxX;
 			bool collisionY = aMaxY > bMinY && aMinY < bMaxY;

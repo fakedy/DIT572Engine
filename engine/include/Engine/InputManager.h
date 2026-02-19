@@ -24,6 +24,6 @@ namespace Engine {
 
 		std::unordered_map<uint32_t, bool> keyMap;
 	private:
-		const bool* _keyboardState;
+		const bool* m_keyboardState;
 	};
 }
