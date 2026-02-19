@@ -49,17 +49,17 @@ namespace Game {
 		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 		box.addComponent<Engine::RigidBody2D>();
 
-		box2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bbox.png");
+		box2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/box.png");
 		box2.getComponent<Engine::Transform>()->translate(vec3(3, -8.5, 6));
 
-		box3.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bbox.png");
+		box3.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/box.png");
 		box3.getComponent<Engine::Transform>()->translate(vec3(-3, -8.5, 4));
 
-		sky.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bsky.png");
+		sky.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/sky.png");
 		sky.getComponent<Engine::Transform>()->translate(vec3(0, 47, -1));
 		sky.getComponent<Engine::Transform>()->scale(vec3(10000, 1, 1));
 
-		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bgrass_stone.png");
+		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/grass_stone.png");
 		floor.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
 		float floorSizeX = floor.getComponent<Engine::Sprite>()->material->texture->width;
 		float floorSizeY = floor.getComponent<Engine::Sprite>()->material->texture->height;
@@ -75,13 +75,13 @@ namespace Game {
 		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -15, 0));
 
 		
-		cloud.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bcloud.png");
+		cloud.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/cloud.png");
 		cloud.getComponent<Engine::Transform>()->translate(vec3(14, 13, 0));
 
-		cloud2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bcloud.png");
+		cloud2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/cloud.png");
 		cloud2.getComponent<Engine::Transform>()->translate(vec3(-11, 15, 0));
 
-		badbg.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/bbadbg.png");
+		badbg.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/badbg.png");
 		badbg.getComponent<Engine::Transform>()->translate(vec3(0, 17, 0));
 
 
