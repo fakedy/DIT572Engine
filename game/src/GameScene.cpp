@@ -24,6 +24,14 @@ namespace Game {
 	Engine::GameObject stoneGround;
 
 	Engine::GameObject camera;
+
+	/*
+		With current grass setup the floor is actually at -8.5
+		Putting sprites at correct locations by code is suprisingly annoying
+	*/
+
+
+
 	
 	void GameScene::start() {
 		Engine::Renderer& renderer = Engine::Renderer::Get();
@@ -68,8 +76,8 @@ namespace Game {
 
 		stoneGround.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/stone.png");
 		stoneGround.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
-		stoneGround.getComponent<Engine::Transform>()->scale(vec3(100, 10, 1));
-		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -15, 0));
+		stoneGround.getComponent<Engine::Transform>()->scale(vec3(100, 7, 1));
+		stoneGround.getComponent<Engine::Transform>()->translate(vec3(0, -14, 0));
 
 		
 		cloud.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/cloud.png");
@@ -124,6 +132,12 @@ namespace Game {
 			camera.getComponent<Engine::Transform>()->translate(vec3(0, -20, 0) * Engine::Time::deltaTime);
 		}
 
+		if (input.GetKeyDown(SDL_SCANCODE_F1)) {
+			SDL_Log("Player Position: (%f, %f, %f)", transform->getPosition().x, transform->getPosition().y, transform->getPosition().z);
+		}
+
+
+
 		Engine::Transform* cloudTransform = cloud.getComponent<Engine::Transform>();
 		Engine::Transform* cloud2Transform = cloud2.getComponent<Engine::Transform>();
 
@@ -135,6 +149,19 @@ namespace Game {
 		}
 		if (cloud2Transform->getPosition().x > 44) {
 			cloud2Transform->setPosition(glm::vec3(-44, cloud2Transform->getPosition().y, cloud2Transform->getPosition().z));
+		}
+
+		// for some camera y-axis follow on camera
+		Engine::Transform* cameraTransform = camera.getComponent<Engine::Transform>();
+		if (transform->getPosition().y >= 5) {
+			cameraTransform->setPosition(
+				glm::vec3(
+					cameraTransform->getPosition().x,
+					transform->getPosition().y - 5,
+					cameraTransform->getPosition().z));
+		}
+		else {
+			cameraTransform->setPosition(glm::vec3(0,0,-10));
 		}
 
 	}

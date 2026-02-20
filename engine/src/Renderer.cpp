@@ -200,7 +200,7 @@ namespace Engine {
 
 				SDL_GPUTextureSamplerBinding textureBinding = {};
 				Material& mat = object->getMaterial();
-				textureBinding.texture = mat.texture->textureHandle; // From AssetManager
+				textureBinding.texture = mat.texture->textureHandle;
 				textureBinding.sampler = m_samplerNearest;
 				ubo.uvScale = glm::vec2(1, 1);
 				// check sampler
