@@ -20,6 +20,8 @@ namespace Engine
 				unsigned int endIndex{ 0 };
 			};
 
+			void playAnimation(const std::string& animationName, bool loop = false);
+
 
 			float animationTime{ 0.0f };
 			unsigned int index{ 0 };

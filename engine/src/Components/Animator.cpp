@@ -57,4 +57,15 @@ namespace Engine {
 		AnimationManager::Get().addAnimator(this);
 
 	}
+
+	void Animator::playAnimation(const std::string& animationName, bool loop)
+	{
+		if (animationMap.find(animationName) == animationMap.end()) {
+			SDL_Log("Animation %s not found!", animationName.c_str());
+			return;
+		}
+
+		AnimationInfo& info = animationMap[animationName];
+		index = info.startIndex;
+	}
 }
