@@ -53,7 +53,7 @@ set(ENGINE_CORE_SOURCES
     "include/Engine/Components/RenderComponent.h"
     
     "include/Engine/Mesh.h"
-    "include/Engine/Material.h" "include/Engine/Components/RigidBody2D.h" "src/Components/RigidBody2D.cpp" "include/Engine/PhysicsManager.h" "src/PhysicsManager.cpp" "include/Engine/CollisionManager.h" "include/Engine/Components/Collider2D.h" "include/Engine/Components/BoxCollider2D.h"  "src/Components/BoxCollider2D.cpp" "src/CollisionManager.cpp" "include/Engine/Components/Camera.h" "src/Components/Camera.cpp" )
+    "include/Engine/Material.h" "include/Engine/Components/RigidBody2D.h" "src/Components/RigidBody2D.cpp" "include/Engine/PhysicsManager.h" "src/PhysicsManager.cpp" "include/Engine/CollisionManager.h" "include/Engine/Components/Collider2D.h" "include/Engine/Components/BoxCollider2D.h"  "src/Components/BoxCollider2D.cpp" "src/CollisionManager.cpp" "include/Engine/Components/Camera.h" "src/Components/Camera.cpp"  "include/Engine/AnimationManager.h" "src/AnimationManager.cpp" "include/Engine/Components/Animator.h")
     
 
 add_library(Engine STATIC ${ENGINE_CORE_SOURCES})

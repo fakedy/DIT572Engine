@@ -4,6 +4,7 @@
 #include <Engine/Texture.h>
 #include <memory>
 #include <Engine/Material.h>
+#include <SDL3/SDL_gpu.h>
 
 
 namespace Engine {
@@ -32,6 +33,8 @@ namespace Engine {
 			* @return Shared_ptr<Material> if successful.
 			*/
 			std::shared_ptr<Material> CreateMaterial(const std::string& name);
+
+			void LoadTextureArray(const std::string& filePath);
 
 
 		private:
