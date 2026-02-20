@@ -99,4 +99,83 @@ namespace Engine {
 		return m_materialmap[name];
 
 	}
+
+
+	void AssetManager::LoadTextureArray(const std::string& filePath) {
+
+		//guh singletons
+		SDL_GPUDevice& device = Renderer::Get().getDevice();
+
+		if (m_textureMap.find(filePath) != m_textureMap.end()) {
+			// return m_textureMap[filePath];
+		}
+
+		int w, h, channels;
+
+		stbi_set_flip_vertically_on_load(true);
+		stbi_uc* pixels = stbi_load(filePath.c_str(), &w, &h, &channels, 4);
+
+		SDL_GPUTextureCreateInfo textureInfo = {};
+		textureInfo.props = 0;
+		textureInfo.width = w;
+		textureInfo.height = h;
+		textureInfo.type = SDL_GPU_TEXTURETYPE_2D_ARRAY;
+		textureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
+		textureInfo.layer_count_or_depth = 1;
+		textureInfo.num_levels = 1;
+		textureInfo.usage = SDL_GPU_TEXTUREUSAGE_SAMPLER;
+
+		SDL_GPUTexture* texture = SDL_CreateGPUTexture(&device, &textureInfo);
+
+		// this is similar to renderer, its the basic way to upload stuff to the gpu using SDL_GPU
+
+
+		SDL_GPUTransferBufferCreateInfo bufferCreateInfo = {};
+		bufferCreateInfo.props = 0;
+		bufferCreateInfo.size = w * h * 4;
+		bufferCreateInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+
+		SDL_GPUTransferBuffer* textureTransferBuffer = SDL_CreateGPUTransferBuffer(&device, &bufferCreateInfo);
+
+
+		void* textureTransferPtr = SDL_MapGPUTransferBuffer(&device, textureTransferBuffer, false);
+		SDL_memcpy(textureTransferPtr, pixels, bufferCreateInfo.size);
+		SDL_UnmapGPUTransferBuffer(&device, textureTransferBuffer);
+
+
+		SDL_GPUTextureTransferInfo source = {};
+		source.transfer_buffer = textureTransferBuffer;
+		source.offset = 0;
+
+		SDL_GPUTextureRegion destination = {};
+		destination.texture = texture;
+		destination.w = w;
+		destination.h = h;
+		destination.d = 1;
+
+
+		// memcpy part
+
+
+		SDL_GPUCommandBuffer* uploadCmdBuffer = SDL_AcquireGPUCommandBuffer(&device);
+		SDL_GPUCopyPass* copyPass = SDL_BeginGPUCopyPass(uploadCmdBuffer);
+
+		SDL_UploadToGPUTexture(copyPass, &source, &destination, false);
+
+		SDL_EndGPUCopyPass(copyPass);
+		SDL_SubmitGPUCommandBuffer(uploadCmdBuffer);
+		SDL_ReleaseGPUTransferBuffer(&device, textureTransferBuffer);
+
+
+		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
+		newTexture->filepath = filePath;
+		newTexture->textureHandle = texture;
+		newTexture->width = w;
+		newTexture->height = h;
+
+		stbi_image_free(pixels);
+		m_textureMap[filePath] = newTexture;
+
+		//return m_textureMap[filePath];
+	}
 }
