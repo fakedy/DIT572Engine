@@ -59,10 +59,10 @@ namespace Engine {
 
 	}
 
-	void Animator::playAnimation(const std::string& animationName, bool loop)
+	void Animator::playAnimation(const std::string& animationName,bool override,float fps, bool loop)
 	{
 
-		if (isPlaying) {
+		if (!override && isPlaying) {
 			return;
 		}
 
@@ -75,6 +75,7 @@ namespace Engine {
 		isPlaying = true;
 		
 		currentAnimation = &it->second;
+		currentAnimation->frameRate = fps;
 
 		animationTime = 0.0f;
 		currentFrameIndex = currentAnimation->startIndex;

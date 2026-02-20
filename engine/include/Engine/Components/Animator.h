@@ -18,11 +18,11 @@ namespace Engine
 			struct AnimationInfo {
 				unsigned int startIndex{ 0 };
 				unsigned int endIndex{ 0 };
-				float frameRate{ 24.0f };
+				float frameRate{ 3.0f };
 				std::string name;
 			};
 
-			void playAnimation(const std::string& animationName, bool loop = false);
+			void playAnimation(const std::string& animationName,bool override, float fps, bool loop = false);
 
 			void play();
 

@@ -20,7 +20,7 @@ namespace Engine {
 
 				if (animator->currentFrameIndex >= animator->currentAnimation->endIndex) {
 					animator->currentFrameIndex = animator->currentAnimation->startIndex;
-					animator->isPlaying = true;
+					animator->isPlaying = false;
 				}
 
 				animator->currentFrameIndex++;
