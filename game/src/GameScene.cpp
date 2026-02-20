@@ -62,7 +62,7 @@ namespace Game {
 		box3.getComponent<Engine::Transform>()->translate(vec3(-3, -8.5, 4));
 
 		sky.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/sky.png");
-		sky.getComponent<Engine::Transform>()->translate(vec3(0, 47, -1));
+		sky.getComponent<Engine::Transform>()->translate(vec3(0, 47, -3));
 		sky.getComponent<Engine::Transform>()->scale(vec3(10000, 1, 1));
 
 		floor.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/grass_stone.png");
@@ -84,10 +84,11 @@ namespace Game {
 		cloud.getComponent<Engine::Transform>()->translate(vec3(14, 13, 0));
 
 		cloud2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/cloud.png");
-		cloud2.getComponent<Engine::Transform>()->translate(vec3(-11, 15, 0));
+		cloud2.getComponent<Engine::Transform>()->translate(vec3(-16, 12, -2));
+		cloud2.getComponent<Engine::Transform>()->scale(vec3(0.5, 0.5, 1));
 
 		badbg.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/badbg.png");
-		badbg.getComponent<Engine::Transform>()->translate(vec3(0, 17, 0));
+		badbg.getComponent<Engine::Transform>()->translate(vec3(0, 17, -1));
 
 
 
@@ -132,7 +133,7 @@ namespace Game {
 			camera.getComponent<Engine::Transform>()->translate(vec3(0, -20, 0) * Engine::Time::deltaTime);
 		}
 
-		if (input.GetKeyDown(SDL_SCANCODE_F1)) {
+		if (input.GetKeyPressed(SDL_SCANCODE_F1)) {
 			SDL_Log("Player Position: (%f, %f, %f)", transform->getPosition().x, transform->getPosition().y, transform->getPosition().z);
 		}
 
