@@ -14,19 +14,27 @@ void Engine::Animator::loadAnimations(std::string& folderPath)
 
 	namespace fs = std::filesystem;
 	int frameCount = 0;
+	int folderCounter = 0;
 
 	for (const auto& entry : fs::directory_iterator(folderPath)) {
+
+		folderCounter++;
+		AnimationInfo info;
+		info.startIndex = frameCount;
+
+		for (const auto& file : fs::directory_iterator(entry.path())) {
+			frameCount++;
+		}
+
+
 
 		std::string folderName = entry.path().filename().string();
 
 		SDL_Log("Folder: %s", folderName.c_str());
 		
-		AnimationInfo info;
-		info.startIndex = 3;
-		info.endIndex = 6;
 
-
-
+		info.endIndex = frameCount;
+		frameCount++;
 
 		animationMap[folderName] = info;
 
