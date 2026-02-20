@@ -39,6 +39,13 @@ namespace Engine {
 		// this is similar to renderer, its the basic way to upload stuff to the gpu using SDL_GPU
 
 
+
+
+
+
+
+
+
 		SDL_GPUTransferBufferCreateInfo bufferCreateInfo = {};
 		bufferCreateInfo.props = 0;
 		bufferCreateInfo.size = w * h * 4;

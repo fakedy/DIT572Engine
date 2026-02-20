@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <Engine/Components/Animator.h>
 
 
 namespace Engine

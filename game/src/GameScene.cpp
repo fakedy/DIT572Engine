@@ -43,6 +43,8 @@ namespace Game {
 		player.addComponent<Engine::RigidBody2D>();
 		player.getComponent<Engine::Transform>()->scale(vec3(-1, 1, 1));
 		player.getComponent<Engine::Transform>()->translate(vec3(0, 0, 5));
+		player.addComponent<Engine::Animator>();
+		player.getComponent<Engine::Animator>()->loadAnimations(std::string("Assets/Sprites/Slime/Animations"));
 
 
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/box.png");
