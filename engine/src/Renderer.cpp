@@ -187,6 +187,13 @@ namespace Engine {
 
 		DataBlock ubo;
 
+		struct FragmentDataBlock {
+			unsigned int layerIndex;
+		};
+
+		FragmentDataBlock fragmentUbo;
+		
+
 		for (auto& camera : m_cameras) {
 
 			// skip inactive cameras
@@ -203,6 +210,8 @@ namespace Engine {
 				textureBinding.texture = mat.texture->textureHandle;
 				textureBinding.sampler = m_samplerNearest;
 				ubo.uvScale = glm::vec2(1, 1);
+				fragmentUbo.layerIndex = object->spriteIndex;
+
 				// check sampler
 				if (mat.samplerMode == Material::SAMPLER_MODE_REPEAT) {
 					textureBinding.sampler = m_samplerRepeat;
@@ -225,6 +234,7 @@ namespace Engine {
 				ubo.model = tempModel;
 
 				SDL_PushGPUVertexUniformData(cmd, 0, &ubo, sizeof(ubo));
+				SDL_PushGPUFragmentUniformData(cmd, 0, &fragmentUbo, sizeof(fragmentUbo));
 				SDL_DrawGPUIndexedPrimitives(renderPass, 6, 1, 0, 0, 0);
 			}
 		}
@@ -394,7 +404,7 @@ namespace Engine {
 
 		// a pipeline must be created for each shader program
 		SDL_GPUShader* vertexShader = createShader("Assets/shaders/vDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_VERTEX, 0, 1, 0, 0);
-		SDL_GPUShader* fragmentShader = createShader("Assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 0, 0, 0);
+		SDL_GPUShader* fragmentShader = createShader("Assets/shaders/fDefault.spv", SDL_GPU_SHADERFORMAT_SPIRV, SDL_GPU_SHADERSTAGE_FRAGMENT, 1, 1, 0, 0);
 
 		SDL_GPUGraphicsPipelineCreateInfo spritePipelineInfo = { 0 };
 		spritePipelineInfo.vertex_shader = vertexShader;

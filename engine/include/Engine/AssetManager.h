@@ -34,7 +34,7 @@ namespace Engine {
 			*/
 			std::shared_ptr<Material> CreateMaterial(const std::string& name);
 
-			void LoadTextureArray(const std::string& filePath);
+			std::shared_ptr<Texture> LoadTextureArray(const std::vector<std::string>& filePaths);
 
 
 		private:

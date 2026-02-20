@@ -26,6 +26,8 @@ namespace Engine {
 
 		void onAdd() override;
 
+		unsigned int spriteIndex{ 0 };
+
 	private:
 
 

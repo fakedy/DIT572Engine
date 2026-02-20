@@ -5,17 +5,31 @@ namespace Engine {
 	AnimationManager::AnimationManager() {
 	}
 
-	void Update() {
-		// update all animations
-		// Vector...
+	void AnimationManager::Update() {
+		for (auto& animator : m_animators)
+		{
+			// fuffens
+
+
+
+		}
 	}
 
 	unsigned int AnimationManager::addAnimator(Animator* anim) {
-		// add to vector
-		return 0;
+		m_animators.push_back(anim);
+		return m_animators.size() - 1;
 	}
 
-	void removeAnimator(unsigned int index) {
-		// remove from vector
+	void AnimationManager::removeAnimator(unsigned int index) {
+		if (index >= m_animators.size()) {
+			return;
+		}
+
+		if (index != m_animators.size() - 1) {
+			m_animators.back()->index = index;
+			m_animators[index] = m_animators.back();
+		}
+		m_animators.pop_back();
+
 	}
 }

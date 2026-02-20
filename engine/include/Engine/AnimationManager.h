@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <Engine/Components/Animator.h>
-
+#include <Engine/Texture.h>
 
 namespace Engine
 {
@@ -23,7 +23,9 @@ namespace Engine
 
 		void removeAnimator(unsigned int index);
 
+		Texture* animationTexture;
+
 	private:
-		std::vector<Animator*> m_animator;
+		std::vector<Animator*> m_animators;
 	};
 }

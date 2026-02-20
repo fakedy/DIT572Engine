@@ -1,5 +1,6 @@
 #pragma once
 #include <Engine/Components/Component.h>
+#include <Engine/GameObject.h>
 #include <unordered_map>
 #include <string>
 namespace Engine
@@ -21,6 +22,7 @@ namespace Engine
 
 
 			float animationTime{ 0.0f };
+			unsigned int index{ 0 };
 
 			std::unordered_map<std::string, AnimationInfo> animationMap;
 
