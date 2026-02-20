@@ -243,7 +243,7 @@ namespace Engine {
 
 		SDL_GPUTextureSamplerBinding textureBinding = {};
 
-		textureBinding.sampler = m_samplerLinear;
+		textureBinding.sampler = m_samplerNearest;
 		textureBinding.texture = m_postFXTexture;
 
 		SDL_BindGPUFragmentSamplers(postFXPass, 0, &textureBinding, 1);

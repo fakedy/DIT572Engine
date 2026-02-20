@@ -5,11 +5,14 @@ layout(location = 0) in vec2 inUV; // the input variable from the vertex shader 
 
 layout(set = 2, binding = 0) uniform sampler2D postFXTexture;
 
+
 void main()
 {
 
+    
 
     vec4 textureColor = texture(postFXTexture, inUV);
+    
 
-    FragColor = textureColor;
+    FragColor = vec4(textureColor.r,textureColor.g,textureColor.b,1);
 }
