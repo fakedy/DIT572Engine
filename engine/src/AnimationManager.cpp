@@ -15,6 +15,7 @@ namespace Engine {
 
 			float frameDuration = 1.0 / animator->currentAnimation->frameRate;
 
+			SDL_Log("Name: %s, Index: %d", animator->currentAnimation->name.c_str(), animator->currentFrameIndex);
 			if (animator->animationTime >= frameDuration) {
 				animator->animationTime = 0.0f;
 
@@ -27,7 +28,6 @@ namespace Engine {
 
 			}
 			animator->play();
-			SDL_Log("Name: %s, Index: %d", animator->currentAnimation->name.c_str(), animator->currentFrameIndex);
 
 		}
 	}

@@ -116,12 +116,12 @@ namespace Game {
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			rigidbody->setVelocity(vec3(-10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(-1, 1, 1));
-			player.getComponent<Engine::Animator>()->playAnimation("walk", false, 24);
+			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24);
 		}
 		else if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			rigidbody->setVelocity(vec3(10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(1, 1, 1));
-			player.getComponent<Engine::Animator>()->playAnimation("walk", false, 24);
+			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24);
 		}
 
 
@@ -174,7 +174,9 @@ namespace Game {
 			cameraTransform->setPosition(glm::vec3(0,0,-10));
 		}
 
-		player.getComponent<Engine::Animator>()->playAnimation("idle", false, 3);
+		if (rigidbody->getVelocity().x == 0) {
+			player.getComponent<Engine::Animator>()->playAnimation("idle", false, 3);
+		}
 
 	}
 }

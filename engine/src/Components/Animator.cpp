@@ -62,15 +62,22 @@ namespace Engine {
 	void Animator::playAnimation(const std::string& animationName,bool override,float fps, bool loop)
 	{
 
-		if (!override && isPlaying) {
-			return;
-		}
 
 		auto& it = animationMap.find(animationName);
 		if (it == animationMap.end()) {
 			SDL_Log("Animation %s not found!", animationName.c_str());
 			return;
 		}
+
+		if (currentAnimation != nullptr && it->second.name == currentAnimation->name && isPlaying) {
+			return;
+		}
+
+		if (isPlaying && !override) {
+			return;
+		}
+
+
 
 		isPlaying = true;
 		
