@@ -12,6 +12,8 @@ void main()
     
 
     vec4 textureColor = texture(postFXTexture, inUV);
+
+
     
 
     FragColor = vec4(textureColor.r,textureColor.g,textureColor.b,1);

@@ -324,6 +324,23 @@ namespace Engine {
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
+		// On resize we have to delete the old depth texture
+		if (m_postFXTexture != nullptr) {
+			SDL_ReleaseGPUTexture(m_gpuDevice, m_postFXTexture);
+			m_postFXTexture = nullptr;
+		}
+
+		// recreate the screen texture
+		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
+		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
+		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		postFXTextureInfo.width = m_windowWidth;
+		postFXTextureInfo.height = m_windowHeight;
+		postFXTextureInfo.layer_count_or_depth = 1;
+		postFXTextureInfo.num_levels = 1;
+		postFXTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
+		m_postFXTexture = SDL_CreateGPUTexture(m_gpuDevice, &postFXTextureInfo);
+
 
 		SDL_Log("Window resized to % dx % d\n", width, height);
 		SDL_Log("Window Units resized to % f % f\n", orthoWidth, orthoHeight);
