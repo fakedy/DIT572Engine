@@ -14,9 +14,6 @@ namespace Engine
 			return instance;
 		}
 
-		AnimationManager();
-		~AnimationManager() = default;
-
 		void Update();
 
 		unsigned int addAnimator(Animator* anim);

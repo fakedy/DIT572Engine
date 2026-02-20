@@ -1,16 +1,33 @@
 #include <Engine/AnimationManager.h>
 #include <Engine/Components/Animator.h>
+#include <Engine/Time.h>
+#include <SDL3/SDL.h>
 
 namespace Engine {
-	AnimationManager::AnimationManager() {
-	}
-
 	void AnimationManager::Update() {
 		for (auto& animator : m_animators)
 		{
-			// fuffens
+			if (animator->currentAnimation == nullptr) {
+				continue;
+			}
+			
+			animator->animationTime += Time::deltaTime;
 
+			float frameDuration = 1.0 / animator->currentAnimation->frameRate;
 
+			if (animator->animationTime >= frameDuration) {
+				animator->animationTime = 0.0f;
+
+				if (animator->currentFrameIndex >= animator->currentAnimation->endIndex) {
+					animator->currentFrameIndex = animator->currentAnimation->startIndex;
+					animator->isPlaying = true;
+				}
+
+				animator->currentFrameIndex++;
+
+			}
+			animator->play();
+			SDL_Log("Name: %s, Index: %d", animator->currentAnimation->name.c_str(), animator->currentFrameIndex);
 
 		}
 	}

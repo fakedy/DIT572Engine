@@ -27,6 +27,7 @@ namespace Engine {
 			folderCounter++;
 			AnimationInfo info;
 			info.startIndex = frameCount;
+			info.name = entry.path().filename().string();
 
 			for (const auto& file : fs::directory_iterator(entry.path())) {
 				if (!file.is_regular_file()) {
@@ -45,7 +46,7 @@ namespace Engine {
 		
 
 			info.endIndex = frameCount;
-			frameCount++;
+
 
 			animationMap[folderName] = info;
 
@@ -61,15 +62,26 @@ namespace Engine {
 	void Animator::playAnimation(const std::string& animationName, bool loop)
 	{
 
+		if (isPlaying) {
+			return;
+		}
+
 		auto& it = animationMap.find(animationName);
 		if (it == animationMap.end()) {
 			SDL_Log("Animation %s not found!", animationName.c_str());
 			return;
 		}
+
+		isPlaying = true;
 		
-		curentAnimation = &it->second;
+		currentAnimation = &it->second;
 
 		animationTime = 0.0f;
-		currentFrameIndex = curentAnimation->startIndex;
+		currentFrameIndex = currentAnimation->startIndex;
+	}
+	void Engine::Animator::play()
+	{
+
+		owner->getComponent<Sprite>()->spriteIndex = currentFrameIndex;
 	}
 }

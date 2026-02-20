@@ -6,6 +6,7 @@
 #include <chrono>
 #include <Engine/PhysicsManager.h>
 #include <Engine/CollisionManager.h>
+#include <Engine/AnimationManager.h>
 
 namespace Engine {
 
@@ -25,6 +26,9 @@ namespace Engine {
 		window.CreateWindow();
 		Engine::Renderer& renderer = Engine::Renderer::Get();
 		renderer.init();
+
+		Engine::AnimationManager& animationManager = Engine::AnimationManager::Get();
+
 
 		Engine::PhysicsManager& physics = Engine::PhysicsManager::Get();
 
@@ -59,6 +63,7 @@ namespace Engine {
 				m_scene->update();
 			}
 
+			animationManager.Update();
 			renderer.draw();
 			window.swapBuffers();
 			Time::timeCount++;

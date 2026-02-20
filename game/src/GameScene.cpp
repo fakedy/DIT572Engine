@@ -98,7 +98,7 @@ namespace Game {
 		camera.getComponent<Engine::Transform>()->translate(glm::vec3(0, 0, -10));
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
-		sound.PlaySound();
+		//sound.PlaySound();
 
 		//world.create();
 		
@@ -109,18 +109,28 @@ namespace Game {
 		Engine::RigidBody2D* rigidbody = player.getComponent<Engine::RigidBody2D>();
 		Engine::InputManager& input = Engine::InputManager::Get();
 
+		//player.getComponent<Engine::Animator>()->playAnimation("idle");
+
 		//camera.getComponent<Engine::Transform>()->setPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y+5, -10));
 
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			rigidbody->setVelocity(vec3(-10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(-1, 1, 1));
+			player.getComponent<Engine::Animator>()->playAnimation("walk");
 		}
-		if (input.GetKeyDown(SDL_SCANCODE_D)) {
+		else if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			rigidbody->setVelocity(vec3(10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(1, 1, 1));
+			player.getComponent<Engine::Animator>()->playAnimation("walk");
 		}
+		else {
+			player.getComponent<Engine::Animator>()->playAnimation("idle");
+		}
+
+
 		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 1700.0f, 0));
+			player.getComponent<Engine::Animator>()->playAnimation("start_jump_idle");
 		}
 		if (input.GetKeyDown(SDL_SCANCODE_LEFT)){
 			camera.getComponent<Engine::Transform>()->translate(vec3(-20, 0, 0) * Engine::Time::deltaTime);
