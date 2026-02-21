@@ -39,7 +39,8 @@ namespace Engine {
 
 		float pixels_per_unit{ 32.0f };
 
-		int addCamera(Camera* camera);
+		unsigned int addCamera(Camera* camera);
+		void removeCamera(unsigned int index);
 
 	private:
 

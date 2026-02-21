@@ -3,12 +3,15 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 
 namespace Engine {
+	Camera::~Camera()
+	{
+		Renderer::Get().removeCamera(index);
 
-
+	}
 	void Camera::onAdd() {
 		m_projection = glm::orthoZO(0.0f, 800.0f, 0.0f, 600.0f, 0.0f, 1.0f);
 		m_transform = owner->getComponent<Transform>();
-		Renderer::Get().addCamera(this);
+		index = Renderer::Get().addCamera(this);
 	}
 
 	void Camera::updateProjection() {

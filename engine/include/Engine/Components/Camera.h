@@ -6,6 +6,9 @@
 namespace Engine {
 	class Camera : public Component {
 		public:
+
+			~Camera();
+
 			enum class ProjectionType {
 				Perspective,
 				Orthographic
@@ -24,8 +27,10 @@ namespace Engine {
 			float orthoWidth{ 800.0f };
 			float orthoHeight{ 600.0f };
 
+			unsigned int index{ 0 };
 
 		private:
+
 
 			Transform* m_transform{ nullptr };
 			glm::mat4 m_projection{ 1.0f };

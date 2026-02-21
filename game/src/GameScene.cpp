@@ -116,19 +116,60 @@ namespace Game {
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			rigidbody->setVelocity(vec3(-10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(-1, 1, 1));
-			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24);
+			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24, true);
 		}
-		else if (input.GetKeyDown(SDL_SCANCODE_D)) {
+		if (input.GetKeyUp(SDL_SCANCODE_A)) {
+			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 3, true);
+		}
+
+
+		if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			rigidbody->setVelocity(vec3(10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(1, 1, 1));
-			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24);
+			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24, true);
+		}
+		if (input.GetKeyUp(SDL_SCANCODE_D)) {
+			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 3, true);
+		}
+
+
+		if (input.GetKeyDown(SDL_SCANCODE_S)) {
+			player.getComponent<Engine::Animator>()->playAnimation("reinforce", true, 3, false);
+		}
+		if (input.GetKeyUp(SDL_SCANCODE_S)) {
+			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 3, true);
 		}
 
 
 		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 1700.0f, 0));
-			player.getComponent<Engine::Animator>()->playAnimation("air", true, 3);
+			player.getComponent<Engine::Animator>()->playAnimation("air", true, 3, true);
 		}
+		if (input.GetKeyUp(SDL_SCANCODE_SPACE)) {
+			player.getComponent<Engine::Animator>()->playAnimation("idle", false, 3, true);
+		}
+
+
+
+
+
+		Engine::Transform* cloudTransform = cloud.getComponent<Engine::Transform>();
+		Engine::Transform* cloud2Transform = cloud2.getComponent<Engine::Transform>();
+
+		cloudTransform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime * 0.2f);
+		cloud2Transform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime * 0.5f);
+		// just move clouds if they go offscreen
+		if (cloudTransform->getPosition().x > 44) {
+			cloudTransform->setPosition(glm::vec3( - 44, cloudTransform->getPosition().y, cloudTransform->getPosition().z));
+		}
+		if (cloud2Transform->getPosition().x > 44) {
+			cloud2Transform->setPosition(glm::vec3(-44, cloud2Transform->getPosition().y, cloud2Transform->getPosition().z));
+		}
+
+
+
+		// camera stuff
+
 		if (input.GetKeyDown(SDL_SCANCODE_LEFT)){
 			camera.getComponent<Engine::Transform>()->translate(vec3(-20, 0, 0) * Engine::Time::deltaTime);
 		}
@@ -147,20 +188,6 @@ namespace Game {
 		}
 
 
-
-		Engine::Transform* cloudTransform = cloud.getComponent<Engine::Transform>();
-		Engine::Transform* cloud2Transform = cloud2.getComponent<Engine::Transform>();
-
-		cloudTransform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime * 0.2f);
-		cloud2Transform->translate(vec3(1, 0, 0) * Engine::Time::deltaTime * 0.5f);
-		// just move clouds if they go offscreen
-		if (cloudTransform->getPosition().x > 44) {
-			cloudTransform->setPosition(glm::vec3( - 44, cloudTransform->getPosition().y, cloudTransform->getPosition().z));
-		}
-		if (cloud2Transform->getPosition().x > 44) {
-			cloud2Transform->setPosition(glm::vec3(-44, cloud2Transform->getPosition().y, cloud2Transform->getPosition().z));
-		}
-
 		// for some camera y-axis follow on camera
 		Engine::Transform* cameraTransform = camera.getComponent<Engine::Transform>();
 		if (transform->getPosition().y >= 5) {
@@ -172,10 +199,6 @@ namespace Game {
 		}
 		else {
 			cameraTransform->setPosition(glm::vec3(0,0,-10));
-		}
-
-		if (rigidbody->getVelocity().x == 0) {
-			player.getComponent<Engine::Animator>()->playAnimation("idle", false, 3);
 		}
 
 	}

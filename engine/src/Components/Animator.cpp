@@ -1,3 +1,5 @@
+
+
 #include <Engine/Components/Animator.h>
 #include <filesystem>
 #include <SDL3/SDL.h>
@@ -6,7 +8,11 @@
 #include <Engine/AnimationManager.h>
 
 namespace Engine {
+	Animator::~Animator()
+	{
 
+		AnimationManager::Get().removeAnimator(index);
+	}
 	void Animator::onAdd()
 	{
 	}
@@ -80,14 +86,14 @@ namespace Engine {
 
 
 		isPlaying = true;
-		
+		loops = loop;
 		currentAnimation = &it->second;
 		currentAnimation->frameRate = fps;
 
 		animationTime = 0.0f;
 		currentFrameIndex = currentAnimation->startIndex;
 	}
-	void Engine::Animator::play()
+	void Engine::Animator::update()
 	{
 
 		owner->getComponent<Sprite>()->spriteIndex = currentFrameIndex;

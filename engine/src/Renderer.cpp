@@ -384,7 +384,7 @@ namespace Engine {
 		return shader;
 	}
 
-	int Renderer::addCamera(Camera* camera)
+	unsigned int Renderer::addCamera(Camera* camera)
 	{
 		m_cameras.push_back(camera);
 
@@ -397,6 +397,20 @@ namespace Engine {
 		camera->updateProjection();
 
 		return m_cameras.size() - 1;
+	}
+
+	void Renderer::removeCamera(unsigned int index)
+	{
+		if (index >= m_cameras.size())
+			return;
+
+		if (index != m_spriteObjects.size() - 1) {
+			m_cameras[index] = m_cameras.back();
+			m_cameras[index]->index = index;
+		}
+
+		m_spriteObjects.pop_back();
+
 	}
 
 	void Renderer::setupSpritePipeline()

@@ -15,19 +15,25 @@ namespace Engine {
 
 			float frameDuration = 1.0 / animator->currentAnimation->frameRate;
 
-			SDL_Log("Name: %s, Index: %d", animator->currentAnimation->name.c_str(), animator->currentFrameIndex);
 			if (animator->animationTime >= frameDuration) {
 				animator->animationTime = 0.0f;
 
+				if (animator->loops == false)
+				{
+					continue;
+				}
+				SDL_Log("Name: %s, Index: %d", animator->currentAnimation->name.c_str(), animator->currentFrameIndex);
 				if (animator->currentFrameIndex >= animator->currentAnimation->endIndex) {
 					animator->currentFrameIndex = animator->currentAnimation->startIndex;
+
 					animator->isPlaying = false;
+					animator->playCount++;
 				}
 
 				animator->currentFrameIndex++;
 
 			}
-			animator->play();
+			animator->update();
 
 		}
 	}

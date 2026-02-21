@@ -9,7 +9,7 @@ namespace Engine
 
 		public:
 			Animator() = default;
-			~Animator() = default;
+			~Animator();
 
 			void onAdd() override;
 
@@ -24,7 +24,7 @@ namespace Engine
 
 			void playAnimation(const std::string& animationName,bool override, float fps, bool loop = false);
 
-			void play();
+			void update();
 
 			
 			AnimationInfo* currentAnimation;
@@ -32,6 +32,8 @@ namespace Engine
 			float animationTime{ 0.0f };
 
 			bool isPlaying{ false };
+			bool loops{ false };
+			unsigned int playCount{0};
 
 			unsigned int index{ 0 };
 

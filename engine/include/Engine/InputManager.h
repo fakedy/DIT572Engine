@@ -19,10 +19,14 @@ namespace Engine {
 
 		bool GetKeyPressed(SDL_Scancode scanCode);
 
+		bool GetKeyUp(SDL_Scancode scanCode);
+
+
 		bool GetKeyDown(SDL_Scancode scanCode);
 
 
 		std::unordered_map<uint32_t, bool> keyMap;
+		std::unordered_map<uint32_t, bool> keyMapUp;
 	private:
 		const bool* m_keyboardState;
 	};

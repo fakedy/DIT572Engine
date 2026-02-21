@@ -23,4 +23,12 @@ namespace Engine {
 		return pressed;
 	}
 
+	bool InputManager::GetKeyUp(SDL_Scancode scanCode) {
+
+		bool pressed = keyMapUp[scanCode];
+		keyMapUp[scanCode] = false;
+		return pressed;
+
+	}
+
 }

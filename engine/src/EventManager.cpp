@@ -25,6 +25,7 @@ namespace Engine {
 
 			if (e.type == SDL_EVENT_KEY_UP) {
 				input.keyMap[e.key.scancode] = false;
+				input.keyMapUp[e.key.scancode] = true;
 			}
 			if (e.type == SDL_EVENT_WINDOW_RESIZED) {
 				// handle window resize if necessary

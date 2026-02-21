@@ -154,10 +154,8 @@ namespace Engine {
 
 		unsigned int count = 0;
 		for (const auto& path : filePaths) {
-			SDL_Log(path.c_str());
 			stbi_uc* pixels = stbi_load(path.c_str(), &w, &h, &channels, 4);
 			if (pixels == nullptr) {
-				SDL_Log("pixels nullptr");
 				return nullptr;
 			}
 
@@ -197,7 +195,7 @@ namespace Engine {
 
 
 		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
-		newTexture->filepath = "höhö";
+		newTexture->filepath = "höhö"; // temporary :)
 		newTexture->textureHandle = texture;
 		newTexture->width = w;
 		newTexture->height = h;
