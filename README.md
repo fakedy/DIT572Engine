@@ -38,6 +38,7 @@ cmake --build .
 * Input system
 * Sound system
 * Camera system
+* Sprite Animation System
 
 ## Third Party Libraries
 * **CMAKE**
