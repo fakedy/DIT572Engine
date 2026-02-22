@@ -11,3 +11,4 @@ out/
 *.db
 *.ipch
 /CMakeSettings.json
+/game/Assets/terraria.wav
