@@ -36,7 +36,7 @@ namespace Engine {
 		// create postFX texture
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
-		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 		postFXTextureInfo.width = m_windowWidth;
 		postFXTextureInfo.height = m_windowHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
@@ -134,6 +134,11 @@ namespace Engine {
 
 		// if we cant get the swapchainTexture (the window is closed)
 		if (!SDL_AcquireGPUSwapchainTexture(cmd, Engine::WindowManager::Get().getWindow(), &swapchainTexture, nullptr, nullptr)) {
+			SDL_SubmitGPUCommandBuffer(cmd);
+			return;
+		}
+
+		if (m_postFXTexture == nullptr || m_depthTexture == nullptr) {
 			SDL_SubmitGPUCommandBuffer(cmd);
 			return;
 		}
@@ -345,7 +350,7 @@ namespace Engine {
 		// recreate the screen texture
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
-		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 		postFXTextureInfo.width = m_windowWidth;
 		postFXTextureInfo.height = m_windowHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
@@ -436,7 +441,7 @@ namespace Engine {
 
 
 		SDL_GPUColorTargetDescription colorTarget = {};
-		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		colorTarget.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 
 		// this is like glBlendFunc except you have to set it all yourself...
 		colorTarget.blend_state.enable_blend = true;
