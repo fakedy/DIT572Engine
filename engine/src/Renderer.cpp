@@ -133,12 +133,18 @@ namespace Engine {
 		SDL_GPUTexture* swapchainTexture;
 
 		// if we cant get the swapchainTexture (the window is closed)
-		if (!SDL_AcquireGPUSwapchainTexture(cmd, Engine::WindowManager::Get().getWindow(), &swapchainTexture, nullptr, nullptr)) {
+		if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmd, Engine::WindowManager::Get().getWindow(), &swapchainTexture, nullptr, nullptr)) {
+			SDL_SubmitGPUCommandBuffer(cmd);
+			return;
+		}
+		if(swapchainTexture == nullptr){
+			SDL_Log("Draw: SwapchainTexture is NULL");
 			SDL_SubmitGPUCommandBuffer(cmd);
 			return;
 		}
 
 		if (m_postFXTexture == nullptr || m_depthTexture == nullptr) {
+			SDL_Log("Draw: postFXTexture or depthTexture is NULL");
 			SDL_SubmitGPUCommandBuffer(cmd);
 			return;
 		}
