@@ -16,7 +16,7 @@ namespace Engine {
 	void Animator::onAdd()
 	{
 	}
-	void Animator::loadAnimations(std::string& folderPath)
+	void Animator::loadAnimations(const std::string& folderPath)
 	{
 		SDL_Log("Loading animation");
 

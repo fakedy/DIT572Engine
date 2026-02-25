@@ -13,7 +13,7 @@ namespace Engine
 
 			void onAdd() override;
 
-			void loadAnimations(std::string& folderPath);
+			void loadAnimations(const std::string& folderPath);
 
 			struct AnimationInfo {
 				unsigned int startIndex{ 0 };
