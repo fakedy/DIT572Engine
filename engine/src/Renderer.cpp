@@ -183,15 +183,17 @@ namespace Engine {
 			glm::mat4 proj;
 			glm::mat4 view;
 			glm::vec2 uvScale;
+			glm::vec2 _padding;
 		};
 
 		DataBlock ubo;
 
 		struct FragmentDataBlock {
 			unsigned int layerIndex;
+			unsigned int _padding[3];
 		};
 
-		FragmentDataBlock fragmentUbo;
+		FragmentDataBlock fragmentUbo = {};
 		
 
 		for (auto& camera : m_cameras) {
