@@ -404,12 +404,12 @@ namespace Engine {
 		if (index >= m_cameras.size())
 			return;
 
-		if (index != m_spriteObjects.size() - 1) {
+		if (index != m_cameras.size() - 1) {
 			m_cameras[index] = m_cameras.back();
 			m_cameras[index]->index = index;
 		}
 
-		m_spriteObjects.pop_back();
+		m_cameras.pop_back();
 
 	}
 

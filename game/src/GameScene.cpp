@@ -98,7 +98,7 @@ namespace Game {
 		camera.getComponent<Engine::Transform>()->translate(glm::vec3(0, 0, -10));
 
 		Engine::SoundManager& sound = Engine::SoundManager::Get();
-		//sound.PlaySound();
+		sound.PlaySound();
 
 		//world.create();
 		
