@@ -292,7 +292,6 @@ namespace Engine {
 	}
 
 
-
 	unsigned int Renderer::addSpriteObject(Sprite* object)
 	{
 		m_spriteObjects.push_back(object);
@@ -352,6 +351,10 @@ namespace Engine {
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
+		if (m_depthTexture == nullptr) {
+			SDL_Log("Failed to create depth texture: %s\n", SDL_GetError());
+		}
+
 		// On resize we have to delete the old depth texture
 		if (m_postFXTexture != nullptr) {
 			SDL_ReleaseGPUTexture(m_gpuDevice, m_postFXTexture);
@@ -368,6 +371,10 @@ namespace Engine {
 		postFXTextureInfo.num_levels = 1;
 		postFXTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
 		m_postFXTexture = SDL_CreateGPUTexture(m_gpuDevice, &postFXTextureInfo);
+
+		if (m_postFXTexture == nullptr) {
+			SDL_Log("Failed to create postFX texture: %s\n", SDL_GetError());
+		}
 
 
 		SDL_Log("Window resized to % dx % d\n", width, height);
@@ -396,6 +403,9 @@ namespace Engine {
 
 
 		SDL_GPUShader*  shader = SDL_CreateGPUShader(m_gpuDevice, &vertexCreateInfo);
+		if (shader == nullptr) {
+			SDL_Log("Failed to create shader: %s\n", SDL_GetError());
+		}
 
 		SDL_free(data);
 
@@ -490,6 +500,9 @@ namespace Engine {
 		spritePipelineInfo.vertex_input_state.num_vertex_buffers = 1;
 
 		m_spritePipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &spritePipelineInfo);
+		if (m_spritePipeline == nullptr) {
+			SDL_Log("Failed to create spritePipeline: %s\n", SDL_GetError());
+		}
 
 		// shaders are not needed anymore!!!
 		SDL_ReleaseGPUShader(m_gpuDevice, vertexShader);
@@ -533,6 +546,9 @@ namespace Engine {
 		SamplerNearest.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
 		m_samplerNearest = SDL_CreateGPUSampler(m_gpuDevice, &SamplerNearest);
+		if (m_samplerNearest == nullptr) {
+			SDL_Log("Failed to create SamplerNearest: %s\n", SDL_GetError());
+		}
 
 		SDL_GPUSamplerCreateInfo SamplerLinear = {};
 		SamplerLinear.props = 0;
@@ -545,6 +561,10 @@ namespace Engine {
 
 		m_samplerLinear = SDL_CreateGPUSampler(m_gpuDevice, &SamplerLinear);
 
+		if (m_samplerLinear == nullptr) {
+			SDL_Log("Failed to create SamplerLinear: %s\n", SDL_GetError());
+		}
+
 		SDL_GPUSamplerCreateInfo SamplerRepeat = {};
 		SamplerRepeat.props = 0;
 		SamplerRepeat.min_filter = SDL_GPU_FILTER_NEAREST;
@@ -555,6 +575,10 @@ namespace Engine {
 		SamplerRepeat.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
 
 		m_samplerRepeat = SDL_CreateGPUSampler(m_gpuDevice, &SamplerRepeat);
+
+		if (m_samplerRepeat == nullptr) {
+			SDL_Log("Failed to create SamplerRepeat: %s\n", SDL_GetError());
+		}
 
 	}
 
