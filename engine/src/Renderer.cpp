@@ -7,7 +7,7 @@ namespace Engine {
 	Renderer::Renderer()
 	{
 
-		m_gpuDevice = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL, true, "vulkan");
+		m_gpuDevice = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, "vulkan");
 
 	}
 
@@ -129,11 +129,16 @@ namespace Engine {
 
 		// create command buffer (for render commands)
 		SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(m_gpuDevice);
+		if (cmd == nullptr) {
+			SDL_Log("Draw: cmd is NULL");
+			return;
+		}
 		// the texture displayed on screen
 		SDL_GPUTexture* swapchainTexture;
 
 		// if we cant get the swapchainTexture (the window is closed)
 		if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmd, Engine::WindowManager::Get().getWindow(), &swapchainTexture, nullptr, nullptr)) {
+			SDL_Log("Draw: Couldnt aquire swapchainTexture");
 			SDL_SubmitGPUCommandBuffer(cmd);
 			return;
 		}
