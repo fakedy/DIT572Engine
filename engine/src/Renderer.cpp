@@ -21,6 +21,10 @@ namespace Engine {
 
 		SDL_ClaimWindowForGPUDevice(m_gpuDevice, Engine::WindowManager::Get().getWindow());
 		
+		if (SDL_GPUTextureSupportsFormat(m_gpuDevice, SDL_GPU_TEXTUREFORMAT_D16_UNORM, SDL_GPU_TEXTURETYPE_2D, SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET)) {
+			SDL_Log("Current depth texture is not supported\n");
+			return 1;
+		}
 
 		// Create depth texture
 		SDL_GPUTextureCreateInfo depthTextureInfo = {};
@@ -32,6 +36,11 @@ namespace Engine {
 		depthTextureInfo.num_levels = 1;
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
+
+		if (SDL_GPUTextureSupportsFormat(m_gpuDevice, SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM, SDL_GPU_TEXTURETYPE_2D, SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER)) {
+			SDL_Log("Current postfx texture is not supported\n");
+			return 1;
+		}
 
 		// create postFX texture
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
