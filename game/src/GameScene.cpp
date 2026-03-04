@@ -159,6 +159,10 @@ namespace Game {
 		if (input.GetKeyUp(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::Animator>()->playAnimation("idle", false, 3, true);
 		}
+		if (input.GetKeyUp(SDL_SCANCODE_F1)) {
+			auto& renderer = Engine::Renderer::Get();
+			renderer.m_postFXEnabled = !renderer.m_postFXEnabled;
+		}
 
 
 		playerIsGrounded = false;

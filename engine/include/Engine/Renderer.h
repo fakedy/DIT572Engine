@@ -40,6 +40,8 @@ namespace Engine {
 			
 			unsigned int addCamera(Camera* camera);
 			void removeCamera(unsigned int index);
+
+			bool m_postFXEnabled = true;
 			
 		private:
 			
