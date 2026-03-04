@@ -92,6 +92,10 @@ namespace Engine {
 		unsigned int m_windowHeight = 720;
 		unsigned int m_windowWidth = 1280;
 		float m_unitHeight = 34.0f;
+		
+		unsigned int m_postFXHeight = 144;
+		unsigned int m_postFXWidth = 256;
+
 
 		SDL_GPUDevice* m_gpuDevice;
 

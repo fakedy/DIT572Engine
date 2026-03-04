@@ -46,8 +46,8 @@ namespace Engine {
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
 		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
-		postFXTextureInfo.width = m_windowWidth;
-		postFXTextureInfo.height = m_windowHeight;
+		postFXTextureInfo.width = m_postFXWidth;
+		postFXTextureInfo.height = m_postFXHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
 		postFXTextureInfo.num_levels = 1;
 		postFXTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
@@ -374,8 +374,8 @@ namespace Engine {
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
 		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
-		postFXTextureInfo.width = m_windowWidth;
-		postFXTextureInfo.height = m_windowHeight;
+		postFXTextureInfo.width = m_postFXWidth;
+		postFXTextureInfo.height = m_postFXHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
 		postFXTextureInfo.num_levels = 1;
 		postFXTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
