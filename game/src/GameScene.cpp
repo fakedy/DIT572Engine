@@ -19,6 +19,8 @@ namespace Game {
 
 	Engine::GameObject badbg;
 
+	Engine::GameObject trampoline;
+
 
 
 	Engine::GameObject floor;
@@ -35,6 +37,9 @@ namespace Game {
 	void onPlayerCollision(std::string str) {
 		if (str == "") {
 			return;
+		}
+		if (str == "trampoline") {
+			player.getComponent<Engine::RigidBody2D>()->addImpulse(glm::vec3(0, 100.0,0));
 		}
 		playerIsGrounded = true;
 	}
@@ -64,7 +69,17 @@ namespace Game {
 		box.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(boxSizeX / renderer.pixels_per_unit, boxSizeY / renderer.pixels_per_unit));
 		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
 		box.getComponent<Engine::BoxCollider2D>()->tag = "box";
-		box.addComponent<Engine::RigidBody2D>();
+
+		trampoline.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/trampoline.png");
+		trampoline.getComponent<Engine::Transform>()->translate(vec3(14, 0, 0));
+		trampoline.addComponent<Engine::RigidBody2D>();
+
+		float trampolineSizeX = trampoline.getComponent<Engine::Sprite>()->getMaterial().texture->width;
+		float trampolineSizeY = trampoline.getComponent<Engine::Sprite>()->getMaterial().texture->height;
+		trampoline.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(trampolineSizeX / renderer.pixels_per_unit, (trampolineSizeY / renderer.pixels_per_unit) -0.5f));
+		trampoline.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
+		trampoline.getComponent<Engine::BoxCollider2D>()->tag = "trampoline";
+
 
 		box2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/box.png");
 		box2.getComponent<Engine::Transform>()->translate(vec3(3, -8.5, 6));
@@ -95,6 +110,11 @@ namespace Game {
 		
 		cloud.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/cloud.png");
 		cloud.getComponent<Engine::Transform>()->translate(vec3(14, 13, 0));
+		float cloud1SizeX = cloud.getComponent<Engine::Sprite>()->getMaterial().texture->width;
+		float cloud1SizeY = cloud.getComponent<Engine::Sprite>()->getMaterial().texture->height;
+		cloud.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(cloud1SizeX / renderer.pixels_per_unit, cloud1SizeY / renderer.pixels_per_unit));
+		cloud.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
+		cloud.getComponent<Engine::BoxCollider2D>()->tag = "floor";
 
 		cloud2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/cloud.png");
 		cloud2.getComponent<Engine::Transform>()->translate(vec3(-16, 12, -2));
