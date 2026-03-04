@@ -9,12 +9,15 @@ layout(set = 2, binding = 0) uniform sampler2D postFXTexture;
 void main()
 {
 
-    
+    ivec2 size = textureSize(postFXTexture, 0);
+    vec2 resolution = vec2(size);
 
     vec4 textureColor = texture(postFXTexture, inUV);
 
+    float scanline = sin(inUV.y * resolution.y * 3.14159);
 
-    
 
-    FragColor = vec4(textureColor.r,textureColor.g,textureColor.b,1);
+    scanline = (scanline * 0.5 + 0.5) * 0.2;
+
+    FragColor = vec4(textureColor.rgb - scanline,1);
 }
