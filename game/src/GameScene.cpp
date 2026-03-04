@@ -6,6 +6,7 @@ namespace Game {
 	using namespace glm;
 
 	Engine::GameObject player;
+	bool playerIsGrounded = false;
 
 	Engine::GameObject box;
 	Engine::GameObject box2;
@@ -31,6 +32,12 @@ namespace Game {
 	*/
 
 
+	void onPlayerCollision(std::string str) {
+		if (str == "") {
+			return;
+		}
+		playerIsGrounded = true;
+	}
 
 	
 	void GameScene::start() {
@@ -45,6 +52,7 @@ namespace Game {
 		player.getComponent<Engine::Transform>()->translate(vec3(0, 0, 5));
 		player.addComponent<Engine::Animator>();
 		player.getComponent<Engine::Animator>()->loadAnimations(std::string("Assets/Sprites/Slime/Animations/"));
+		player.getComponent<Engine::BoxCollider2D>()->listeners.push_back(onPlayerCollision);
 
 
 		box.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/box.png");
@@ -55,6 +63,7 @@ namespace Game {
 		float boxSizeY = box.getComponent<Engine::Sprite>()->getMaterial().texture->height;
 		box.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(boxSizeX / renderer.pixels_per_unit, boxSizeY / renderer.pixels_per_unit));
 		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
+		box.getComponent<Engine::BoxCollider2D>()->tag = "box";
 		box.addComponent<Engine::RigidBody2D>();
 
 		box2.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/box.png");
@@ -75,6 +84,8 @@ namespace Game {
 		floor.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(100, floorSizeY / renderer.pixels_per_unit));
 		floor.getComponent<Engine::Transform>()->translate(vec3(0, -10, 0));
 		floor.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
+		floor.getComponent<Engine::BoxCollider2D>()->tag = "floor";
+
 
 		stoneGround.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/stone.png");
 		stoneGround.getComponent<Engine::Sprite>()->getMaterial().samplerMode = Engine::Material::SAMPLER_MODE_REPEAT;
@@ -141,7 +152,7 @@ namespace Game {
 		}
 
 
-		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
+		if (playerIsGrounded && input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
 			player.getComponent<Engine::RigidBody2D>()->addImpulse(glm::vec3(0, 8.0f, 0));
 			player.getComponent<Engine::Animator>()->playAnimation("air", true, 3, true);
 		}
@@ -154,7 +165,7 @@ namespace Game {
 		}
 
 
-
+		playerIsGrounded = false;
 
 
 		Engine::Transform* cloudTransform = cloud.getComponent<Engine::Transform>();
