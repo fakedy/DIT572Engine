@@ -17,32 +17,35 @@ namespace Engine {
 			static Renderer* instance = new Renderer();
 			return *instance;
 		}
-
-		Renderer();
-
-		~Renderer();
-
+		
 		int init();
-
+		
 		void draw();
 
-
+		Renderer(const Renderer&) = delete;
+    	Renderer& operator=(const Renderer&) = delete;
+		
+		
 		SDL_GPUDevice& getDevice();
-
+		
 		unsigned int addSpriteObject(Sprite* object);
 		void removeSpriteObject(unsigned int id);
-
+		
 		void handleResizeWindow(unsigned int width, unsigned int height);
-
+		
 		SDL_GPUShader* createShader(const char* shaderPath, SDL_GPUShaderFormat format, SDL_GPUShaderStage stage
 			, Uint32 numSamplers, Uint32 numUniformBuffers, Uint32 numStorageBuffers, Uint32 numStorageTextures);
-
-		float pixels_per_unit{ 32.0f };
-
-		unsigned int addCamera(Camera* camera);
-		void removeCamera(unsigned int index);
-
-	private:
+			
+			float pixels_per_unit{ 32.0f };
+			
+			unsigned int addCamera(Camera* camera);
+			void removeCamera(unsigned int index);
+			
+		private:
+			
+			Renderer();
+			
+			~Renderer();
 
 
 		void setupSpritePipeline();
@@ -64,16 +67,16 @@ namespace Engine {
 			1, 2, 3
 		};
 
-		SDL_GPUBuffer* m_quadVertexBuffer;
-		SDL_GPUBuffer* m_quadIndicesBuffer;
+		SDL_GPUBuffer* m_quadVertexBuffer{nullptr};
+		SDL_GPUBuffer* m_quadIndicesBuffer{nullptr};
 
-		SDL_GPUSampler* m_samplerNearest;
-		SDL_GPUSampler* m_samplerLinear;
-		SDL_GPUSampler* m_samplerRepeat;
+		SDL_GPUSampler* m_samplerNearest{nullptr};
+		SDL_GPUSampler* m_samplerLinear{nullptr};
+		SDL_GPUSampler* m_samplerRepeat{nullptr};
 
 
-		SDL_GPUTexture* m_depthTexture;
-		SDL_GPUTexture* m_postFXTexture;
+		SDL_GPUTexture* m_depthTexture{nullptr};
+		SDL_GPUTexture* m_postFXTexture{nullptr};
 
 		std::vector<Sprite*> m_spriteObjects;
 

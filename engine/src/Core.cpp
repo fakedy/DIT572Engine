@@ -43,24 +43,34 @@ namespace Engine {
 
 		auto lastTime = std::chrono::high_resolution_clock::now();
 
+		double lag = 0.0;
 		while (m_running) {
 
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<float> frameTime = currentTime - lastTime;
 
+			lastTime = currentTime;
 			Time::deltaTime = frameTime.count();
+
+			lag += Time::deltaTime;
+
 
 			// Clamp deltaTime to avoid physics explosions
 			const float maxDelta = 0.05f; // 50 ms (20 FPS worst case)
 			if (Time::deltaTime > maxDelta)
 				Time::deltaTime = maxDelta;
 
-			physics.update();
 
-			EventManager::Get().PollEvents(m_running);
+			while (lag > 0.016) {
 
-			if (m_scene != nullptr) {
-				m_scene->update();
+				physics.update();
+
+				EventManager::Get().PollEvents(m_running);
+
+				if (m_scene != nullptr) {
+					m_scene->update();
+				}
+				lag -= 0.016;
 			}
 
 			animationManager.Update();
@@ -68,7 +78,6 @@ namespace Engine {
 			window.swapBuffers();
 			Time::timeCount++;
 
-			lastTime = currentTime;
 
 		}
 

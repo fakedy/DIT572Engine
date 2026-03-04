@@ -16,7 +16,7 @@ namespace Engine {
 	void Animator::onAdd()
 	{
 	}
-	void Animator::loadAnimations(std::string& folderPath)
+	void Animator::loadAnimations(const std::string& folderPath)
 	{
 		SDL_Log("Loading animation");
 
@@ -69,7 +69,7 @@ namespace Engine {
 	{
 
 
-		auto& it = animationMap.find(animationName);
+		auto it = animationMap.find(animationName);
 		if (it == animationMap.end()) {
 			SDL_Log("Animation %s not found!", animationName.c_str());
 			return;

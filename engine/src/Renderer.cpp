@@ -7,7 +7,7 @@ namespace Engine {
 	Renderer::Renderer()
 	{
 
-		m_gpuDevice = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL, true, "vulkan");
+		m_gpuDevice = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_SPIRV, true, "vulkan");
 
 	}
 
@@ -21,6 +21,10 @@ namespace Engine {
 
 		SDL_ClaimWindowForGPUDevice(m_gpuDevice, Engine::WindowManager::Get().getWindow());
 		
+		if (!SDL_GPUTextureSupportsFormat(m_gpuDevice, SDL_GPU_TEXTUREFORMAT_D16_UNORM, SDL_GPU_TEXTURETYPE_2D, SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET)) {
+			SDL_Log("Current depth texture is not supported\n");
+			return 1;
+		}
 
 		// Create depth texture
 		SDL_GPUTextureCreateInfo depthTextureInfo = {};
@@ -33,10 +37,15 @@ namespace Engine {
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
+		if (!SDL_GPUTextureSupportsFormat(m_gpuDevice, SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM, SDL_GPU_TEXTURETYPE_2D, SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER)) {
+			SDL_Log("Current postfx texture is not supported\n");
+			return 1;
+		}
+
 		// create postFX texture
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
-		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 		postFXTextureInfo.width = m_windowWidth;
 		postFXTextureInfo.height = m_windowHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
@@ -129,11 +138,27 @@ namespace Engine {
 
 		// create command buffer (for render commands)
 		SDL_GPUCommandBuffer* cmd = SDL_AcquireGPUCommandBuffer(m_gpuDevice);
+		if (cmd == nullptr) {
+			SDL_Log("Draw: cmd is NULL");
+			return;
+		}
 		// the texture displayed on screen
 		SDL_GPUTexture* swapchainTexture;
 
 		// if we cant get the swapchainTexture (the window is closed)
-		if (!SDL_AcquireGPUSwapchainTexture(cmd, Engine::WindowManager::Get().getWindow(), &swapchainTexture, nullptr, nullptr)) {
+		if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmd, Engine::WindowManager::Get().getWindow(), &swapchainTexture, nullptr, nullptr)) {
+			SDL_Log("Draw: Couldnt aquire swapchainTexture");
+			SDL_SubmitGPUCommandBuffer(cmd);
+			return;
+		}
+		if(swapchainTexture == nullptr){
+			SDL_Log("Draw: SwapchainTexture is NULL");
+			SDL_SubmitGPUCommandBuffer(cmd);
+			return;
+		}
+
+		if (m_postFXTexture == nullptr || m_depthTexture == nullptr) {
+			SDL_Log("Draw: postFXTexture or depthTexture is NULL");
 			SDL_SubmitGPUCommandBuffer(cmd);
 			return;
 		}
@@ -183,15 +208,17 @@ namespace Engine {
 			glm::mat4 proj;
 			glm::mat4 view;
 			glm::vec2 uvScale;
+			glm::vec2 _padding;
 		};
 
 		DataBlock ubo;
 
 		struct FragmentDataBlock {
 			unsigned int layerIndex;
+			unsigned int _padding[3];
 		};
 
-		FragmentDataBlock fragmentUbo;
+		FragmentDataBlock fragmentUbo = {};
 		
 
 		for (auto& camera : m_cameras) {
@@ -274,7 +301,6 @@ namespace Engine {
 	}
 
 
-
 	unsigned int Renderer::addSpriteObject(Sprite* object)
 	{
 		m_spriteObjects.push_back(object);
@@ -334,6 +360,10 @@ namespace Engine {
 		depthTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET;
 		m_depthTexture = SDL_CreateGPUTexture(m_gpuDevice, &depthTextureInfo);
 
+		if (m_depthTexture == nullptr) {
+			SDL_Log("Failed to create depth texture: %s\n", SDL_GetError());
+		}
+
 		// On resize we have to delete the old depth texture
 		if (m_postFXTexture != nullptr) {
 			SDL_ReleaseGPUTexture(m_gpuDevice, m_postFXTexture);
@@ -343,13 +373,17 @@ namespace Engine {
 		// recreate the screen texture
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
-		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 		postFXTextureInfo.width = m_windowWidth;
 		postFXTextureInfo.height = m_windowHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
 		postFXTextureInfo.num_levels = 1;
 		postFXTextureInfo.usage = SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
 		m_postFXTexture = SDL_CreateGPUTexture(m_gpuDevice, &postFXTextureInfo);
+
+		if (m_postFXTexture == nullptr) {
+			SDL_Log("Failed to create postFX texture: %s\n", SDL_GetError());
+		}
 
 
 		SDL_Log("Window resized to % dx % d\n", width, height);
@@ -378,6 +412,9 @@ namespace Engine {
 
 
 		SDL_GPUShader*  shader = SDL_CreateGPUShader(m_gpuDevice, &vertexCreateInfo);
+		if (shader == nullptr) {
+			SDL_Log("Failed to create shader: %s\n", SDL_GetError());
+		}
 
 		SDL_free(data);
 
@@ -404,12 +441,12 @@ namespace Engine {
 		if (index >= m_cameras.size())
 			return;
 
-		if (index != m_spriteObjects.size() - 1) {
+		if (index != m_cameras.size() - 1) {
 			m_cameras[index] = m_cameras.back();
 			m_cameras[index]->index = index;
 		}
 
-		m_spriteObjects.pop_back();
+		m_cameras.pop_back();
 
 	}
 
@@ -434,7 +471,7 @@ namespace Engine {
 
 
 		SDL_GPUColorTargetDescription colorTarget = {};
-		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
+		colorTarget.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 
 		// this is like glBlendFunc except you have to set it all yourself...
 		colorTarget.blend_state.enable_blend = true;
@@ -472,6 +509,9 @@ namespace Engine {
 		spritePipelineInfo.vertex_input_state.num_vertex_buffers = 1;
 
 		m_spritePipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &spritePipelineInfo);
+		if (m_spritePipeline == nullptr) {
+			SDL_Log("Failed to create spritePipeline: %s\n", SDL_GetError());
+		}
 
 		// shaders are not needed anymore!!!
 		SDL_ReleaseGPUShader(m_gpuDevice, vertexShader);
@@ -515,6 +555,9 @@ namespace Engine {
 		SamplerNearest.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
 
 		m_samplerNearest = SDL_CreateGPUSampler(m_gpuDevice, &SamplerNearest);
+		if (m_samplerNearest == nullptr) {
+			SDL_Log("Failed to create SamplerNearest: %s\n", SDL_GetError());
+		}
 
 		SDL_GPUSamplerCreateInfo SamplerLinear = {};
 		SamplerLinear.props = 0;
@@ -527,6 +570,10 @@ namespace Engine {
 
 		m_samplerLinear = SDL_CreateGPUSampler(m_gpuDevice, &SamplerLinear);
 
+		if (m_samplerLinear == nullptr) {
+			SDL_Log("Failed to create SamplerLinear: %s\n", SDL_GetError());
+		}
+
 		SDL_GPUSamplerCreateInfo SamplerRepeat = {};
 		SamplerRepeat.props = 0;
 		SamplerRepeat.min_filter = SDL_GPU_FILTER_NEAREST;
@@ -537,6 +584,10 @@ namespace Engine {
 		SamplerRepeat.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
 
 		m_samplerRepeat = SDL_CreateGPUSampler(m_gpuDevice, &SamplerRepeat);
+
+		if (m_samplerRepeat == nullptr) {
+			SDL_Log("Failed to create SamplerRepeat: %s\n", SDL_GetError());
+		}
 
 	}
 
