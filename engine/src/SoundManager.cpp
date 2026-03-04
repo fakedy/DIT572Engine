@@ -47,15 +47,13 @@ namespace Engine {
                 /* feed more data to the stream. It will queue at the end, and trickle out as the hardware needs more data. */
                 SDL_PutAudioStreamData(stream, wav_data, wav_data_len);
             }
-
-
-
         }
 
       
 
         void SoundManager::StopSound()
         {
+            SDL_ClearAudioStream(stream);
             SDL_free(wav_data);  /* strictly speaking, this isn't necessary because the process is ending, but it's good policy. */
             /* SDL will clean up the window/renderer for us. */
         }

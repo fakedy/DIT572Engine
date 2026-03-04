@@ -2,6 +2,8 @@
 #include <Engine/Components/Component.h>
 #include <Engine/Components/Transform.h>
 #include <Engine/Components/RigidBody2D.h>
+#include <string>
+#include <functional>
 
 namespace Engine {
 	class Collider2D : public Component{
@@ -30,5 +32,9 @@ namespace Engine {
 			float friction{ 0 };
 
 			ColliderType2D type{ BOX };
+
+			std::string tag{""};
+			
+			std::vector<std::function<void(std::string)>>  listeners;
 	};
 }

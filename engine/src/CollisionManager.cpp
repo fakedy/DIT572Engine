@@ -39,6 +39,9 @@ namespace Engine {
 
 					if (col->ColliderCheck(other, colstruct)) {
 						collisions.push_back(colstruct);
+						for (auto& listener : col->listeners) {
+							listener(other->tag);
+						}
 					}
 				}
 			}
