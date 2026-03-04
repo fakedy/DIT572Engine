@@ -165,9 +165,11 @@ namespace Engine {
 		
 		// render pass
 
+		SDL_GPUTexture* initTarget = m_postFXEnabled ? m_postFXTexture : swapchainTexture;
+
 		// color target
 		SDL_GPUColorTargetInfo colorTargetInfo = { 0 };
-		colorTargetInfo.texture = m_postFXTexture;
+		colorTargetInfo.texture = initTarget;
 		colorTargetInfo.clear_color = { 0.3f, 0.3f, 0.8f, 1.0f };
 		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
 		colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE; // write to memory
@@ -268,31 +270,32 @@ namespace Engine {
 
 		SDL_EndGPURenderPass(renderPass);
 
-
-		colorTargetInfo.texture = swapchainTexture;
-		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
-
-
-		// only works for 2d right now
-		SDL_GPURenderPass* postFXPass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, nullptr);
-
-		SDL_BindGPUGraphicsPipeline(postFXPass, m_postFXPipeline);
-
-		SDL_GPUTextureSamplerBinding textureBinding = {};
-
-		textureBinding.sampler = m_samplerNearest;
-		textureBinding.texture = m_postFXTexture;
-
-		SDL_BindGPUFragmentSamplers(postFXPass, 0, &textureBinding, 1);
-
-		// draw screen quad
-		SDL_DrawGPUPrimitives(postFXPass, 6, 1, 0, 0);
+		if (m_postFXEnabled) {
+			colorTargetInfo.texture = swapchainTexture;
+			colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR; // clear on load 
 
 
-		SDL_EndGPURenderPass(postFXPass);
+			// only works for 2d right now
+			SDL_GPURenderPass* postFXPass = SDL_BeginGPURenderPass(cmd, &colorTargetInfo, 1, nullptr);
+
+			SDL_BindGPUGraphicsPipeline(postFXPass, m_postFXPipeline);
+
+			SDL_GPUTextureSamplerBinding textureBinding = {};
+
+			textureBinding.sampler = m_samplerNearest;
+			textureBinding.texture = m_postFXTexture;
+
+			SDL_BindGPUFragmentSamplers(postFXPass, 0, &textureBinding, 1);
+
+			// draw screen quad
+			SDL_DrawGPUPrimitives(postFXPass, 6, 1, 0, 0);
+
+
+			SDL_EndGPURenderPass(postFXPass);
+		}
+
 		// cleanup
 		SDL_SubmitGPUCommandBuffer(cmd);
-
 	}
 
 	SDL_GPUDevice& Renderer::getDevice()

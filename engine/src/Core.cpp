@@ -41,7 +41,7 @@ namespace Engine {
 			m_scene->start();
 		}
 
-		const float fixedDeltaTime = 1.0f / 60.0f;
+		const float fixedDeltaTime = 1.0f / 120.0f;
 
 		auto lastTime = std::chrono::high_resolution_clock::now();
 
