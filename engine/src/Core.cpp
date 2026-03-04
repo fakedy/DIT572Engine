@@ -61,12 +61,13 @@ namespace Engine {
 			lag += deltaTime;
 
 
+			lag += Time::deltaTime;
+
 			while (lag >= fixedDeltaTime) {
 				Engine::Time::deltaTime = fixedDeltaTime;
 
 				physics.update();
 
-				EventManager::Get().PollEvents(m_running);
 
 				if (m_scene != nullptr) {
 					m_scene->update();
