@@ -41,27 +41,28 @@ namespace Engine {
 			m_scene->start();
 		}
 
+		const float fixedDeltaTime = 1.0f / 60.0f;
+
 		auto lastTime = std::chrono::high_resolution_clock::now();
 
-		double lag = 0.0;
+		double lag = 0.0f;
 		while (m_running) {
 
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<float> frameTime = currentTime - lastTime;
-
 			lastTime = currentTime;
-			Time::deltaTime = frameTime.count();
 
-			lag += Time::deltaTime;
-
+			float deltaTime = frameTime.count();
 
 			// Clamp deltaTime to avoid physics explosions
-			const float maxDelta = 0.05f; // 50 ms (20 FPS worst case)
-			if (Time::deltaTime > maxDelta)
-				Time::deltaTime = maxDelta;
+			if (deltaTime > 0.25)
+				deltaTime = 0.25;
+
+			lag += deltaTime;
 
 
-			while (lag > 0.016) {
+			while (lag >= fixedDeltaTime) {
+				Engine::Time::deltaTime = fixedDeltaTime;
 
 				physics.update();
 
@@ -70,7 +71,7 @@ namespace Engine {
 				if (m_scene != nullptr) {
 					m_scene->update();
 				}
-				lag -= 0.016;
+				lag -= fixedDeltaTime;
 			}
 
 			animationManager.Update();
