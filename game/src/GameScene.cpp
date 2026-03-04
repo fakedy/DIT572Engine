@@ -116,20 +116,20 @@ namespace Game {
 		if (input.GetKeyDown(SDL_SCANCODE_A)) {
 			rigidbody->setVelocity(vec3(-10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(-1, 1, 1));
-			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24, true);
+			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 12, true);
 		}
 		if (input.GetKeyUp(SDL_SCANCODE_A)) {
-			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 3, true);
+			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 2, true);
 		}
 
 
 		if (input.GetKeyDown(SDL_SCANCODE_D)) {
 			rigidbody->setVelocity(vec3(10, rigidbody->velocity.y, 0));
 			transform->scale(vec3(1, 1, 1));
-			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 24, true);
+			player.getComponent<Engine::Animator>()->playAnimation("walk", true, 12, true);
 		}
 		if (input.GetKeyUp(SDL_SCANCODE_D)) {
-			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 3, true);
+			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 2, true);
 		}
 
 
@@ -137,7 +137,7 @@ namespace Game {
 			player.getComponent<Engine::Animator>()->playAnimation("reinforce", true, 3, false);
 		}
 		if (input.GetKeyUp(SDL_SCANCODE_S)) {
-			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 3, true);
+			player.getComponent<Engine::Animator>()->playAnimation("idle", true, 2, true);
 		}
 
 
@@ -146,7 +146,7 @@ namespace Game {
 			player.getComponent<Engine::Animator>()->playAnimation("air", true, 3, true);
 		}
 		if (input.GetKeyUp(SDL_SCANCODE_SPACE)) {
-			player.getComponent<Engine::Animator>()->playAnimation("idle", false, 3, true);
+			player.getComponent<Engine::Animator>()->playAnimation("idle", false, 2, true);
 		}
 
 
