@@ -187,7 +187,7 @@ namespace Engine {
 
 
 		std::shared_ptr<Texture> newTexture = std::make_shared<Texture>();
-		newTexture->filepath = "höhö"; // temporary :)
+		newTexture->filepath = "bazinga"; // temporary :)
 		newTexture->textureHandle = texture;
 		newTexture->width = w;
 		newTexture->height = h;
