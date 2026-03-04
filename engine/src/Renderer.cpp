@@ -45,7 +45,7 @@ namespace Engine {
 		// create postFX texture
 		SDL_GPUTextureCreateInfo postFXTextureInfo = {};
 		postFXTextureInfo.type = SDL_GPU_TEXTURETYPE_2D;
-		postFXTextureInfo.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
+		postFXTextureInfo.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
 		postFXTextureInfo.width = m_postFXWidth;
 		postFXTextureInfo.height = m_postFXHeight;
 		postFXTextureInfo.layer_count_or_depth = 1;
@@ -474,7 +474,7 @@ namespace Engine {
 
 
 		SDL_GPUColorTargetDescription colorTarget = {};
-		colorTarget.format = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
+		colorTarget.format = SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, Engine::WindowManager::Get().getWindow());
 
 		// this is like glBlendFunc except you have to set it all yourself...
 		colorTarget.blend_state.enable_blend = true;
