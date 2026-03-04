@@ -67,8 +67,10 @@ namespace Game {
 		float boxSizeX = box.getComponent<Engine::Sprite>()->getMaterial().texture->width;
 		float boxSizeY = box.getComponent<Engine::Sprite>()->getMaterial().texture->height;
 		box.addComponent<Engine::BoxCollider2D>()->setSize(glm::vec2(boxSizeX / renderer.pixels_per_unit, boxSizeY / renderer.pixels_per_unit));
-		box.getComponent<Engine::BoxCollider2D>()->friction = 0.5f;
-		box.getComponent<Engine::BoxCollider2D>()->tag = "box";
+
+		Engine::BoxCollider2D* boxCol = box.getComponent<Engine::BoxCollider2D>();
+		boxCol->friction = 0.5f;
+		boxCol->tag = "box";
 
 		trampoline.addComponent<Engine::Sprite>()->LoadSprite("Assets/Sprites/trampoline.png");
 		trampoline.getComponent<Engine::Transform>()->translate(vec3(14, 0, 0));
