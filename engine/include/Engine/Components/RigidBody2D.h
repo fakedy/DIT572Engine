@@ -14,6 +14,7 @@ namespace Engine {
 		void setVelocity(glm::vec3 velocity);
 
 		void addForce(glm::fvec3 force);
+		void addImpulse(glm::fvec3 impulse);
 
 		RigidBody2D();
 		~RigidBody2D();

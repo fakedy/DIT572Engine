@@ -63,7 +63,7 @@ namespace Engine {
 			EventManager::Get().PollEvents(m_running);
 
 			while (lag >= fixedDeltaTime) {
-				Engine::Time::deltaTime = fixedDeltaTime;
+				Time::deltaTime = fixedDeltaTime;
 
 				physics.update();
 
@@ -73,6 +73,7 @@ namespace Engine {
 				lag -= fixedDeltaTime;
 			}
 
+			Time::deltaTime = deltaTime;
 			animationManager.Update();
 			renderer.draw();
 			window.swapBuffers();

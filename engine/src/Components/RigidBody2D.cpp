@@ -19,7 +19,12 @@ namespace Engine {
 
 	void RigidBody2D::addForce(glm::fvec3 force)
 	{
-		acceleration = force / mass;
+		acceleration += force / mass;
+	}
+
+	void RigidBody2D::addImpulse(glm::fvec3 impulse)
+	{
+		velocity += impulse / mass;
 	}
 
 	RigidBody2D::RigidBody2D(){

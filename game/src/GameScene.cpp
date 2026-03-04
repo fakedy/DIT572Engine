@@ -142,7 +142,7 @@ namespace Game {
 
 
 		if (input.GetKeyPressed(SDL_SCANCODE_SPACE)) {
-			player.getComponent<Engine::RigidBody2D>()->addForce(glm::vec3(0, 1700.0f, 0));
+			player.getComponent<Engine::RigidBody2D>()->addImpulse(glm::vec3(0, 8.0f, 0));
 			player.getComponent<Engine::Animator>()->playAnimation("air", true, 3, true);
 		}
 		if (input.GetKeyUp(SDL_SCANCODE_SPACE)) {
