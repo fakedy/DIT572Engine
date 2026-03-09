@@ -38,7 +38,7 @@ namespace Engine {
 
 	void RigidBody2D::onAdd() {
 
-		// add itself to renderer
+		// add itself to physics manager
 		RGbodyIndex = PhysicsManager::Get().addRGBody2D(this);
 		// Transform is default to gameobjects so they should have one.
 		transform = owner->getComponent<Transform>();
